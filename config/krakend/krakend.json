@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "port": 8000,
+  "endpoints": [
+    {
+      "endpoint": "/admin",
+      "output_encoding": "no-op",
+      "backend": [
+        {
+          "encoding": "no-op",
+          "host": [
+            "admin_service:80"
+          ],
+          "url_pattern": "/"
+        }
+      ]
+    }
+  ]
+}
