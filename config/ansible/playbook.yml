@@ -1,0 +1,9 @@
+---
+
+- hosts: traservers
+  vars:
+    adminservice_build_id: "{{ lookup('file', '/var/tmp/{{ project_id }}/adminservice-build-id.txt') }}"
+    patientservice_build_id: "{{ lookup('file', '/var/tmp/{{ project_id }}/patientservice-build-id.txt') }}"
+    therapistservice_build_id: "{{ lookup('file', '/var/tmp/{{ project_id }}/therapistservice-build-id.txt') }}"
+  roles:
+    - role: deploy

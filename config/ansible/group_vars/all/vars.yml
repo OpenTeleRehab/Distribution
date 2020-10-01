@@ -1,0 +1,17 @@
+---
+
+
+project_id:     'hiv-tra-20'
+project_name:   'rehabilitation'
+k8s_namespace:  'hiv'
+website_url:    '{{ stage }}-{{ project_name }}.wehost.asia'
+
+app_context:    'Production'
+
+image_name:     'hub.web-essentials.co/we/{{ project_id }}'
+kubeconfig:     '~/.kube/admin.conf'
+workspace:      '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
+
+tz_path:        '/usr/share/zoneinfo/Asia/Phnom_Penh'
+
+deployment_replica: '1'
