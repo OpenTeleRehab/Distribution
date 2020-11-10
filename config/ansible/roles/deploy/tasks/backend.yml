@@ -17,8 +17,8 @@
 - name: Deploy namespace and configmap
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/{{ item }}'
   loop:
-    - namespace.yaml
-    - configmap.yaml
+    - namespace.yml
+    - configmap.yml
   when: lookup('env', 'JENKINS_HOME')
 
 ### Deploy keycloak
