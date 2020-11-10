@@ -1,0 +1,61 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-{{ stage }}-{{ project_name }}-webclient
+  namespace: hiv
+spec:
+  selector:
+    matchLabels:
+      app: app-{{ stage }}-{{ project_name }}-webclient
+  template:
+    metadata:
+      labels:
+        app: app-{{ stage }}-{{ project_name }}-webclient
+    spec:
+      containers:
+        - image: nginx:1.19.3
+          name: app-{{ stage }}-{{ project_name }}-webclient
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: tz-config
+              mountPath: /etc/localtime
+            - name: configmap-{{ stage }}-{{ project_name }}-webclient-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Phnom_Penh
+        - name: configmap-{{ stage }}-{{ project_name }}-webclient-volume
+          configMap:
+            name: configmap-{{ stage }}-{{ project_name }}-webclient
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-{{ stage }}-{{ project_name }}-webclient
+  namespace: hiv
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: app-{{ stage }}-{{ project_name }}-webclient
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ing-{{ stage }}-{{ project_name }}
+  namespace: hiv
+spec:
+  rules:
+    - host: latest-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-webclient
+              servicePort: 80

@@ -1,1 +1,9 @@
 ---
+
+- name: Deploy keycloak and System first
+  import_tasks: backend.yml
+  when: stage != 'live'
+
+- name: Deploy webclient
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
+  when: lookup('env', 'JENKINS_HOME')

@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-therapist'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-therapist'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-therapist'
+    spec:
+      containers:
+        - image: {{ image_name }}/system:{{ therapistservice_build_id }}
+          name: 'app-{{ stage }}-{{ project_name }}-therapist'
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-therapist'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-therapist'

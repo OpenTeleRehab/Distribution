@@ -1,0 +1,27 @@
+---
+
+### Deploy namespace and configmap
+- name: Create build directory
+  file:
+    path: '{{ workspace }}/k8s-deploy'
+    state: directory
+
+- name: Create namespace and configmap
+  template:
+    src: '{{ item }}'
+    dest: '{{ workspace }}/k8s-deploy/{{ item | basename | regex_replace('\.j2$', '') }}'
+  with_fileglob:
+    - '../templates/internal/*.j2'
+
+- name: Deploy namespace and configmap
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/{{ item }}'
+  loop:
+    - namespace.yaml
+    - configmap.yaml
+  when: lookup('env', 'JENKINS_HOME')
+
+### Deploy keycloak
+
+- name: Deploy keycloak
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
+  when: lookup('env', 'JENKINS_HOME')
