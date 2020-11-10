@@ -1,17 +1,23 @@
 ---
 
+project_id:          'hiv-tra-20'
+project_name:        'tra'
+k8s_namespace:       'hiv'
+website_url:         '{{ stage }}-rehabilitation.wehost.asia'
 
-project_id:     'hiv-tra-20'
-project_name:   'rehabilitation'
-k8s_namespace:  'hiv'
-website_url:    '{{ stage }}-{{ project_name }}.wehost.asia'
+app_context:         'Production'
 
-app_context:    'Production'
+image_name:          'hub.web-essentials.co/we/{{ project_id }}'
+kubeconfig:          '~/.kube/admin.conf'
+workspace:           '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
 
-image_name:     'hub.web-essentials.co/we/{{ project_id }}'
-kubeconfig:     '~/.kube/admin.conf'
-workspace:      '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
+my_host:             '10.10.10.25'
+my_keycloak_user:    '{{ stage }}_{{ project_name }}_keycloak'
+my_keycloak_pass:    '{{ my_keycloak_pass_vault }}'
+my_keycloak_db:      '{{ stage }}_{{ project_name }}_keycloak'
+keycloak_admin_user: 'admin'
+keycloak_admin_pass: '{{ keycloak_admin_pass_vault }}'
 
-tz_path:        '/usr/share/zoneinfo/Asia/Phnom_Penh'
+tz_path:             '/usr/share/zoneinfo/Asia/Phnom_Penh'
 
-deployment_replica: '1'
+deployment_replica:  '1'

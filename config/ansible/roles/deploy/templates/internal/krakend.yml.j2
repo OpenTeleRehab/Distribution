@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-krakend'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-krakend'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-krakend'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: devopsfaith/krakend:1.1.1
+          name: 'app-{{ stage }}-{{ project_name }}-krakend'
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: tz-config
+              mountPath: /etc/localtime
+            - name: 'configmap-{{ stage }}-{{ project_name }}-krakend'
+              mountPath: /etc/krakend/krakend.json
+              subPath: queue-worker
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: {{ tz_path }}
+        - name: configmap-{{ stage }}-{{ project_name }}-krakend
+          configMap:
+            name: configmap-{{ stage }}-{{ project_name }}-krakend
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-krakend'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-krakend'

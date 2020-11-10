@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-keycloak'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-keycloak'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-keycloak'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: {{ image_name }}/keycloak:{{ keycloak_build_id }}
+          name: 'app-{{ stage }}-{{ project_name }}-keycloak'
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: tz-config
+              mountPath: /etc/localtime
+          env:
+            - name: DB_VENDOR
+              value: MYSQL
+            - name: DB_ADDR
+              value: {{ my_host }}
+            - name: DB_DATABASE
+              value: {{ my_keycloak_db }}
+            - name: DB_USER
+              value: {{ my_keycloak_user }}
+            - name: DB_PASSWORD
+              value: {{ my_keycloak_pass }}
+            - name: KEYCLOAK_USER
+              value: {{ keycloak_admin_user }}
+            - name: KEYCLOAK_PASSWORD
+              value: {{ keycloak_admin_pass }}
+            - name: PROXY_ADDRESS_FORWARDING
+              value: 'true'
+            - name: JAVA_OPTS
+              value: '-Dkeycloak.profile.feature.scripts=enabled
+                    -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms256m -Xmx512m
+                    -XX:MetaspaceSize=128M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
+                    -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: {{ tz_path }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-keycloak'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-keycloak'

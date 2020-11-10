@@ -9,7 +9,7 @@
         {
           "encoding": "no-op",
           "host": [
-            "admin_service:80"
+            "svc-{{ stage }}-{{ project_name }}-admin:80"
           ],
           "url_pattern": "/"
         }
