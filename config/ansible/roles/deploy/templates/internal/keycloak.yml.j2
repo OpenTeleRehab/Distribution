@@ -18,6 +18,7 @@ spec:
       containers:
         - image: {{ image_name }}/keycloak:{{ keycloak_build_id }}
           name: 'app-{{ stage }}-{{ project_name }}-keycloak'
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           volumeMounts:
