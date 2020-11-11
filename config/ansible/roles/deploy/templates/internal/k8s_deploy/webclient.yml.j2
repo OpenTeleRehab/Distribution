@@ -13,9 +13,12 @@ spec:
       labels:
         app: app-{{ stage }}-{{ project_name }}-webclient
     spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
       containers:
-        - image: nginx:1.19.3
+        - image: {{ image_name }}/webclient:{{ version }}
           name: app-{{ stage }}-{{ project_name }}-webclient
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           volumeMounts:

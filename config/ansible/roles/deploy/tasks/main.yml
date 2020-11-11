@@ -1,8 +1,33 @@
 ---
 
+- name: Build Admin webapp
+  import_tasks: admin-webapp.yml
+  when: stage != 'live'
+
 - name: Deploy keycloak and System first
   import_tasks: backend.yml
   when: stage != 'live'
+
+- name: Copy Dockerfile
+  template:
+    src: '{{  item }}.j2'
+    dest: '{{ workspace }}/{{ item }}'
+    mode: 0755
+  loops:
+    - Dockerfile
+    - .dockerignore
+
+- name: Build docker image
+  shell: 'docker build -t {{ image_name }}/webclient:{{ version }} .'
+  args:
+    chdir: '{{ workspace }}'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Push docker image to dockerhub.web-essentials.co
+  shell: 'docker push {{ image_name }}/webclient:{{ version }}'
+  args:
+    chdir: '{{ workspace }}'
+  when: lookup('env', 'JENKINS_HOME')
 
 - name: Deploy webclient
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
