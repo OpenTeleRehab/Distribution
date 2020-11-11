@@ -26,3 +26,9 @@
 - name: Deploy keycloak
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
   when: lookup('env', 'JENKINS_HOME')
+
+### Deploy Admin Webapp
+
+- name: Deploy admin webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
+  when: lookup('env', 'JENKINS_HOME')
