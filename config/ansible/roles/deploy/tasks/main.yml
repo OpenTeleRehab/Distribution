@@ -13,7 +13,7 @@
     src: '{{  item }}.j2'
     dest: '{{ workspace }}/{{ item }}'
     mode: 0755
-  loops:
+  loop:
     - Dockerfile
     - .dockerignore
 
