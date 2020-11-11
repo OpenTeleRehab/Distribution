@@ -10,7 +10,7 @@
     src: '{{ item }}'
     dest: '{{ workspace }}/k8s-deploy/{{ item | basename | regex_replace("\.j2$", "") }}'
   with_fileglob:
-    - '../templates/internal/*.j2'
+    - '../templates/internal/k8s_deploy/*.j2'
 
 ### Deploy namespace and configmap
 
