@@ -39,7 +39,7 @@
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Tag docker image to hub.web-essentials.co
-  shell: 'docker tag {{ stage }}-admin-webapp:latest {{ image_name }}{{ stage }}/admin-webapp:{{ item }}'
+  shell: 'docker tag {{ stage }}-admin-webapp:latest {{ image_name }}/{{ stage }}/admin-webapp:{{ item }}'
   args:
     chdir: '{{ workspace }}/admin-webapp'
   loop:
@@ -48,7 +48,7 @@
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Push docker image to hub.web-essentials.co
-  shell: 'docker push {{ image_name }}{{ stage }}/admin-webapp:{{ item }}'
+  shell: 'docker push {{ image_name }}/{{ stage }}/admin-webapp:{{ item }}'
   args:
     chdir: '{{ workspace }}/admin-webapp'
   loop:
