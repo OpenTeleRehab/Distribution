@@ -22,6 +22,15 @@
   with_fileglob:
     - '../templates/internal/admin-webapp/*.j2'
 
+- name: Create env and dockeringore
+  template:
+    src: 'internal/admin-webapp/{{ item }}.j2'
+    dest: '{{ workspace }}/admin-webapp/{{ item }}'
+    mode: 0755
+  loop:
+    - .dockerignore
+    - .env
+
 - name: Run npm install
   shell: npm install
   args:
