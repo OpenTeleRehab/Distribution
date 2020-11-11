@@ -16,6 +16,7 @@ spec:
       containers:
         - image: {{ image_name }}/system:{{ admin_webapp_build_id }}
           name: 'app-{{ stage }}-{{ project_name }}-admin-webapp'
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           volumeMounts:
