@@ -14,9 +14,9 @@ spec:
         app: 'app-{{ stage }}-{{ project_name }}-admin-webapp'
     spec:
       imagePullSecrets:
-      - name: secret-{{ project_name }}
+        - name: secret-{{ project_name }}
       containers:
-        - image: {{ image_name }}/system:{{ admin_webapp_build_id }}
+        - image: {{ image_name }}/admin-webapp:{{ admin_webapp_build_id }}
           name: 'app-{{ stage }}-{{ project_name }}-admin-webapp'
           imagePullPolicy: Always
           ports:
