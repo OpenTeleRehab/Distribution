@@ -6,10 +6,13 @@ k8s_namespace:       'hiv'
 website_url:         '{{ stage }}-rehabilitation.wehost.asia'
 
 app_context:         'Production'
+php_bin:             '/opt/php-versions/php74/bin/php'
+composer_bin:        '/usr/local/bin/composer'
+composer_flags:      '--no-dev --prefer-dist --no-interaction'
 
-hub_registry:   'hub.web-essentials.co'
-hub_user:       'docker'
-hub_pass:       '{{ hub_pass_vault }}'
+hub_registry:        'hub.web-essentials.co'
+hub_user:            'docker'
+hub_pass:            '{{ hub_pass_vault }}'
 
 image_name:          'hub.web-essentials.co/we/{{ project_id }}'
 kubeconfig:          '~/.kube/admin.conf'

@@ -1,5 +1,9 @@
 ---
 
+- name: Build Admin service
+  import_tasks: admin-service.yml
+  when: stage != 'live'
+
 - name: Build Admin webapp
   import_tasks: admin-webapp.yml
   when: stage != 'live'
@@ -28,6 +32,29 @@
   args:
     chdir: '{{ workspace }}'
   when: lookup('env', 'JENKINS_HOME')
+
+### Admin Service
+
+- name: Admin-Service | Get running admin service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
+  register: pod_name
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Admin-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n ns-{{ project_name }} -- {{ php_bin }} artisan migrate --force &'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Admin-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n ns-{{ project_name }} -- {{ php_bin }} artisan storage:link &'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Admin-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n ns-{{ project_name }} -- {{ php_bin }} artisan {{ item }} &'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
 
 - name: Deploy webclient
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
