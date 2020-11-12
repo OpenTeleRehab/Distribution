@@ -21,8 +21,8 @@
     mode: 0755
   loop:
     - .env
+    - default.conf
     - Dockerfile
-    - vhost.conf
 
 - name: Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
