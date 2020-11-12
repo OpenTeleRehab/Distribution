@@ -1,12 +1,12 @@
 ---
 
-- name: Login to nexus docker private repo
+- name: AdminService | Login to nexus docker private repo
   docker_login:
     registry: '{{ hub_registry }}'
     username: '{{ hub_user }}'
     password: '{{ hub_pass }}'
 
-- name: Clone Admin webapp repos
+- name: AdminService | Clone Admin webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
     dest: '{{ workspace }}/admin-service'
@@ -14,7 +14,7 @@
     version: master
     force: yes
 
-- name: Copy deployment configuration
+- name: AdminService | Copy deployment configuration
   template:
     src: 'internal/admin-service/{{ item }}.j2'
     dest: '{{ workspace }}/admin-service/{{ item }}'
@@ -24,18 +24,18 @@
     - default.conf
     - Dockerfile
 
-- name: Run composer to install dependencies
+- name: AdminService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
   args:
-    chdir: '{{ workspace }}'
+    chdir: '{{ workspace }}/admin-service'
 
-- name: Build docker image
+- name: AdminService | Build docker image
   shell: 'docker build -t {{ stage }}-admin-service:latest .'
   args:
     chdir: '{{ workspace }}/admin-service'
   when: lookup('env', 'JENKINS_HOME')
 
-- name: Tag docker image to hub.web-essentials.co
+- name: AdminService | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-admin-service:latest {{ image_name }}/{{ stage }}/admin-service:{{ item }}'
   args:
     chdir: '{{ workspace }}/admin-service'
@@ -44,7 +44,7 @@
     - latest
   when: lookup('env', 'JENKINS_HOME')
 
-- name: Push docker image to hub.web-essentials.co
+- name: AdminService | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/admin-service:{{ item }}'
   args:
     chdir: '{{ workspace }}/admin-service'
