@@ -1,1 +1,3 @@
 ---
+
+keycloak_backend_secret:  '{{ keycloak_backend_secret_vault }}'
