@@ -1,12 +1,6 @@
 ---
 
-- name: Login to nexus docker private repo
-  docker_login:
-    registry: '{{ hub_registry }}'
-    username: '{{ hub_user }}'
-    password: '{{ hub_pass }}'
-
-- name: Clone Admin webapp repos
+- name: AdminWebapp | Clone Admin webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-web-app.git
     dest: '{{ workspace }}/admin-webapp'
@@ -14,7 +8,7 @@
     version: master
     force: yes
 
-- name: Create configuration teamplates
+- name: AdminWebapp | Create configuration teamplates
   template:
     src: '{{ item }}'
     dest: '{{ workspace }}/admin-webapp/{{ item | basename | regex_replace("\.j2$", "") }}'
@@ -22,7 +16,7 @@
   with_fileglob:
     - '../templates/internal/admin-webapp/*.j2'
 
-- name: Create env and dockeringore
+- name: AdminWebapp | Create env and dockeringore
   template:
     src: 'internal/admin-webapp/{{ item }}.j2'
     dest: '{{ workspace }}/admin-webapp/{{ item }}'
@@ -31,23 +25,23 @@
     - .dockerignore
     - .env
 
-- name: Run npm install
+- name: AdminWebapp | Run npm install
   shell: npm install
   args:
     chdir: '{{ workspace }}/admin-webapp'
 
-- name: Run yarn build
+- name: AdminWebapp | Run yarn build
   shell: yarn build
   args:
     chdir: '{{ workspace }}/admin-webapp'
 
-- name: Build docker image
+- name: AdminWebapp | Build docker image
   shell: 'docker build -t {{ stage }}-admin-webapp:latest .'
   args:
     chdir: '{{ workspace }}/admin-webapp'
   when: lookup('env', 'JENKINS_HOME')
 
-- name: Tag docker image to hub.web-essentials.co
+- name: AdminWebapp | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-admin-webapp:latest {{ image_name }}/{{ stage }}/admin-webapp:{{ item }}'
   args:
     chdir: '{{ workspace }}/admin-webapp'
@@ -56,7 +50,7 @@
     - latest
   when: lookup('env', 'JENKINS_HOME')
 
-- name: Push docker image to hub.web-essentials.co
+- name: AdminWebapp | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/admin-webapp:{{ item }}'
   args:
     chdir: '{{ workspace }}/admin-webapp'

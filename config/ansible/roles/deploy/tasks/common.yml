@@ -1,5 +1,11 @@
 ---
 
+- name: Login to nexus docker private repo
+  docker_login:
+    registry: '{{ hub_registry }}'
+    username: '{{ hub_user }}'
+    password: '{{ hub_pass }}'
+
 - name: Create deploy directory
   file:
     path: '{{ workspace }}/k8s-deploy'
@@ -19,22 +25,4 @@
   loop:
     - namespace.yml
     - configmap.yml
-  when: lookup('env', 'JENKINS_HOME')
-
-### Deploy keycloak
-
-- name: Deploy keycloak
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
-  when: lookup('env', 'JENKINS_HOME')
-
-### Deploy Admin Webapp
-
-- name: Deploy admin webapp
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
-  when: lookup('env', 'JENKINS_HOME')
-
-### Deploy Admin Service
-
-- name: Deploy Admin Service
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
   when: lookup('env', 'JENKINS_HOME')

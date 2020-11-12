@@ -1,5 +1,9 @@
 ---
 
+- name: Run common requirement task
+  import_tasks: common.yml
+  when: stage != 'live'
+
 - name: Build Admin service
   import_tasks: admin-service.yml
   when: stage != 'live'
@@ -9,7 +13,7 @@
   when: stage != 'live'
 
 - name: Deploy keycloak and System first
-  import_tasks: backend.yml
+  import_tasks: deploy-services.yml
   when: stage != 'live'
 
 - name: Copy Dockerfile
