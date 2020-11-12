@@ -19,6 +19,11 @@ kubeconfig:          '~/.kube/admin.conf'
 workspace:           '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
 
 my_host:             '10.10.10.25'
+
+my_adminservice_user:          '{{ stage }}_adminservice'
+my_adminservice_pass:          '{{ my_adminservice_pass_vault }}'
+my_adminservice_db:            '{{ stage }}_adminservice'
+
 my_keycloak_user:    '{{ stage }}_{{ project_name }}_keycloak'
 my_keycloak_pass:    '{{ my_keycloak_pass_vault }}'
 my_keycloak_db:      '{{ stage }}_{{ project_name }}_keycloak'
