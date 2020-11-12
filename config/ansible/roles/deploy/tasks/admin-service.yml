@@ -1,11 +1,5 @@
 ---
 
-- name: AdminService | Login to nexus docker private repo
-  docker_login:
-    registry: '{{ hub_registry }}'
-    username: '{{ hub_user }}'
-    password: '{{ hub_pass }}'
-
 - name: AdminService | Clone Admin webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
