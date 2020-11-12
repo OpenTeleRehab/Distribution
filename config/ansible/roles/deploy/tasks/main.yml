@@ -45,15 +45,15 @@
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Admin-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n ns-{{ project_name }} -- /usr/bin/php artisan migrate --force &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Admin-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n ns-{{ project_name }} -- /usr/bin/php artisan storage:link &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Admin-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n ns-{{ project_name }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
     - config:clear
