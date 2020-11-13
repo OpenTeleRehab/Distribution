@@ -45,6 +45,10 @@
     chdir: '{{ workspace }}'
   when: lookup('env', 'JENKINS_HOME')
 
+- name: Wait for containers ready
+  pause:
+    seconds: 30
+
 ### Admin Service
 
 - name: Admin-Service | Get running admin service pod name
