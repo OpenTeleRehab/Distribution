@@ -1,0 +1,60 @@
+---
+
+- name: TherapistWebapp | Clone Therapist webapp repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/therapist-web-app.git
+    dest: '{{ workspace }}/therapist-webapp'
+    accept_hostkey: yes
+    version: master
+    force: yes
+
+- name: TherapistWebapp | Create configuration teamplates
+  template:
+    src: '{{ item }}'
+    dest: '{{ workspace }}/therapist-webapp/{{ item | basename | regex_replace("\.j2$", "") }}'
+    mode: 0755
+  with_fileglob:
+    - '../templates/internal/therapist-webapp/*.j2'
+
+- name: TherapistWebapp | Create env and dockeringore
+  template:
+    src: 'internal/therapist-webapp/{{ item }}.j2'
+    dest: '{{ workspace }}/therapist-webapp/{{ item }}'
+    mode: 0755
+  loop:
+    - .dockerignore
+    - .env
+
+- name: TherapistWebapp | Run npm install
+  shell: npm install
+  args:
+    chdir: '{{ workspace }}/therapist-webapp'
+
+- name: TherapistWebapp | Run yarn build
+  shell: yarn build
+  args:
+    chdir: '{{ workspace }}/therapist-webapp'
+
+- name: TherapistWebapp | Build docker image
+  shell: 'docker build -t {{ stage }}-therapist-webapp:latest .'
+  args:
+    chdir: '{{ workspace }}/therapist-webapp'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: TherapistWebapp | Tag docker image to hub.web-essentials.co
+  shell: 'docker tag {{ stage }}-therapist-webapp:latest {{ image_name }}/{{ stage }}/therapist-webapp:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/therapist-webapp'
+  loop:
+    - '{{ version }}'
+    - latest
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: TherapistWebapp | Push docker image to hub.web-essentials.co
+  shell: 'docker push {{ image_name }}/{{ stage }}/therapist-webapp:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/therapist-webapp'
+  loop:
+    - '{{ version }}'
+    - latest
+  when: lookup('env', 'JENKINS_HOME')
