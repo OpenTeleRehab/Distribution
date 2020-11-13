@@ -20,7 +20,7 @@
   import_tasks: therapist-webapp.yml
   when: stage != 'live'
 
-- name: Deploy keycloak and System first
+- name: Deploy deploy services
   import_tasks: deploy-services.yml
   when: stage != 'live'
 

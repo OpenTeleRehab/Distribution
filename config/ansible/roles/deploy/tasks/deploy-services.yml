@@ -17,3 +17,15 @@
 - name: Deploy Admin Service
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
   when: lookup('env', 'JENKINS_HOME')
+
+### Deploy Therapist Webapp
+
+- name: Deploy Therapist webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapist_webapp.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+### Deploy Therapist Service
+
+- name: Deploy Therapist Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapistservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
