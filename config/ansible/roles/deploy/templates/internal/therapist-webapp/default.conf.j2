@@ -1,0 +1,72 @@
+charset utf-8;
+
+tcp_nopush on;
+tcp_nodelay off;
+client_header_timeout 300s;
+client_body_timeout 300s;
+proxy_read_timeout 3600s;
+client_max_body_size 1024k;
+reset_timedout_connection on;
+
+# Enable gzip compression.
+gzip on;
+gzip_comp_level 5;
+gzip_min_length 256;
+gzip_proxied any;
+gzip_vary on;
+
+gzip_types
+    text/css
+    text/javascript
+    text/xml
+    text/plain
+    application/javascript
+    application/x-javascript
+    application/json
+    application/xml
+    application/rss+xml
+    application/atom+xml
+    font/truetype
+    font/opentype
+    image/svg+xml;
+
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+
+  access_log /var/log/nginx/nginx.access.log;
+  error_log /var/log/nginx/nginx.error.log;
+
+  error_page 404 @rewrites;
+
+  # To make sure any assets can get through :)
+  location / {
+
+    try_files $uri @rewrites;
+
+    add_header X-UA-Compatible "IE=Edge";
+
+    # Documents
+    location ~* \.(?:manifest|appcache|html?|xml|json)$ {
+      expires 0;
+    }
+
+    # Media files
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|mp4|ogg|ogv|webm|htc)$ {
+      access_log off;
+      expires 1M;
+    }
+
+    # CSS and JavaScript
+    location ~* \.(?:css|js)$ {
+      access_log off;
+      expires 1y;
+    }
+
+  }
+
+  # If no asset matches, send it to your javascript app. Hopefully it's a route in the app!
+  location @rewrites {
+    rewrite ^(.+)$ /index.html last;
+  }
+}

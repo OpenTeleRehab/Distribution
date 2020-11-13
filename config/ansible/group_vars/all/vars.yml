@@ -1,35 +1,39 @@
 ---
 
-project_id:          'hiv-tra-20'
-project_name:        'tra'
-k8s_namespace:       'hiv'
-website_url:         '{{ stage }}-rehabilitation.wehost.asia'
+project_id:                    'hiv-tra-20'
+project_name:                  'tra'
+k8s_namespace:                 'hiv'
+website_url:                   '{{ stage }}-rehabilitation.wehost.asia'
 
-app_context:         'Production'
-php_bin:             '/opt/php-versions/php74/bin/php'
-composer_bin:        '/usr/local/bin/composer'
-composer_flags:      '--no-dev --prefer-dist --no-interaction'
+app_context:                   'Production'
+php_bin:                       '/opt/php-versions/php74/bin/php'
+composer_bin:                  '/usr/local/bin/composer'
+composer_flags:                '--no-dev --prefer-dist --no-interaction'
 
-hub_registry:        'hub.web-essentials.co'
-hub_user:            'docker'
-hub_pass:            '{{ hub_pass_vault }}'
+hub_registry:                  'hub.web-essentials.co'
+hub_user:                      'docker'
+hub_pass:                      '{{ hub_pass_vault }}'
 
-image_name:          'hub.web-essentials.co/we/{{ project_id }}'
-kubeconfig:          '~/.kube/admin.conf'
-workspace:           '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
+image_name:                    'hub.web-essentials.co/we/{{ project_id }}'
+kubeconfig:                    '~/.kube/admin.conf'
+workspace:                     '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
 
-my_host:             '10.10.10.25'
+my_host:                       '10.10.10.25'
 
 my_adminservice_user:          '{{ stage }}_adminservice'
 my_adminservice_pass:          '{{ my_adminservice_pass_vault }}'
 my_adminservice_db:            '{{ stage }}_adminservice'
 
-my_keycloak_user:    '{{ stage }}_{{ project_name }}_keycloak'
-my_keycloak_pass:    '{{ my_keycloak_pass_vault }}'
-my_keycloak_db:      '{{ stage }}_{{ project_name }}_keycloak'
-keycloak_admin_user: 'admin'
-keycloak_admin_pass: '{{ keycloak_admin_pass_vault }}'
+my_therapistservice_user:      '{{ stage }}_therapistservice'
+my_therapistservice_pass:      '{{ my_therapistservice_pass_vault }}'
+my_therapistservice_db:        '{{ stage }}_therapistservice'
 
-tz_path:             '/usr/share/zoneinfo/Asia/Phnom_Penh'
+my_keycloak_user:              '{{ stage }}_{{ project_name }}_keycloak'
+my_keycloak_pass:              '{{ my_keycloak_pass_vault }}'
+my_keycloak_db:                '{{ stage }}_{{ project_name }}_keycloak'
+keycloak_admin_user:           'admin'
+keycloak_admin_pass:           '{{ keycloak_admin_pass_vault }}'
 
-deployment_replica:  '1'
+tz_path:                       '/usr/share/zoneinfo/Asia/Phnom_Penh'
+
+deployment_replica:            '1'
