@@ -47,6 +47,10 @@
     - latest
   when: lookup('env', 'JENKINS_HOME')
 
+- name: Deploy Admin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
 - name: Remove build file
   file:
     path: '/var/tmp/{{ project_id }}/admin-service-build'

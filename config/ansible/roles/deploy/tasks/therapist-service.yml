@@ -47,6 +47,10 @@
     - latest
   when: lookup('env', 'JENKINS_HOME')
 
+- name: Deploy Therapist Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapistservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
 - name: Remove build file
   file:
     path: '/var/tmp/{{ project_id }}/therapist-service-build'

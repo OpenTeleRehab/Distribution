@@ -59,6 +59,10 @@
     - latest
   when: lookup('env', 'JENKINS_HOME')
 
+- name: Deploy admin webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
 - name: Remove build file
   file:
     path: '/var/tmp/{{ project_id }}/admin-webapp-build'
