@@ -4,10 +4,17 @@
   import_tasks: common.yml
   when: stage != 'live'
 
+### Build Admin Service ###
+- name: Get build file for Admin service
+  stat:
+    path: '/var/tmp/{{ project_id }}/admin-service-build'
+  register: admin_service_build
+
 - name: Build Admin service
   import_tasks: admin-service.yml
-  when: stage != 'live'
+  when: stage != 'live' and admin_service_build.stat.exists
 
+### Build Admin Webapp ###
 - name: Get build file for Admin webapp
   stat:
     path: '/var/tmp/{{ project_id }}/admin-webapp-build'
@@ -17,14 +24,27 @@
   import_tasks: admin-webapp.yml
   when: stage != 'live' and admin_webapp_build.stat.exists
 
+### Build Therapist Service ###
+- name: Get build file for Admin webapp
+  stat:
+    path: '/var/tmp/{{ project_id }}/therapist-service-build'
+  register: therapist_service_build
+
 - name: Build Therapist service
   import_tasks: therapist-service.yml
-  when: stage != 'live'
+  when: stage != 'live' and therapist_service_build.stat.exists
+
+### Build Therapist Webapp ###
+- name: Get build file for Admin webapp
+  stat:
+    path: '/var/tmp/{{ project_id }}/therapist-webapp-build'
+  register: therapist_webapp_build
 
 - name: Build Therapist webapp
   import_tasks: therapist-webapp.yml
-  when: stage != 'live'
+  when: stage != 'live' and therapist_webapp_build.stat.exists
 
+### Deploy k8s pods ###
 - name: Deploy deploy services
   import_tasks: deploy-services.yml
   when: stage != 'live'

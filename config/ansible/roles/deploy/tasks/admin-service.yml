@@ -1,6 +1,6 @@
 ---
 
-- name: AdminService | Clone Admin webapp repos
+- name: AdminService | Clone Admin service repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
     dest: '{{ workspace }}/admin-service'
@@ -46,3 +46,8 @@
     - '{{ version }}'
     - latest
   when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/admin-service-build'
+    state: absent

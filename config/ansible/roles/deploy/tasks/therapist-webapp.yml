@@ -58,3 +58,8 @@
     - '{{ version }}'
     - latest
   when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/therapist-webapp-build'
+    state: absent
