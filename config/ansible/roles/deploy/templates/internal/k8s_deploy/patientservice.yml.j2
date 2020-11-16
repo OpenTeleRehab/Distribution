@@ -2,19 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 'app-{{ stage }}-{{ project_name }}-patient'
+  name: 'app-{{ stage }}-{{ project_name }}-patient-service'
   namespace: '{{ k8s_namespace }}'
 spec:
   selector:
     matchLabels:
-      app: 'app-{{ stage }}-{{ project_name }}-patient'
+      app: 'app-{{ stage }}-{{ project_name }}-patient-service'
   template:
     metadata:
       labels:
-        app: 'app-{{ stage }}-{{ project_name }}-patient'
+        app: 'app-{{ stage }}-{{ project_name }}-patient-service'
     spec:
       containers:
-        - image: {{ image_name }}/system:{{ patientservice_build_id }}
+        - image: {{ image_name }}/patient-service:{{ version }}
           name: 'app-{{ stage }}-{{ project_name }}-patient'
           ports:
             - containerPort: 80
@@ -30,10 +30,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 'svc-{{ stage }}-{{ project_name }}-patient'
+  name: 'svc-{{ stage }}-{{ project_name }}-patient-service'
   namespace: '{{ k8s_namespace }}'
 spec:
   ports:
     - port: 80
   selector:
-    app: 'app-{{ stage }}-{{ project_name }}-patient'
+    app: 'app-{{ stage }}-{{ project_name }}-patient-service'
