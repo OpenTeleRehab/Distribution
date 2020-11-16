@@ -8,9 +8,14 @@
   import_tasks: admin-service.yml
   when: stage != 'live'
 
+- name: Get build file for Admin webapp
+  stat:
+    path: '/var/tmp/{{ project_id }}/admin-webapp-build'
+  register: admin_webapp_build
+
 - name: Build Admin webapp
   import_tasks: admin-webapp.yml
-  when: stage != 'live'
+  when: stage != 'live' and admin_webapp_build.stat.exists
 
 - name: Build Therapist service
   import_tasks: therapist-service.yml
