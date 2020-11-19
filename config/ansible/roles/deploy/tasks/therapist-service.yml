@@ -53,5 +53,5 @@
 
 - name: Remove build file
   file:
-    path: '/var/tmp/{{ project_id }}/therapist-service-build'
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
     state: absent
