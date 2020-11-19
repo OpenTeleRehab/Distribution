@@ -7,7 +7,7 @@
 ### Build Admin Service ###
 - name: Get build file for Admin service
   stat:
-    path: '/var/tmp/{{ project_id }}/admin-service-build'
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
   register: admin_service_build
 
 - name: Build Admin service
@@ -17,7 +17,7 @@
 ### Build Admin Webapp ###
 - name: Get build file for Admin webapp
   stat:
-    path: '/var/tmp/{{ project_id }}/admin-webapp-build'
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
   register: admin_webapp_build
 
 - name: Build Admin webapp
@@ -27,7 +27,7 @@
 ### Build Therapist Service ###
 - name: Get build file for Admin webapp
   stat:
-    path: '/var/tmp/{{ project_id }}/therapist-service-build'
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
   register: therapist_service_build
 
 - name: Build Therapist service
@@ -37,7 +37,7 @@
 ### Build Therapist Webapp ###
 - name: Get build file for Admin webapp
   stat:
-    path: '/var/tmp/{{ project_id }}/therapist-webapp-build'
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
   register: therapist_webapp_build
 
 - name: Build Therapist webapp
