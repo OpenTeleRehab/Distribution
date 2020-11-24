@@ -69,10 +69,24 @@ spec:
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-admin-webapp
               servicePort: 80
+    - host: {{ stage }}-api-admin-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-admin-service
+              servicePort: 80
     - host: {{ stage }}-therapist-rehabilitation.wehost.asia
       http:
         paths:
           - path: /
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-therapist-webapp
+              servicePort: 80
+    - host: {{ stage }}-api-therapist-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-therapist-service
               servicePort: 80
