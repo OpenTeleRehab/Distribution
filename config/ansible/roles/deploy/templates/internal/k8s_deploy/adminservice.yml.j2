@@ -24,11 +24,16 @@ spec:
           volumeMounts:
           - name: tz-config
             mountPath: /etc/localtime
+          - name: configmap-{{ stage }}-{{ project_name }}-env
+            mountPath: /var/www/.env
+            subPath: admin-service-env
       volumes:
       - name: tz-config
         hostPath:
           path: {{ tz_path }}
-
+      - name: configmap-{{ stage }}-{{ project_name }}-env
+        configMap:
+          name: configmap-{{ stage }}-{{ project_name }}-admin-service-env
 ---
 apiVersion: v1
 kind: Service
