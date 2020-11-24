@@ -24,10 +24,16 @@ spec:
           volumeMounts:
           - name: tz-config
             mountPath: /etc/localtime
+          - name: configmap-{{ stage }}-{{ project_name }}-env
+            mountPath: /usr/share/nginx/html/.env
+            subPath: therapist-webapp-env
       volumes:
       - name: tz-config
         hostPath:
           path: {{ tz_path }}
+      - name: configmap-{{ stage }}-{{ project_name }}-env
+        configMap:
+          name: configmap-{{ stage }}-{{ project_name }}-therapist-webapp-env
 
 ---
 apiVersion: v1
