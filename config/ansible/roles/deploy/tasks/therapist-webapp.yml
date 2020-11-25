@@ -22,6 +22,7 @@
     dest: '{{ workspace }}/therapist-webapp/{{ item }}'
     mode: 0755
   loop:
+    - .env
     - .dockerignore
 
 - name: TherapistWebapp | Run npm install

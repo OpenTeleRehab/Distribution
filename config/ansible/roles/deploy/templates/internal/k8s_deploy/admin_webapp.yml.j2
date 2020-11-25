@@ -26,16 +26,11 @@ spec:
           volumeMounts:
           - name: tz-config
             mountPath: /etc/localtime
-          - name: configmap-{{ stage }}-{{ project_name }}-env
-            mountPath: /usr/share/nginx/html/.env
-            subPath: admin-webapp-env
       volumes:
       - name: tz-config
         hostPath:
           path: {{ tz_path }}
-      - name: configmap-{{ stage }}-{{ project_name }}-env
-        configMap:
-          name: configmap-{{ stage }}-{{ project_name }}-admin-webapp-env
+
 ---
 apiVersion: v1
 kind: Service
