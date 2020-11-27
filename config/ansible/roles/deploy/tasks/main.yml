@@ -4,6 +4,40 @@
   import_tasks: common.yml
   when: stage != 'live'
 
+- name: AdminWebapp | Create env
+  template:
+    src: 'internal/admin-webapp/.env.j2'
+    dest: '{{ workspace }}/admin-webapp/.env'
+    mode: 0755
+  register: admin_webapp_env
+
+- name: Create build file when env changed
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ item }}'
+    state: touch
+    mode: 0755
+  loop:
+    - latest-admin-webapp-build
+    - demo-admin-webapp-build
+  when: admin_webapp_env.changed
+
+- name: TherapistWebapp | Create env
+  template:
+    src: 'internal/therapist-webapp/.env.j2'
+    dest: '{{ workspace }}/therapist-webapp/.env'
+    mode: 0755
+  register: therapist_webapp_env
+
+- name: Create build file when env changed
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ item }}'
+    state: touch
+    mode: 0755
+  loop:
+    - latest-therapist-webapp-build
+    - demo-therapist-webapp-build
+  when: therapist_webapp_env.changed
+
 ### Build Admin Service ###
 - name: Get build file for Admin service
   stat:
