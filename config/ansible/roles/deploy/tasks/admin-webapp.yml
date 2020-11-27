@@ -22,7 +22,6 @@
     dest: '{{ workspace }}/admin-webapp/{{ item }}'
     mode: 0755
   loop:
-    - .env
     - .dockerignore
 
 - name: AdminWebapp | Run npm install
