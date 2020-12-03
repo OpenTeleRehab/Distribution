@@ -15,9 +15,12 @@ spec:
       labels:
         app: 'app-{{ stage }}-{{ project_name }}-patient-service'
     spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
       containers:
-        - image: {{ image_name }}/patient-service:{{ version }}
-          name: 'app-{{ stage }}-{{ project_name }}-patient'
+        - image: {{ image_name }}/{{ stage }}/patient-service:{{ version }}
+          name: 'app-{{ stage }}-{{ project_name }}-patient-service'
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           volumeMounts:
@@ -33,7 +36,6 @@ spec:
       - name: configmap-{{ stage }}-{{ project_name }}-env
         configMap:
           name: configmap-{{ stage }}-{{ project_name }}-patient-service-env
-
 ---
 apiVersion: v1
 kind: Service
