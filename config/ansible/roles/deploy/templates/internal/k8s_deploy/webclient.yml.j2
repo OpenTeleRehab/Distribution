@@ -92,3 +92,10 @@ spec:
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-therapist-service
               servicePort: 80
+    - host: {{ stage }}-api-patient-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-patient-service
+              servicePort: 80
