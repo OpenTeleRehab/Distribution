@@ -1,6 +1,6 @@
 ---
 
-- name: AdminService | Clone Admin service repos
+- name: PatientService | Clone Admin service repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/patient-service.git
     dest: '{{ workspace }}/patient-service'
@@ -8,7 +8,7 @@
     version: master
     force: yes
 
-- name: AdminService | Copy deployment configuration
+- name: PatientService | Copy deployment configuration
   template:
     src: 'internal/patient-service/{{ item }}.j2'
     dest: '{{ workspace }}/patient-service/{{ item }}'
@@ -17,18 +17,18 @@
     - default.conf
     - Dockerfile
 
-- name: AdminService | Run composer to install dependencies
+- name: PatientService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
   args:
     chdir: '{{ workspace }}/patient-service'
 
-- name: AdminService | Build docker image
+- name: PatientService | Build docker image
   shell: 'docker build -t {{ stage }}-patient-service:latest .'
   args:
     chdir: '{{ workspace }}/patient-service'
   when: lookup('env', 'JENKINS_HOME')
 
-- name: AdminService | Tag docker image to hub.web-essentials.co
+- name: PatientService | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-patient-service:latest {{ image_name }}/{{ stage }}/patient-service:{{ item }}'
   args:
     chdir: '{{ workspace }}/patient-service'
@@ -37,7 +37,7 @@
     - latest
   when: lookup('env', 'JENKINS_HOME')
 
-- name: AdminService | Push docker image to hub.web-essentials.co
+- name: PatientService | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/patient-service:{{ item }}'
   args:
     chdir: '{{ workspace }}/patient-service'
