@@ -1,0 +1,56 @@
+---
+
+- name: AdminService | Clone Admin service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/patient-service.git
+    dest: '{{ workspace }}/patient-service'
+    accept_hostkey: yes
+    version: master
+    force: yes
+
+- name: AdminService | Copy deployment configuration
+  template:
+    src: 'internal/patient-service/{{ item }}.j2'
+    dest: '{{ workspace }}/patient-service/{{ item }}'
+    mode: 0755
+  loop:
+    - default.conf
+    - Dockerfile
+
+- name: AdminService | Run composer to install dependencies
+  shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
+  args:
+    chdir: '{{ workspace }}/patient-service'
+
+- name: AdminService | Build docker image
+  shell: 'docker build -t {{ stage }}-patient-service:latest .'
+  args:
+    chdir: '{{ workspace }}/patient-service'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: AdminService | Tag docker image to hub.web-essentials.co
+  shell: 'docker tag {{ stage }}-patient-service:latest {{ image_name }}/{{ stage }}/patient-service:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/patient-service'
+  loop:
+    - '{{ version }}'
+    - latest
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: AdminService | Push docker image to hub.web-essentials.co
+  shell: 'docker push {{ image_name }}/{{ stage }}/patient-service:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/patient-service'
+  loop:
+    - '{{ version }}'
+    - latest
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Deploy Admin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/patientservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
+    state: absent

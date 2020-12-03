@@ -78,6 +78,16 @@
   import_tasks: therapist-webapp.yml
   when: stage != 'live' and therapist_webapp_build.stat.exists
 
+### Build Patient Service ###
+- name: Get build file for Patient service
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
+  register: patient_service_build
+
+- name: Build Therapist service
+  import_tasks: patient-service.yml
+  when: stage != 'live' and patient_service_build.stat.exists
+
 ### Deploy k8s pods ###
 - name: Deploy deploy services
   import_tasks: deploy-services.yml
@@ -148,6 +158,29 @@
 
 - name: Therapist-Service | Clear caches
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
+
+### Patient Service
+
+- name: Patient-Service | Get running patient service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-patient-service | cut -d " " -f1'
+  register: pod_name
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Patient-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Patient-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Patient-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
     - config:clear
