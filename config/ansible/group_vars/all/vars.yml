@@ -5,6 +5,9 @@ project_name:                  'tra'
 k8s_namespace:                 'hiv'
 website_url:                   '{{ stage }}-rehabilitation.wehost.asia'
 
+nfs_server:                    '10.10.10.26'
+nfs_path:                      '/volume1/export/{{ stage }}/{{ project_id }}'
+
 app_context:                   'Production'
 php_bin:                       '/opt/php-versions/php74/bin/php'
 composer_bin:                  '/usr/local/bin/composer'
