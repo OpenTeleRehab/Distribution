@@ -18,6 +18,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: 'pvc-{{ stage }}-{{ project_id }}-admin-service'
+  namespace: hiv
 spec:
   selector:
     matchLabels:
@@ -51,6 +52,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: 'pvc-{{ stage }}-{{ project_id }}-therapist-service'
+  namespace: hiv
 spec:
   selector:
     matchLabels:
@@ -84,6 +86,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: 'pvc-{{ stage }}-{{ project_id }}-patient-service'
+  namespace: hiv
 spec:
   selector:
     matchLabels:
