@@ -83,7 +83,9 @@ This repository is where Telerehabilitation App implemented in Microservices and
   docker-compose run --rm patient_service php artisan migrate
   ```
 
-> Enjoy your development on `admin-web-app` or `therapist-web-app`
+  > Access database via user interface: [http://localhost:8060/](http://localhost:8060/)
+
+### Enjoy your development on `admin-web-app` or `therapist-web-app`
 
 # Useful docker command
 
