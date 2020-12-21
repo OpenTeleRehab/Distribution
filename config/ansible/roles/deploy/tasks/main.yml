@@ -141,6 +141,11 @@
     - view:clear
     - route:clear
 
+- name: Admin-Service | Import default system settings
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - hi:import-default-translation
+
 ### Therapist Service
 
 - name: Therapist-Service | Get running admin service pod name
