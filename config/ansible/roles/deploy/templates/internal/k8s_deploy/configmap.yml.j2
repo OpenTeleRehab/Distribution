@@ -139,6 +139,10 @@ data:
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
     KEYCLOAK_URL=http://svc-{{ stage }}-{{ project_name }}-keycloak:8080
+    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_realm_public_key}}
+    KEYCLOAK_ALLOWED_RESOURCES=account
+    KEYCLOAK_LOAD_USER_FROM_DATABASE=true
+    KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
     KEYCLOAK_BACKEND_USERNAME=hi_backend
@@ -203,6 +207,10 @@ data:
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
     KEYCLOAK_URL=http://svc-{{ stage }}-{{ project_name }}-keycloak:8080
+    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_therapist_realm_public_key }}
+    KEYCLOAK_ALLOWED_RESOURCES=account
+    KEYCLOAK_LOAD_USER_FROM_DATABASE=true
+    KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
     KEYCLOAK_BACKEND_USERNAME=hi_backend
