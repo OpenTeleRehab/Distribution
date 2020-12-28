@@ -12,7 +12,9 @@
   shell: 'rsync -avz {{ workspace }}/therapist-service/storage/ /export/{{ stage }}/{{ project_id }}/therapist-service/'
 
 - name: Change permission mode
-  shell: 'chmod -R 0777 /export/{{ stage }}/{{ project_id }}/therapist-service'
+  shell: 'find . -not -path "*/cache*" -type d -exec chmod 0777 {} \;'
+  args:
+    chdir: '/export/{{ stage }}/{{ project_id }}/therapist-service'
 
 - name: TherapistService | Copy deployment configuration
   template:
