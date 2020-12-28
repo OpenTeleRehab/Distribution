@@ -11,6 +11,9 @@
 - name: Sync local storage to shared folder
   shell: 'rsync -avz {{ workspace }}/admin-service/storage/ /export/{{ stage }}/{{ project_id }}/admin-service/'
 
+- name: Change permission mode
+  shell: 'chmod -R 0777 /export/{{ stage }}/{{ project_id }}/admin-service'
+
 - name: AdminService | Copy deployment configuration
   template:
     src: 'internal/admin-service/{{ item }}.j2'
