@@ -133,6 +133,11 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
   when: lookup('env', 'JENKINS_HOME')
 
+- name: Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  when: lookup('env', 'JENKINS_HOME')
+
+
 - name: Admin-Service | Clear caches
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
@@ -161,6 +166,10 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
   when: lookup('env', 'JENKINS_HOME')
 
+- name: Therapist-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  when: lookup('env', 'JENKINS_HOME')
+
 - name: Therapist-Service | Clear caches
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
@@ -182,6 +191,10 @@
 
 - name: Patient-Service | Link storage folder to public
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Patient-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Patient-Service | Clear caches
