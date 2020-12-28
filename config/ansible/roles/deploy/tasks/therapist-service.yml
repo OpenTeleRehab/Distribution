@@ -8,6 +8,9 @@
     version: master
     force: yes
 
+- name: Sync local storage to shared folder
+  shell: 'rsync -avz {{ workspace }}/therapist-service/storage/ /export/{{ stage }}/{{ project_id }}/therapist-service/'
+
 - name: TherapistService | Copy deployment configuration
   template:
     src: 'internal/therapist-service/{{ item }}.j2'
