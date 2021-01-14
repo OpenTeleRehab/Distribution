@@ -44,3 +44,5 @@ keycloak_admin_pass:           '{{ keycloak_admin_pass_vault }}'
 tz_path:                       '/usr/share/zoneinfo/Asia/Phnom_Penh'
 
 deployment_replica:            '1'
+
+mobile_app_hash:              'yyaAQeC3+I1'
