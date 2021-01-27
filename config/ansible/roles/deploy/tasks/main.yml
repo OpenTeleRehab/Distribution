@@ -122,24 +122,24 @@
 
 - name: Admin-Service | Get running admin service pod name
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
-  register: pod_name
+  register: admin_pod_name
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Admin-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Admin-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Admin-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
   when: lookup('env', 'JENKINS_HOME')
 
 
 - name: Admin-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
     - config:clear
@@ -147,7 +147,7 @@
     - route:clear
 
 - name: Admin-Service | Import default system settings
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
     - hi:import-default-translation
 
@@ -167,7 +167,7 @@
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Therapist-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Therapist-Service | Clear caches
@@ -182,23 +182,23 @@
 
 - name: Patient-Service | Get running patient service pod name
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-patient-service | cut -d " " -f1'
-  register: pod_name
+  register: patient_pod_name
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Patient-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Patient-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Patient-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
   when: lookup('env', 'JENKINS_HOME')
 
 - name: Patient-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
     - config:clear
