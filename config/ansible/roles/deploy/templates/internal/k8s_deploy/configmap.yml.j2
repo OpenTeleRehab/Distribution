@@ -233,6 +233,7 @@ data:
     KEYCLOAK_REAMLS_NAME=hi-therapist
 
     REACT_APP_BASE_URL = https://{{ stage }}-therapist-rehabilitation.wehost.asia/
+    ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
 
 ---
 apiVersion: v1
@@ -292,6 +293,6 @@ data:
     SMS_SID={{ sms_sid }}
     SMS_TOKEN={{ sms_token }}
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
-    MOBILE_APP_HASH={{ mobile_app_hash }}
+    SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
     ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
