@@ -95,7 +95,7 @@ data:
     APP_ENV=production
     APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
     APP_DEBUG=false
-    APP_URL=http://localhost
+    APP_URL=https://{{ stage }}-api-admin-rehabilitation.wehost.asia
 
     LOG_CHANNEL=stack
 
@@ -304,3 +304,16 @@ data:
     ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
     ROCKET_CHAT_ADMIN_USERNAME={{ rocketchat_admin_user }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-keycloak-theme-properties
+  namespace: hiv
+data:
+  theme-properties: |
+    parent=keycloak
+    import=common/keycloak
+    styles=css/login.css
+    ADMIN_SERVICE_URL=https://{{ stage }}-api-admin-rehabilitation.wehost.asia
