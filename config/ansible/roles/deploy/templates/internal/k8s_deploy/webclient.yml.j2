@@ -99,3 +99,10 @@ spec:
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-patient-service
               servicePort: 80
+    - host: {{ stage }}-chat-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-rocketchat
+              servicePort: 3000

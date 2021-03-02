@@ -97,3 +97,71 @@ spec:
   resources:
     requests:
       storage: 2Gi
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: 'pv-{{ stage }}-{{ project_id }}-rocketchat'
+  labels:
+    app: 'pv-{{ stage }}-{{ project_id }}-rocketchat'
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: '{{ nfs_server }}'
+    path: '{{ nfs_path }}/rocketchat'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'pvc-{{ stage }}-{{ project_id }}-rocketchat'
+  namespace: hiv
+spec:
+  selector:
+    matchLabels:
+      app: 'pv-{{ stage }}-{{ project_id }}-rocketchat'
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+  resources:
+    requests:
+      storage: 10Gi
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: 'pv-{{ stage }}-{{ project_id }}-rocketchat-db'
+  labels:
+    app: 'pv-{{ stage }}-{{ project_id }}-rocketchat-db'
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: '{{ nfs_server }}'
+    path: '{{ nfs_path }}/rocketchat-db'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'pvc-{{ stage }}-{{ project_id }}-rocketchat-db'
+  namespace: hiv
+spec:
+  selector:
+    matchLabels:
+      app: 'pv-{{ stage }}-{{ project_id }}-rocketchat-db'
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+  resources:
+    requests:
+      storage: 10Gi

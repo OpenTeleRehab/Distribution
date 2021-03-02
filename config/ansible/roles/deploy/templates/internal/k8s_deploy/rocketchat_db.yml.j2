@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: mongo:3.6.9
+          name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
+          imagePullPolicy: Always
+          command: ["/bin/sh","-c"]
+          args: ["mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1"]
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /app/uploads
+      volumes:
+      - name: 'vol-{{ stage }}-{{ project_name }}'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-rocketchat-db'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-rocketchat-db'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
