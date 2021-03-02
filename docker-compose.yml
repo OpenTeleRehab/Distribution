@@ -142,7 +142,7 @@ services:
 # Rocket chat #
 ###############
   rocketchat:
-    image: rocketchat/rocket.chat:3.6.0
+    image: rocketchat/rocket.chat:3.12.0
     command: >
       bash -c
         "for i in `seq 1 30`; do

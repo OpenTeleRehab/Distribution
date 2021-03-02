@@ -158,7 +158,7 @@ services:
   # Rocket chat #
   ###############
   rocketchat:
-    image: rocketchat/rocket.chat:3.6.0
+    image: rocketchat/rocket.chat:3.12.0
     command: >
       bash -c
         "for i in `seq 1 30`; do
@@ -185,6 +185,8 @@ services:
     volumes:
       - rocketchat_db_data:/data/db
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+    ports:
+      - 27018:27017
 
   # this container's job is just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
