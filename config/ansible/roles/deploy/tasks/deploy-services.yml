@@ -5,3 +5,13 @@
 - name: Deploy keycloak
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
   when: lookup('env', 'JENKINS_HOME')
+
+### Deploy rocketchat
+
+- name: Deploy mongodb rocketchat
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat_db.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Deploy rocketchat
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
+  when: lookup('env', 'JENKINS_HOME')
