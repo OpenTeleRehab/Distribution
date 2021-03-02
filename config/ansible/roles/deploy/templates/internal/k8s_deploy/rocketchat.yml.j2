@@ -21,9 +21,11 @@ spec:
         - image: rocketchat/rocket.chat:3.6.0
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat'
           imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          command: ["/bin/sh","-c"]
+          args: ["for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"]
           env:
-            - name: PORT
-              value: 3000
             - name: ROOT_URL
               value: http://localhost:3000
             - name: MONGO_URL
@@ -32,10 +34,6 @@ spec:
               value: svc-{{ stage }}-{{ project_name }}-rocketchat-db:27017/local
             - name: MAIL_URL
               value: smtp://smtp.email
-          command: ["/bin/sh","-c"]
-          args: ["for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"]
-          ports:
-            - containerPort: 3000
           volumeMounts:
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /app/uploads
