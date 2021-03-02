@@ -21,8 +21,6 @@ spec:
         - image: mongo:3.6.9
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
           imagePullPolicy: Always
-          command: ["/bin/sh","-c"]
-          args: ["mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1"]
           ports:
             - containerPort: 27017
           volumeMounts:
