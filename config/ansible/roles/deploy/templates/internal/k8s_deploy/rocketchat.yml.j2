@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: rocketchat/rocket.chat:3.6.0
+        - image: rocketchat/rocket.chat:3.12.0
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat'
           imagePullPolicy: Always
           ports:
@@ -27,7 +27,7 @@ spec:
           args: ["for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"]
           env:
             - name: ROOT_URL
-              value: http://localhost:3000
+              value: https://{{ stage }}-chat-rehabilitation.wehost.asia
             - name: MONGO_URL
               value: svc-{{ stage }}-{{ project_name }}-rocketchat-db:27017/rocketchat
             - name: MONGO_OPLOG_URL
