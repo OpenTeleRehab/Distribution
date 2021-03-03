@@ -1,0 +1,22 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ing-test-{{ stage }}-{{ project_name }}
+  namespace: hiv
+spec:
+  rules:
+    - host: test.{{ stage }}-admin-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-admin-webapp
+              servicePort: 80
+    - host: test.{{ stage }}-therapist-rehabilitation.wehost.asia
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svc-{{ stage }}-{{ project_name }}-therapist-webapp
+              servicePort: 80

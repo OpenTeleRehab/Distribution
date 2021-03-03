@@ -208,3 +208,7 @@
 - name: Deploy webclient
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
   when: lookup('env', 'JENKINS_HOME')
+
+- name: Deploy uat test
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/uat_test.yml'
+  when: lookup('env', 'JENKINS_HOME')
