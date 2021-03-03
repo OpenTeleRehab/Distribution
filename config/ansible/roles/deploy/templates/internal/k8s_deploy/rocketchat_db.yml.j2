@@ -26,7 +26,8 @@ spec:
           volumeMounts:
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /app/uploads
-          command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+          command: ["/bin/sh","-c"]
+          args: ["mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1"]
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}'
         persistentVolumeClaim:
