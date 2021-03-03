@@ -232,8 +232,12 @@ data:
     KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
     KEYCLOAK_REAMLS_NAME=hi-therapist
 
-    REACT_APP_BASE_URL = https://{{ stage }}-therapist-rehabilitation.wehost.asia/
+    REACT_APP_BASE_URL=https://{{ stage }}-therapist-rehabilitation.wehost.asia/
     ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
+
+    ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
+    ROCKET_CHAT_ADMIN_USERNAME={{ rocketchat_admin_user }}
+    ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
 ---
 apiVersion: v1
@@ -296,3 +300,7 @@ data:
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
     ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
+
+    ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
+    ROCKET_CHAT_ADMIN_USERNAME={{ rocketchat_admin_user }}
+    ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
