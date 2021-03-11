@@ -41,7 +41,8 @@ my_keycloak_db:                 '{{ stage }}_{{ project_name }}_keycloak'
 keycloak_admin_user:            'admin'
 keycloak_admin_pass:            '{{ keycloak_admin_pass_vault }}'
 
-rocketchat_admin_user:          'admin'
+rocketchat_admin_user_id:       '{{ rocketchat_admin_user_id_vault }}'
+rocketchat_admin_auth_token:    '{{ rocketchat_admin_auth_token_vault }}'
 rocketchat_admin_pass:          '{{ rocketchat_admin_pass_vault }}'
 
 tz_path:                        '/usr/share/zoneinfo/Asia/Phnom_Penh'
