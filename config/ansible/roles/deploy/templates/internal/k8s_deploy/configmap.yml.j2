@@ -236,7 +236,8 @@ data:
     ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
 
     ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
-    ROCKET_CHAT_ADMIN_USERNAME={{ rocketchat_admin_user }}
+    ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
+    ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
 ---
@@ -302,7 +303,8 @@ data:
     ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
 
     ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
-    ROCKET_CHAT_ADMIN_USERNAME={{ rocketchat_admin_user }}
+    ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
+    ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
 ---
