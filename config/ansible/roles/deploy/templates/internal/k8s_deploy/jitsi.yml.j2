@@ -41,7 +41,7 @@ spec:
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
         persistentVolumeClaim:
-          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-jitsi-config'
 
 ---
 apiVersion: v1
@@ -105,7 +105,7 @@ spec:
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
         persistentVolumeClaim:
-          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-jitsi-config'
 
 ---
 apiVersion: v1
@@ -161,7 +161,7 @@ spec:
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
         persistentVolumeClaim:
-          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-jitsi-config'
 
 ---
 apiVersion: v1
@@ -218,7 +218,7 @@ spec:
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
         persistentVolumeClaim:
-          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-jitsi-config'
 
 ---
 apiVersion: v1
