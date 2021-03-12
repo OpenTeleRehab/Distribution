@@ -1,0 +1,237 @@
+---
+# Frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-jitsi-web'
+  namespace: 'hiv'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-jitsi-web'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-jitsi-web'
+    spec:
+      imagePullSecrets:
+        - name: secret-tra
+      containers:
+        - image: jitsi/web:stable-5390-3
+          name: 'app-{{ stage }}-{{ project_name }}-jitsi-web'
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
+          envFrom:
+            - configMapRef:
+                name: configmap-{{ stage }}-{{ project_name }}-jitsi-env
+          volumeMounts:
+          - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+            subPath: web
+            mountPath: /config
+          - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+            subPath: transcripts
+            mountPath: /usr/share/jitsi-meet/transcripts
+
+      volumes:
+      - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-jitsi-web'
+  namespace: 'hiv'
+spec:
+  ports:
+    - name: http
+      port: 80
+    - name: https
+      port: 443
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-jitsi-web'
+
+
+
+---
+# XMPP server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-jitsi-prosody'
+  namespace: 'hiv'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-jitsi-prosody'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-jitsi-prosody'
+    spec:
+      imagePullSecrets:
+        - name: secret-tra
+      containers:
+        - image: jitsi/prosody:stable-5390-3
+          name: 'app-{{ stage }}-{{ project_name }}-jitsi-prosody'
+          imagePullPolicy: Always
+          ports:
+            - name: client
+              containerPort: 5222
+            - name: external
+              containerPort: 5347
+            - name: telnet
+              containerPort: 5280
+          envFrom:
+            - configMapRef:
+                name: configmap-{{ stage }}-{{ project_name }}-jitsi-env
+          volumeMounts:
+          - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+            subPath: prosody/config
+            mountPath: /config
+          - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+            subPath: prosody/prosody-plugins-custom
+            mountPath: /prosody-plugins-custom
+
+      volumes:
+      - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-jitsi-prosody'
+  namespace: 'hiv'
+spec:
+  ports:
+    - name: client
+      port: 5222
+    - name: external
+      port: 5347
+    - name: telnet
+      port: 5280
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-jitsi-prosody'
+
+
+
+---
+# Focus component
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-jitsi-jicofo'
+  namespace: 'hiv'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-jitsi-jicofo'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-jitsi-jicofo'
+    spec:
+      imagePullSecrets:
+        - name: secret-tra
+      containers:
+        - image: jitsi/jicofo:stable-5390-3
+          name: 'app-{{ stage }}-{{ project_name }}-jitsi-jicofo'
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: configmap-{{ stage }}-{{ project_name }}-jitsi-env
+          volumeMounts:
+          - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+            subPath: jicofo
+            mountPath: /config
+
+      volumes:
+      - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-jitsi-jicofo'
+  namespace: 'hiv'
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-jitsi-jicofo'
+
+
+
+---
+# Video bridge
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-jitsi-jvb'
+  namespace: 'hiv'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-jitsi-jvb'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-jitsi-jvb'
+    spec:
+      imagePullSecrets:
+        - name: secret-tra
+      containers:
+        - image: jitsi/jvb:stable-5390-3
+          name: 'app-{{ stage }}-{{ project_name }}-jitsi-jvb'
+          imagePullPolicy: Always
+          ports:
+            - name: jvbudp
+              containerPort: 10000
+              protocol: UDP
+            - name: jvbtcp
+              containerPort: 4443
+          envFrom:
+            - configMapRef:
+                name: configmap-{{ stage }}-{{ project_name }}-jitsi-env
+          volumeMounts:
+          - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+            subPath: jvb
+            mountPath: /config
+
+      volumes:
+      - name: 'vol-{{ stage }}-{{ project_name }}-jitsi-config'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_name }}-jitsi-config'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-jitsi-jvb'
+  namespace: 'hiv'
+spec:
+  ports:
+    - name: jvbudp
+      port: 10000
+      protocol: UDP
+    - name: jvbtcp
+      port: 4443
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-jitsi-jvb'
