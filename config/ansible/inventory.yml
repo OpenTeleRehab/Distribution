@@ -22,6 +22,11 @@ all:
         live-tra:
           ansible_connection: local
 
+    test:
+      hosts:
+        test-tra:
+          ansible_connection: local
+
     tra:
       hosts:
         hiv-tra:
