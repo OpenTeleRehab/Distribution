@@ -15,3 +15,9 @@
 - name: Deploy rocketchat
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
   when: lookup('env', 'JENKINS_HOME')
+
+### Deploy jitsi
+- name: Deploy jitsi
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/jitsi.yml'
+  when: lookup('env', 'JENKINS_HOME')
+

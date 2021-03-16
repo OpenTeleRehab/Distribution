@@ -6,4 +6,4 @@ STAGE="${FILE_NAME%.*}"
 ansible-playbook config/ansible/playbook.yml -vv \
     -l ${STAGE} \
     -e stage=${STAGE} \
-    -e version=${DEPLOY_ID}
+    -e version=${BUILD_ID}
