@@ -31,7 +31,7 @@
     chdir: '{{ workspace }}/admin-webapp'
 
 - name: AdminWebapp | Run yarn build
-  shell: yarn build
+  shell: NODE_OPTIONS=--max_old_space_size=4096 yarn build
   args:
     chdir: '{{ workspace }}/admin-webapp'
 
