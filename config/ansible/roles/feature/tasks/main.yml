@@ -1,0 +1,11 @@
+---
+
+### Admin Service
+- name: Admin-Service | Get running admin service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
+  register: admin_pod_name
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Admin-Service | Testing
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan test &'
+  when: lookup('env', 'JENKINS_HOME')
