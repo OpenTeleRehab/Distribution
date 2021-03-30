@@ -5,7 +5,7 @@ tcp_nodelay off;
 client_header_timeout 300s;
 client_body_timeout 300s;
 proxy_read_timeout 3600s;
-client_max_body_size 1024k;
+client_max_body_size 32M;
 reset_timedout_connection on;
 
 # Enable gzip compression.
