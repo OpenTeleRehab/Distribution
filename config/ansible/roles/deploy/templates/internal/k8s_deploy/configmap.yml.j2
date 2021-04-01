@@ -143,7 +143,7 @@ data:
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
     KEYCLOAK_URL=http://svc-{{ stage }}-{{ project_name }}-keycloak:8080
-    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_realm_public_key}}
+    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_realm_public_key }}
     KEYCLOAK_ALLOWED_RESOURCES=account
     KEYCLOAK_LOAD_USER_FROM_DATABASE=true
     KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
@@ -182,80 +182,79 @@ metadata:
 data:
   admin-service-env-dusk-local: |
     APP_NAME=HI
-    APP_ENV=production
-    APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
-    APP_DEBUG=false
-    APP_URL=https://test-admin-rehabilitation.wehost.asia
+        APP_ENV=testing
+        APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
+        APP_DEBUG=false
+        APP_URL=https://{{ stage }}-api-admin-rehabilitation.wehost.asia
 
-    LOG_CHANNEL=stack
+        LOG_CHANNEL=stack
 
-    DB_CONNECTION=mysql
-    DB_HOST=10.10.10.200
-    DB_PORT=3306
-    DB_DATABASE=test_adminservice
-    DB_USERNAME=test_adminservice
-    DB_PASSWORD=test_adminservicedbpwd
+        DB_CONNECTION=mysql
+        DB_HOST={{ my_host }}
+        DB_PORT=3306
+        DB_DATABASE={{ my_adminservice_db }}
+        DB_USERNAME={{ my_adminservice_user }}
+        DB_PASSWORD={{ my_adminservice_pass }}
 
-    BROADCAST_DRIVER=log
-    CACHE_DRIVER=file
-    QUEUE_CONNECTION=sync
-    SESSION_DRIVER=file
-    SESSION_LIFETIME=120
+        BROADCAST_DRIVER=log
+        CACHE_DRIVER=file
+        QUEUE_CONNECTION=sync
+        SESSION_DRIVER=file
+        SESSION_LIFETIME=120
 
-    REDIS_HOST=127.0.0.1
-    REDIS_PASSWORD=null
-    REDIS_PORT=6379
+        REDIS_HOST=127.0.0.1
+        REDIS_PASSWORD=null
+        REDIS_PORT=6379
 
-    MAIL_MAILER=smtp
-    MAIL_HOST=smtp.mailtrap.io
-    MAIL_PORT=2525
-    MAIL_USERNAME=null
-    MAIL_PASSWORD=null
-    MAIL_ENCRYPTION=null
-    MAIL_FROM_ADDRESS=null
-    MAIL_FROM_NAME="${APP_NAME}"
+        MAIL_MAILER=smtp
+        MAIL_HOST=smtp.mailtrap.io
+        MAIL_PORT=2525
+        MAIL_USERNAME=null
+        MAIL_PASSWORD=null
+        MAIL_ENCRYPTION=null
+        MAIL_FROM_ADDRESS=null
+        MAIL_FROM_NAME="${APP_NAME}"
 
-    AWS_ACCESS_KEY_ID=
-    AWS_SECRET_ACCESS_KEY=
-    AWS_DEFAULT_REGION=us-east-1
-    AWS_BUCKET=
+        AWS_ACCESS_KEY_ID=
+        AWS_SECRET_ACCESS_KEY=
+        AWS_DEFAULT_REGION=us-east-1
+        AWS_BUCKET=
 
-    PUSHER_APP_ID=
-    PUSHER_APP_KEY=
-    PUSHER_APP_SECRET=
-    PUSHER_APP_CLUSTER=mt1
+        PUSHER_APP_ID=
+        PUSHER_APP_KEY=
+        PUSHER_APP_SECRET=
+        PUSHER_APP_CLUSTER=mt1
 
-    MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-    MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+        MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+        MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
-    KEYCLOAK_URL=https://test-rehabilitation.wehost.asia/auth
-    KEYCLOAK_REALM_PUBLIC_KEY=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAubZNwliR7jvrOXc2SJYhDlJ1NRAOZXFp3xKR5EeZFxBVlzkKKwibX+BZyXYFXAmHrwqaoDX+Eqfws3Gjfo5V990Ge81XSv5y2NtX1xjuhy2RhZCUA84nKkKt1fzFkMJu5cS6zP7nmu+zMjREuEMeW/NkcehDrKGI3o/CcXaxAvTK6Bh9sTBshre/CGRXi2Y9m1PQJPTrePvBZFHxBwS9eST+rg02uGeLb4XhbFD7pP5HEGXrGqc+D2RpmuNU4Efyr7AxnnSN0+Pde8isRFjzGYuXEbnTTMjd+1gSCywhZAgCA73MUbeS2A+nfLlKHAzd5kMIxAA5W+Uuqk7dk+RCiwIDAQAB
-    KEYCLOAK_ALLOWED_RESOURCES=account
-    KEYCLOAK_LOAD_USER_FROM_DATABASE=true
-    KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
+        KEYCLOAK_URL=http://svc-{{ stage }}-{{ project_name }}-keycloak:8080
+        KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_realm_public_key }}
+        KEYCLOAK_ALLOWED_RESOURCES=account
+        KEYCLOAK_LOAD_USER_FROM_DATABASE=true
+        KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
+        KEYCLOAK_BACKEND_CLIENT=hi_backend
+        KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+        KEYCLOAK_BACKEND_USERNAME=hi_backend
+        KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+        KEYCLOAK_REAMLS_NAME=hi
 
-    KEYCLOAK_BACKEND_CLIENT=hi_backend
-    KEYCLOAK_BACKEND_SECRET=637c513f-1eef-462f-b32d-38d3afb9b3d2
-    KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
-    KEYCLOAK_REAMLS_NAME=hi
+        REACT_APP_BASE_URL=https://{{ stage }}-rehabilitation.wehost.asia/
 
-    REACT_APP_BASE_URL=https://{{ stage }}-rehabilitation.wehost.asia/
+        # Thumbnail image dimensions
+        THUMBNAIL_IMAGE_WIDTH=320
+        THUMBNAIL_IMAGE_HEIGHT=240
 
-    # Thumbnail image dimensions
-    THUMBNAIL_IMAGE_WIDTH=320
-    THUMBNAIL_IMAGE_HEIGHT=240
+        # Watermark image
+        WATERMARK_IMAGE=true
+        WATERMARK_PATH=/var/www/storage/app/asset/play_button.png
 
-    # Watermark image
-    WATERMARK_IMAGE=true
-    WATERMARK_PATH=/var/www/storage/app/asset/play_button.png
-
-    # Custom FFMPEG binaries path
-    FFMPEG_BINARIES=true
-    FFMPEG_PATH=/usr/bin/ffmpeg
-    FFPROBE_PATH=/usr/bin/ffprobe
-    FFMPEG_TIMEOUT=3600
-    FFMPEG_THREADS=12
+        # Custom FFMPEG binaries path
+        FFMPEG_BINARIES=true
+        FFMPEG_PATH=/usr/bin/ffmpeg
+        FFPROBE_PATH=/usr/bin/ffprobe
+        FFMPEG_TIMEOUT=3600
+        FFMPEG_THREADS=12
 
 
 
@@ -268,72 +267,71 @@ metadata:
   namespace: hiv
 data:
   therapist-service-env-dusk-local: |
-    APP_NAME=HI
-    APP_ENV=production
-    APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
-    APP_DEBUG=false
-    APP_URL=https://test-therapist-rehabilitation.wehost.asia
+     APP_NAME=HI
+        APP_ENV=testing
+        APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
+        APP_DEBUG=false
+        APP_URL=http://localhost
 
-    LOG_CHANNEL=stack
+        LOG_CHANNEL=stack
 
-    DB_CONNECTION=mysql
-    DB_HOST=10.10.10.200
-    DB_PORT=3306
-    DB_DATABASE=test_therapistservice
-    DB_USERNAME=test_therapistservice
-    DB_PASSWORD=test_therapistservicedbpwd
+        DB_CONNECTION=mysql
+        DB_HOST={{ my_host }}
+        DB_PORT=3306
+        DB_DATABASE={{ my_therapistservice_db }}
+        DB_USERNAME={{ my_therapistservice_user }}
+        DB_PASSWORD={{ my_therapistservice_pass }}
 
-    BROADCAST_DRIVER=log
-    CACHE_DRIVER=file
-    QUEUE_CONNECTION=sync
-    SESSION_DRIVER=file
-    SESSION_LIFETIME=120
+        BROADCAST_DRIVER=log
+        CACHE_DRIVER=file
+        QUEUE_CONNECTION=sync
+        SESSION_DRIVER=file
+        SESSION_LIFETIME=120
 
-    REDIS_HOST=127.0.0.1
-    REDIS_PASSWORD=null
-    REDIS_PORT=6379
+        REDIS_HOST=127.0.0.1
+        REDIS_PASSWORD=null
+        REDIS_PORT=6379
 
-    MAIL_MAILER=smtp
-    MAIL_HOST=smtp.mailtrap.io
-    MAIL_PORT=2525
-    MAIL_USERNAME=null
-    MAIL_PASSWORD=null
-    MAIL_ENCRYPTION=null
-    MAIL_FROM_ADDRESS=null
-    MAIL_FROM_NAME="${APP_NAME}"
+        MAIL_MAILER=smtp
+        MAIL_HOST=smtp.mailtrap.io
+        MAIL_PORT=2525
+        MAIL_USERNAME=null
+        MAIL_PASSWORD=null
+        MAIL_ENCRYPTION=null
+        MAIL_FROM_ADDRESS=null
+        MAIL_FROM_NAME="${APP_NAME}"
 
-    AWS_ACCESS_KEY_ID=
-    AWS_SECRET_ACCESS_KEY=
-    AWS_DEFAULT_REGION=us-east-1
-    AWS_BUCKET=
+        AWS_ACCESS_KEY_ID=
+        AWS_SECRET_ACCESS_KEY=
+        AWS_DEFAULT_REGION=us-east-1
+        AWS_BUCKET=
 
-    PUSHER_APP_ID=
-    PUSHER_APP_KEY=
-    PUSHER_APP_SECRET=
-    PUSHER_APP_CLUSTER=mt1
+        PUSHER_APP_ID=
+        PUSHER_APP_KEY=
+        PUSHER_APP_SECRET=
+        PUSHER_APP_CLUSTER=mt1
 
-    MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-    MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+        MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+        MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
-    KEYCLOAK_URL=https://test-rehabilitation.wehost.asia/auth
-    KEYCLOAK_REALM_PUBLIC_KEY=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnCqE+XybnU/uZYBwymNdGJ2TmV9/3RD9qX142qtE9f4tOYWP7apNZU1GO6wbPdk17U4AgWp6LTPQdPGkaxqnkR5o/AbhmbqUroo65n3CosBz98E2lkmklQWW/vncJbXbuQUb5NkNw7z/ii3XZwgCCofHNI+mjcK3qHNM4mc1xd6FZLR9zu2nytXusQI/cygE3eGYfu2/J98R/zy3fqgUUFrlailcrlENMYxxz1BeTDBFAzp9xAIMAuEk8H/hZISHUF/1c8FlVWQhAW3XXshABeiRn+1cipfvEh3VVVx1M6HF6JncQf9DiM4fQF63qYg+h4SxGtUE/23UqwKClIU71QIDAQAB
-    KEYCLOAK_ALLOWED_RESOURCES=account
-    KEYCLOAK_LOAD_USER_FROM_DATABASE=true
-    KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
-    KEYCLOAK_BACKEND_CLIENT=hi_backend
+        KEYCLOAK_URL=http://svc-{{ stage }}-{{ project_name }}-keycloak:8080
+        KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_therapist_realm_public_key }}
+        KEYCLOAK_ALLOWED_RESOURCES=account
+        KEYCLOAK_LOAD_USER_FROM_DATABASE=true
+        KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
+        KEYCLOAK_BACKEND_CLIENT=hi_backend
+        KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+        KEYCLOAK_BACKEND_USERNAME=hi_backend
+        KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+        KEYCLOAK_REAMLS_NAME=hi-therapist
 
-    KEYCLOAK_BACKEND_SECRET=dc61ba2a-0e1c-4315-a05d-84e707a24ff6
-    KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
-    KEYCLOAK_REAMLS_NAME=hi-therapist
+        REACT_APP_BASE_URL=https://{{ stage }}-therapist-rehabilitation.wehost.asia/
+        ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
 
-    REACT_APP_BASE_URL=https://{{ stage }}-therapist-rehabilitation.wehost.asia/
-    ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
-
-    ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
-    ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
-    ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
-    ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+        ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
+        ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
+        ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
+        ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
 
 
@@ -425,6 +423,77 @@ data:
   patient-service-env: |
     APP_NAME=HI
     APP_ENV=production
+    APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
+    APP_DEBUG=false
+    APP_URL=http://localhost
+
+    LOG_CHANNEL=stack
+
+    DB_CONNECTION=mysql
+    DB_HOST={{ my_host }}
+    DB_PORT=3306
+    DB_DATABASE={{ my_patientservice_db }}
+    DB_USERNAME={{ my_patientservice_user }}
+    DB_PASSWORD={{ my_patientservice_pass }}
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    QUEUE_CONNECTION=sync
+    SESSION_DRIVER=file
+    SESSION_LIFETIME=120
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+    MAIL_FROM_ADDRESS=null
+    MAIL_FROM_NAME="${APP_NAME}"
+
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRET_ACCESS_KEY=
+    AWS_DEFAULT_REGION=us-east-1
+    AWS_BUCKET=
+
+    PUSHER_APP_ID=
+    PUSHER_APP_KEY=
+    PUSHER_APP_SECRET=
+    PUSHER_APP_CLUSTER=mt1
+
+    MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+    MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+    SMS_SID={{ sms_sid }}
+    SMS_TOKEN={{ sms_token }}
+    SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
+    SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
+
+    ADMIN_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-admin-service
+    THERAPIST_SERVICE_URL=http://svc-{{ stage }}-{{ project_name }}-therapist-service
+
+    ROCKET_CHAT_URL=http://svc-{{ stage }}-{{ project_name }}-rocketchat:3000
+    ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
+    ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
+    ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+
+
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-patient-service-dusk-local
+  namespace: hiv
+data:
+  patient-service-dusk-local: |
+    APP_NAME=HI
+    APP_ENV=testing
     APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
     APP_DEBUG=false
     APP_URL=http://localhost
