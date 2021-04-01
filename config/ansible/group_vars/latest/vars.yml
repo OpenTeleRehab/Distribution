@@ -1,5 +1,1 @@
 ---
-
-keycloak_hi_backend_secret:  '{{ keycloak_hi_backend_secret_vault }}'
-keycloak_hi_therapistbackend_secret: '{{ keycloak_hi_therapist_backend_secret_vault }}'
-keycloak_hi_patientbackend_secret: '{{ keycloak_hi_patientbackend_secret_vault }}'
