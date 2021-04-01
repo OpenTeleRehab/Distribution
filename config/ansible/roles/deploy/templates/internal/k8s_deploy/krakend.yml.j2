@@ -25,7 +25,7 @@ spec:
               mountPath: /etc/localtime
             - name: 'configmap-{{ stage }}-{{ project_name }}-krakend'
               mountPath: /etc/krakend/krakend.json
-              subPath: queue-worker
+              subPath: krakend-json
       volumes:
         - name: tz-config
           hostPath:

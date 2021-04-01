@@ -21,3 +21,7 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/jitsi.yml'
   when: lookup('env', 'JENKINS_HOME')
 
+### Deploy Krakend
+- name: Deploy krakend
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/krakend.yml'
+  when: lookup('env', 'JENKINS_HOME')
