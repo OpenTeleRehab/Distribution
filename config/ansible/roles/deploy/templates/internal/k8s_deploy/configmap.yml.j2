@@ -84,7 +84,10 @@ data:
 
     }
 
+
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -167,7 +170,10 @@ data:
     FFMPEG_TIMEOUT=3600
     FFMPEG_THREADS=12
 
+
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -251,7 +257,10 @@ data:
     FFMPEG_TIMEOUT=3600
     FFMPEG_THREADS=12
 
+
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -326,7 +335,10 @@ data:
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -400,7 +412,10 @@ data:
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -468,7 +483,10 @@ data:
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+
+
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -480,6 +498,38 @@ data:
     import=common/keycloak
     styles=css/login.css
     ADMIN_SERVICE_URL=https://{{ stage }}-api-admin-rehabilitation.wehost.asia/api
+
+
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-krakend
+  namespace: hiv
+data:
+  krakend-json: |
+    {
+      "version": 2,
+      "port": 8000,
+      "endpoints": [
+        {
+          "endpoint": "/admin",
+          "output_encoding": "no-op",
+          "backend": [
+            {
+              "encoding": "no-op",
+              "host": [
+                "svc-{{ stage }}-{{ project_name }}-admin:80"
+              ],
+              "url_pattern": "/"
+            }
+          ]
+        }
+      ]
+    }
+
 
 
 ---
