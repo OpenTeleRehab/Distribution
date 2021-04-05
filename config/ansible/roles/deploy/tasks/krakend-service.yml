@@ -2,7 +2,7 @@
 
 - name: Copy Dockerfile
   template:
-    src: 'service.json.j2'
+    src: 'internal/krakend-service/service.json.j2'
     dest: '{{ workspace }}/krakend-service/config/krakend/settings/service.json'
     mode: 0755
 
