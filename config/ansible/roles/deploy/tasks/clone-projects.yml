@@ -78,3 +78,13 @@
     accept_hostkey: yes
     version: master
     force: yes
+
+# Krakend Service
+- name: KrakendService | Clone Krakend service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/krakend.git
+    version: SS-00
+    dest: '{{ workspace }}/krakend-service'
+    accept_hostkey: yes
+    version: master
+    force: yes
