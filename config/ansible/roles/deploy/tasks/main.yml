@@ -1,210 +1,73 @@
 ---
 
-- name: Run common requirement task
-  import_tasks: common.yml
+- name: Login to nexus docker private repo
+  docker_login:
+    registry: '{{ hub_registry }}'
+    username: '{{ hub_user }}'
+    password: '{{ hub_pass }}'
+
+- name: Deploy k8s namespace pvc configmap
+  import_tasks: deploy-k8s-common.yml
   when: stage != 'live'
 
-- name: AdminWebapp | Create env
-  template:
-    src: 'internal/admin-webapp/.env.j2'
-    dest: '{{ workspace }}/admin-webapp/.env'
-    mode: 0755
-  register: admin_webapp_env
+- name: Git clone all repositories into workspace (Admin, Therapist, Patient)
+  import_tasks: clone-projects.yml
 
-- name: Create build file when env changed
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ item }}'
-    state: touch
-    mode: 0755
-  loop:
-    - latest-admin-webapp-build
-    - demo-admin-webapp-build
-  when: admin_webapp_env.changed
-
-- name: TherapistWebapp | Create env
-  template:
-    src: 'internal/therapist-webapp/.env.j2'
-    dest: '{{ workspace }}/therapist-webapp/.env'
-    mode: 0755
-  register: therapist_webapp_env
-
-- name: Create build file when env changed
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ item }}'
-    state: touch
-    mode: 0755
-  loop:
-    - latest-therapist-webapp-build
-    - demo-therapist-webapp-build
-  when: therapist_webapp_env.changed
-
-### Build Admin Service ###
-- name: Get build file for Admin service
+### Build Docker image Admin Service
+- name: Check build file if exist for Admin service
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
   register: admin_service_build
 
 - name: Build Admin service
   import_tasks: admin-service.yml
-  when: stage != 'live' and admin_service_build.stat.exists
+  when: admin_service_build.stat.exists
 
-### Build Admin Webapp ###
-- name: Get build file for Admin webapp
+### Build Docker image Admin Webapp
+- name: Check build file if exist for Admin webapp
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
   register: admin_webapp_build
 
 - name: Build Admin webapp
   import_tasks: admin-webapp.yml
-  when: stage != 'live' and admin_webapp_build.stat.exists
+  when: admin_webapp_build.stat.exists
 
-### Build Therapist Service ###
-- name: Get build file for Admin webapp
+### Build Docker image Therapist Service
+- name: Check build file if exist for Admin webapp
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
   register: therapist_service_build
 
 - name: Build Therapist service
   import_tasks: therapist-service.yml
-  when: stage != 'live' and therapist_service_build.stat.exists
+  when: therapist_service_build.stat.exists
 
-### Build Therapist Webapp ###
-- name: Get build file for Admin webapp
+### Build Docker image Therapist Webapp
+- name: Check build file if exist for Admin webapp
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
   register: therapist_webapp_build
 
 - name: Build Therapist webapp
   import_tasks: therapist-webapp.yml
-  when: stage != 'live' and therapist_webapp_build.stat.exists
+  when: therapist_webapp_build.stat.exists
 
-### Build Patient Service ###
-- name: Get build file for Patient service
+### Build Docker image Patient Service
+- name: Check build file if exist for Patient service
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
   register: patient_service_build
 
 - name: Build Therapist service
   import_tasks: patient-service.yml
-  when: stage != 'live' and patient_service_build.stat.exists
+  when: patient_service_build.stat.exists
 
-### Deploy k8s pods ###
+### Build webclient
+- name: Build Therapist webapp
+  import_tasks: webclient.yml
+
+### Deploy k8s pods
 - name: Deploy deploy services
-  import_tasks: deploy-services.yml
+  import_tasks: deploy-k8s-services.yml
   when: stage != 'live'
-
-- name: Copy Dockerfile
-  template:
-    src: '{{  item }}.j2'
-    dest: '{{ workspace }}/{{ item }}'
-    mode: 0755
-  loop:
-    - Dockerfile
-    - .dockerignore
-
-- name: Build docker image
-  shell: 'docker build -t {{ image_name }}/webclient:{{ version }} .'
-  args:
-    chdir: '{{ workspace }}'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Push docker image to dockerhub.web-essentials.co
-  shell: 'docker push {{ image_name }}/webclient:{{ version }}'
-  args:
-    chdir: '{{ workspace }}'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Wait for containers ready
-  pause:
-    seconds: 30
-
-### Admin Service
-
-- name: Admin-Service | Get running admin service pod name
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
-  register: admin_pod_name
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Admin-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Admin-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Admin-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
-  when: lookup('env', 'JENKINS_HOME')
-
-
-- name: Admin-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
-  loop:
-    - cache:clear
-    - config:clear
-    - view:clear
-    - route:clear
-
-- name: Admin-Service | Import default system settings
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
-  loop:
-    - hi:import-default-translation
-
-### Therapist Service
-
-- name: Therapist-Service | Get running admin service pod name
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-therapist-service | cut -d " " -f1'
-  register: therapist_pod_name
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Therapist-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Therapist-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Therapist-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Therapist-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
-  loop:
-    - cache:clear
-    - config:clear
-    - view:clear
-    - route:clear
-
-### Patient Service
-
-- name: Patient-Service | Get running patient service pod name
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-patient-service | cut -d " " -f1'
-  register: patient_pod_name
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Patient-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Patient-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Patient-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Patient-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
-  loop:
-    - cache:clear
-    - config:clear
-    - view:clear
-    - route:clear
-
-- name: Deploy webclient
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
-  when: lookup('env', 'JENKINS_HOME')

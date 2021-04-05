@@ -1,15 +1,8 @@
 ---
 
-- name: AdminService | Clone Admin service repos
-  git:
-    repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
-    dest: '{{ workspace }}/admin-service'
-    accept_hostkey: yes
-    version: master
-    force: yes
-
 - name: Sync local storage to shared folder
   shell: 'rsync -avz {{ workspace }}/admin-service/storage/ /export/{{ stage }}/{{ project_id }}/admin-service/'
+  when: stage != 'live'
 
 - name: AdminService | Copy deployment configuration
   template:
@@ -48,12 +41,3 @@
     - '{{ version }}'
     - latest
   when: lookup('env', 'JENKINS_HOME')
-
-- name: Deploy Admin Service
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Remove build file
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
-    state: absent

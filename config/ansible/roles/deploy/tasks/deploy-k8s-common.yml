@@ -1,11 +1,5 @@
 ---
 
-- name: Login to nexus docker private repo
-  docker_login:
-    registry: '{{ hub_registry }}'
-    username: '{{ hub_user }}'
-    password: '{{ hub_pass }}'
-
 - name: Create deploy directory
   file:
     path: '{{ workspace }}/k8s-deploy'

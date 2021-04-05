@@ -1,0 +1,80 @@
+---
+
+### Deploy Admin Service
+- name: Deploy Admin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
+    state: absent
+
+### Deploy Admin Webapp
+- name: Deploy admin webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
+    state: absent
+
+### Deploy Thearapist Service
+- name: Deploy Therapist Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapistservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
+    state: absent
+
+### Deploy Therapist Webapp
+- name: Deploy Therapist webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapist_webapp.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
+    state: absent
+
+### Deploy Patient Service
+- name: Deploy Admin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/patientservice.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
+    state: absent
+
+### Deploy keycloak
+- name: Deploy keycloak
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+### Deploy rocketchat
+- name: Deploy mongodb rocketchat
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat_db.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Deploy rocketchat
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+### Deploy jitsi
+- name: Deploy jitsi
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/jitsi.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+### Deploy Krakend
+- name: Deploy krakend
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/krakend.yml'
+  when: lookup('env', 'JENKINS_HOME')
+
+### Deploy webclient
+- name: Deploy webclient
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
+  when: lookup('env', 'JENKINS_HOME')
