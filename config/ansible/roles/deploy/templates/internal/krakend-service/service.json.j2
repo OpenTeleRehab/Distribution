@@ -1,0 +1,14 @@
+{
+  "port": 8000,
+  "hosts": {
+    "admin": "svc-{{ stage }}-{{ project_name }}-admin-service",
+    "therapist": "svc-{{ stage }}-{{ project_name }}-therapist-service",
+    "patient": "svc-{{ stage }}-{{ project_name }}-patient-service",
+    "patient_vn": "patient_vn_service"
+  },
+  "extra_config": {
+    "github_com/devopsfaith/krakend-cors": {
+      "allow_origins": ["*"]
+    }
+  }
+}

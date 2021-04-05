@@ -63,6 +63,16 @@
   import_tasks: patient-service.yml
   when: patient_service_build.stat.exists
 
+### Build Docker image Krakend Service
+- name: Check build file if exist for Krakend service
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-krakend-service-build'
+  register: krakend_service_build
+
+- name: Build Therapist service
+  import_tasks: krakend-service.yml
+  when: krakend_service_build.stat.exists
+
 ### Build webclient
 - name: Build Therapist webapp
   import_tasks: webclient.yml
