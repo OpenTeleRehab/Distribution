@@ -1,13 +1,5 @@
 ---
 
-- name: AdminWebapp | Clone Admin webapp repos
-  git:
-    repo: git@git.web-essentials.asia:hiv-tra-20/admin-web-app.git
-    dest: '{{ workspace }}/admin-webapp'
-    accept_hostkey: yes
-    version: master
-    force: yes
-
 - name: AdminWebapp | Create configuration teamplates
   template:
     src: '{{ item }}'
@@ -58,12 +50,3 @@
     - '{{ version }}'
     - latest
   when: lookup('env', 'JENKINS_HOME')
-
-- name: Deploy admin webapp
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Remove build file
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
-    state: absent

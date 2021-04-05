@@ -1,0 +1,22 @@
+---
+
+- name: Copy Dockerfile
+  template:
+    src: '{{  item }}.j2'
+    dest: '{{ workspace }}/{{ item }}'
+    mode: 0755
+  loop:
+    - Dockerfile
+    - .dockerignore
+
+- name: Build docker image
+  shell: 'docker build -t {{ image_name }}/webclient:{{ version }} .'
+  args:
+    chdir: '{{ workspace }}'
+  when: lookup('env', 'JENKINS_HOME')
+
+- name: Push docker image to dockerhub.web-essentials.co
+  shell: 'docker push {{ image_name }}/webclient:{{ version }}'
+  args:
+    chdir: '{{ workspace }}'
+  when: lookup('env', 'JENKINS_HOME')

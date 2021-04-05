@@ -1,15 +1,8 @@
 ---
 
-- name: TherapistService | Clone therapist service repos
-  git:
-    repo: git@git.web-essentials.asia:hiv-tra-20/therapist-service.git
-    dest: '{{ workspace }}/therapist-service'
-    accept_hostkey: yes
-    version: master
-    force: yes
-
 - name: Sync local storage to shared folder
   shell: 'rsync -avz {{ workspace }}/therapist-service/storage/ /export/{{ stage }}/{{ project_id }}/therapist-service/'
+  when: stage != 'live'
 
 - name: TherapistService | Copy deployment configuration
   template:
@@ -48,12 +41,3 @@
     - '{{ version }}'
     - latest
   when: lookup('env', 'JENKINS_HOME')
-
-- name: Deploy Therapist Service
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapistservice.yml'
-  when: lookup('env', 'JENKINS_HOME')
-
-- name: Remove build file
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
-    state: absent
