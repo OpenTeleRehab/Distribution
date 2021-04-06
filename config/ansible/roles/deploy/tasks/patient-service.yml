@@ -13,6 +13,12 @@
     - default.conf
     - Dockerfile
 
+- name: PatientService | Copy .env file
+  template:
+    src: 'internal/patient-service/env.j2'
+    dest: '{{ workspace }}/patient-service/.env'
+    mode: 0755
+
 - name: PatientService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
   args:
