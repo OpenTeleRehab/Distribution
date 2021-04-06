@@ -81,3 +81,8 @@
 - name: Deploy deploy services
   import_tasks: deploy-k8s-services.yml
   when: stage != 'live'
+
+### Run migration Admin therapist Patient
+- name: Migration Admin, therapist, Patient
+  import_tasks: deploy-k8s-migration.yml
+  when: stage != 'live'
