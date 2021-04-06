@@ -583,18 +583,76 @@ data:
   krakend-json: |
     {
       "version": 2,
-      "port": 8000,
+      "port": {{ .service.port }},
+      "extra_config": {{ marshal .service.extra_config }},
       "endpoints": [
+        {{ range .endpoint_admin.endpoints }}
         {
-          "endpoint": "/admin",
+          "endpoint": "/admin/{{ .endpoint }}",
+          "querystring_params": ["*"],
           "output_encoding": "no-op",
           "backend": [
             {
               "encoding": "no-op",
-              "host": [
-                "svc-{{ stage }}-{{ project_name }}-admin:80"
-              ],
-              "url_pattern": "/"
+              "host": ["{{ $.service.hosts.admin }}"],
+              "url_pattern": "/api/{{ .endpoint }}"
+            }
+          ]
+        },
+        {{ end }}
+
+        {{ range .endpoint_therapist.endpoints }}
+        {
+          "endpoint": "/therapist/{{ .endpoint }}",
+          "querystring_params": ["*"],
+          "output_encoding": "no-op",
+          "backend": [
+            {
+              "encoding": "no-op",
+              "host": ["{{ $.service.hosts.therapist }}"],
+              "url_pattern": "/api/{{ .endpoint }}"
+            }
+          ]
+        },
+        {{ end }}
+
+        {{ range .endpoint_patient.endpoints }}
+        {
+          "endpoint": "/patient/{{ .endpoint }}",
+          "querystring_params": ["*"],
+          "output_encoding": "no-op",
+          "backend": [
+            {
+              "encoding": "no-op",
+              "host": ["{{ $.service.hosts.patient }}"],
+              "url_pattern": "/api/{{ .endpoint }}",
+              "extra_config": {
+                "github.com/devopsfaith/krakend-martian": {
+                  "url.Filter": {
+                    "scope": ["request"],
+                    "query": "country=2",
+                    "modifier" : {
+                      "url.Modifier": {
+                        "scope": ["request"],
+                        "host": "{{ $.service.hosts.patient_vn }}"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {{ end }}
+
+        {
+          "endpoint": "/limited-endpoint",
+          "output_encoding": "no-op",
+          "backend": [
+            {
+              "encoding": "no-op",
+              "host": ["{{ .service.hosts.patient }}"],
+              "url_pattern": "/api/limited-endpoint"
             }
           ]
         }
