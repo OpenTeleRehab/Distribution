@@ -17,8 +17,8 @@
     - .dockerignore
     - .env
 
-- name: TherapistWebapp | Run npm install
-  shell: npm install
+- name: TherapistWebapp | Run yarn install
+  shell: NODE_OPTIONS=--max_old_space_size=4096 yarn install
   args:
     chdir: '{{ workspace }}/therapist-webapp'
 
