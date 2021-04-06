@@ -3,7 +3,7 @@
 ### Deploy Admin Service
 - name: Deploy Admin Service
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
-  when: lookup('env', 'JENKINS_HOME')
+  when: admin_service_build.stat.exists
 
 - name: Remove build file
   file:
@@ -13,7 +13,7 @@
 ### Deploy Admin Webapp
 - name: Deploy admin webapp
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
-  when: lookup('env', 'JENKINS_HOME')
+  when: admin_webapp_build.stat.exists
 
 - name: Remove build file
   file:
@@ -23,7 +23,7 @@
 ### Deploy Thearapist Service
 - name: Deploy Therapist Service
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapistservice.yml'
-  when: lookup('env', 'JENKINS_HOME')
+  when: therapist_service_build.stat.exists
 
 - name: Remove build file
   file:
@@ -33,7 +33,7 @@
 ### Deploy Therapist Webapp
 - name: Deploy Therapist webapp
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapist_webapp.yml'
-  when: lookup('env', 'JENKINS_HOME')
+  when: therapist_webapp_build.stat.exists
 
 - name: Remove build file
   file:
@@ -41,9 +41,9 @@
     state: absent
 
 ### Deploy Patient Service
-- name: Deploy Admin Service
+- name: Deploy Patient Service
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/patientservice.yml'
-  when: lookup('env', 'JENKINS_HOME')
+  when: patient_service_build.stat.exists
 
 - name: Remove build file
   file:
@@ -53,26 +53,22 @@
 ### Deploy keycloak
 - name: Deploy keycloak
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
-  when: lookup('env', 'JENKINS_HOME')
 
 ### Deploy rocketchat
 - name: Deploy mongodb rocketchat
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat_db.yml'
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: Deploy rocketchat
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
-  when: lookup('env', 'JENKINS_HOME')
 
 ### Deploy jitsi
 - name: Deploy jitsi
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/jitsi.yml'
-  when: lookup('env', 'JENKINS_HOME')
 
 ### Deploy Krakend
 - name: Deploy krakend
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/krakend.yml'
-  when: lookup('env', 'JENKINS_HOME')
+  when: krakend_service_build.stat.exists
 
 - name: Remove build file
   file:
@@ -82,4 +78,3 @@
 ### Deploy webclient
 - name: Deploy webclient
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/webclient.yml'
-  when: lookup('env', 'JENKINS_HOME')
