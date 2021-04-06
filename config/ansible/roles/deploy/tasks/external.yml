@@ -1,0 +1,26 @@
+---
+
+- name: Login to nexus docker private repo
+  docker_login:
+    registry: '{{ hub_registry }}'
+    username: '{{ hub_user }}'
+    password: '{{ hub_pass }}'
+
+- name: Create projects directory
+  file:
+    path: '/home/{{ ansible_ssh_user }}/{{ item }}'
+    state: directory
+    mode: 0755
+  loop:
+    - projects/hiv/config
+    - projects/hiv/config/admin-web-app
+    - projects/hiv/config/adminservice
+    - projects/hiv/config/jitsi
+    - projects/hiv/config/keycloak
+    - projects/hiv/config/krakend
+    - projects/hiv/config/patientservice
+    - projects/hiv/config/rocketchat
+    - projects/hiv/config/therapist-web-app
+    - projects/hiv/config/therapistservice
+
+- name: Add deploy configuration file

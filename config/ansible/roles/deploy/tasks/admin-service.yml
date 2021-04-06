@@ -13,6 +13,18 @@
     - default.conf
     - Dockerfile
 
+- name: AdminService | Copy .env
+  template:
+    src: 'internal/admin-service/env.j2'
+    dest: '{{ workspace }}/admin-service/.env'
+    mode: 0755
+
+- name: AdminService | Copy .env.dusk.local
+  template:
+    src: 'internal/admin-service/env.dusk.local.j2'
+    dest: '{{ workspace }}/admin-service/.env.dusk.local'
+    mode: 0755
+
 - name: AdminService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
   args:
