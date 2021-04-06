@@ -25,16 +25,11 @@ spec:
           volumeMounts:
             - name: tz-config
               mountPath: /etc/localtime
-            - name: 'configmap-{{ stage }}-{{ project_name }}-krakend'
-              mountPath: /etc/krakend/krakend.json
-              subPath: krakend-json
       volumes:
         - name: tz-config
           hostPath:
             path: {{ tz_path }}
-        - name: configmap-{{ stage }}-{{ project_name }}-krakend
-          configMap:
-            name: configmap-{{ stage }}-{{ project_name }}-krakend
+
 
 ---
 apiVersion: v1
