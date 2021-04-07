@@ -28,15 +28,19 @@ all:
           ansible_user: essentials
           ansible_ssh_private_key_file: ~/.ssh/id_rsa
 
+        live-vn-tra:
+          ansible_host: 10.10.10.151
+          ansible_user: essentials
+          ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
     test:
       hosts:
-      test-tra:
-      ansible_connection: local
+        test-tra:
+          ansible_connection: local
 
     traservers:
       children:
         latest:
         demo:
         live:
-        tra:
         test:
