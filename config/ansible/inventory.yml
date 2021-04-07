@@ -22,13 +22,6 @@ all:
         live-tra:
           ansible_connection: local
 
-    external:
-      hosts:
-        live-gl-tra:
-          ansible_host: 10.10.10.150
-          ansible_user: essentials
-          ansible_ssh_private_key_file: ~/.ssh/id_rsa
-
     test:
       hosts:
       test-tra:
