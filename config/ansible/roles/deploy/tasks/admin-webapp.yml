@@ -31,7 +31,6 @@
   shell: 'docker build -t {{ stage }}-admin-webapp:latest .'
   args:
     chdir: '{{ workspace }}/admin-webapp'
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: AdminWebapp | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-admin-webapp:latest {{ image_name }}/{{ stage }}/admin-webapp:{{ item }}'
@@ -40,7 +39,6 @@
   loop:
     - '{{ version }}'
     - latest
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: AdminWebapp | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/admin-webapp:{{ item }}'
@@ -49,4 +47,3 @@
   loop:
     - '{{ version }}'
     - latest
-  when: lookup('env', 'JENKINS_HOME')

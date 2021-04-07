@@ -34,7 +34,6 @@
   shell: 'docker build -t {{ stage }}-admin-service:latest .'
   args:
     chdir: '{{ workspace }}/admin-service'
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: AdminService | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-admin-service:latest {{ image_name }}/{{ stage }}/admin-service:{{ item }}'
@@ -43,7 +42,6 @@
   loop:
     - '{{ version }}'
     - latest
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: AdminService | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/admin-service:{{ item }}'
@@ -52,4 +50,3 @@
   loop:
     - '{{ version }}'
     - latest
-  when: lookup('env', 'JENKINS_HOME')
