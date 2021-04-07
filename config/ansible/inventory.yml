@@ -19,26 +19,29 @@ all:
 
     live:
       hosts:
-        live-gl-tra:
-          ansible_host: 10.10.10.150
-          ansible_user: essentials
-          ansible_ssh_private_key_file: ~/.ssh/id_rsa
+        live-tra:
+          ansible_connection: local
 
     test:
       hosts:
-        test-tra:
-          ansible_connection: local
+      test-tra:
+      ansible_connection: local
 
     tra:
       hosts:
-        hiv-tra:
-          ansible_host:
-          ansible_user:
+      hiv-tra:
+      ansible_host:
+      ansible_user:
 
     traservers:
       children:
-        latest:
-        demo:
-        live:
-        tra:
-        test:
+      latest:
+      demo:
+      live:
+      tra:
+      test:
+  hosts:
+    live-gl-tra:
+      ansible_host: 10.10.10.150
+      ansible_user: essentials
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa

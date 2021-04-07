@@ -5,6 +5,7 @@
     registry: '{{ hub_registry }}'
     username: '{{ hub_user }}'
     password: '{{ hub_pass }}'
+  delegate_to: live-gl-tra
 
 - name: Production | Create projects directory
   file:
@@ -22,6 +23,7 @@
     - projects/hiv/config/rocketchat
     - projects/hiv/config/therapist-web-app
     - projects/hiv/config/therapistservice
+  delegate_to: live-gl-tra
 
 - name: Production |  Add deployment files
   template:
@@ -30,13 +32,16 @@
     mode: 0755
   loop:
     - { src: 'external/docker-compose.yml.j2', dest: '/home/{{ ansible_ssh_user }}/hiv/docker-compose.yml' }
+  delegate_to: live-gl-tra
 
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
   args:
     chdir: '/home/{{ ansible_ssh_user }}/hiv'
+  delegate_to: live-gl-tra
 
 - name: Production | Docker compose start all container
   shell: docker-compose up -d
   args:
     chdir: '/home/{{ ansible_ssh_user }}/hiv'
+  delegate_to: live-gl-tra
