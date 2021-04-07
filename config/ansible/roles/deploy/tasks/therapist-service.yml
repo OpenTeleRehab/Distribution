@@ -34,7 +34,6 @@
   shell: 'docker build -t {{ stage }}-therapist-service:latest .'
   args:
     chdir: '{{ workspace }}/therapist-service'
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: TherapistService | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-therapist-service:latest {{ image_name }}/{{ stage }}/therapist-service:{{ item }}'
@@ -43,7 +42,6 @@
   loop:
     - '{{ version }}'
     - latest
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: TherapistService | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/therapist-service:{{ item }}'
@@ -52,4 +50,3 @@
   loop:
     - '{{ version }}'
     - latest
-  when: lookup('env', 'JENKINS_HOME')

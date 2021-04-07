@@ -20,4 +20,3 @@
     - namespace.yml
     - configmap.yml
     - pvc.yml
-  when: lookup('env', 'JENKINS_HOME')

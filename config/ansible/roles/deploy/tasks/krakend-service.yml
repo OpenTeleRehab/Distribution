@@ -10,10 +10,8 @@
   shell: 'docker build -t {{ image_name }}/krakend:{{ version }} .'
   args:
     chdir: '{{ workspace }}/krakend-service'
-  when: lookup('env', 'JENKINS_HOME')
 
 - name: Push docker image to dockerhub.web-essentials.co
   shell: 'docker push {{ image_name }}/krakend:{{ version }}'
   args:
     chdir: '{{ workspace }}/krakend-service'
-  when: lookup('env', 'JENKINS_HOME')

@@ -9,7 +9,7 @@
 
 - name: Production | Create projects directory
   file:
-    path: '/home/{{ ansible_ssh_user }}/{{ item }}'
+    path: '{{ item }}'
     state: directory
     mode: 0755
   loop:
@@ -31,17 +31,17 @@
     dest: '{{ item.dest }}'
     mode: 0755
   loop:
-    - { src: 'external/docker-compose.yml.j2', dest: '/home/{{ ansible_ssh_user }}/hiv/docker-compose.yml' }
+    - { src: 'external/docker-compose.yml.j2', dest: 'projects/hiv/docker-compose.yml' }
   delegate_to: live-gl-tra
 
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
   args:
-    chdir: '/home/{{ ansible_ssh_user }}/hiv'
+    chdir: 'projects/hiv'
   delegate_to: live-gl-tra
 
 - name: Production | Docker compose start all container
   shell: docker-compose up -d
   args:
-    chdir: '/home/{{ ansible_ssh_user }}/hiv'
+    chdir: 'projects/hiv'
   delegate_to: live-gl-tra

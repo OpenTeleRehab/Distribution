@@ -4,6 +4,10 @@ version: '3'
 networks:
   hiv-docker-net:
 
+volumes:
+  rocketchat_db_data:
+  rocketchat_uploads:
+
 services:
   traefik:
     container_name: 'traefik'
@@ -126,7 +130,7 @@ services:
       - MONGO_URL=mongodb://rocketchat_mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://rocketchat_mongo:27017/local
     depends_on:
-      - mongo
+      - rocketchat_mongo
     ports:
       - 3000:3000
 
