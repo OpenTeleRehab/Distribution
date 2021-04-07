@@ -21,6 +21,7 @@ all:
       hosts:
         live-tra:
           ansible_connection: local
+
     external:
       hosts:
         live-gl-tra:
@@ -40,7 +41,6 @@ all:
       ansible_user:
 
     traservers:
-      children:
       latest:
       demo:
       live:
