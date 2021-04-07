@@ -34,7 +34,7 @@
   when: admin_webapp_build.stat.exists
 
 ### Build Docker image Therapist Service
-- name: Check build file if exist for Admin webapp
+- name: Check build file if exist for Therapist Service
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
   register: therapist_service_build
@@ -44,7 +44,7 @@
   when: therapist_service_build.stat.exists
 
 ### Build Docker image Therapist Webapp
-- name: Check build file if exist for Admin webapp
+- name: Check build file if exist for Therapist webapp
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
   register: therapist_webapp_build
@@ -59,7 +59,7 @@
     path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
   register: patient_service_build
 
-- name: Build Therapist service
+- name: Build Patient service
   import_tasks: patient-service.yml
   when: patient_service_build.stat.exists
 
@@ -69,12 +69,12 @@
     path: '/var/tmp/{{ project_id }}/{{ stage }}-krakend-service-build'
   register: krakend_service_build
 
-- name: Build Therapist service
+- name: Build Krakend service
   import_tasks: krakend-service.yml
   when: krakend_service_build.stat.exists
 
 ### Build webclient
-- name: Build Therapist webapp
+- name: Build webclient
   import_tasks: webclient.yml
 
 ### Deploy k8s pods
@@ -86,3 +86,8 @@
 - name: Migration Admin, therapist, Patient
   import_tasks: deploy-k8s-migration.yml
   when: stage != 'live'
+
+### Run task on live
+- name: Production | Deploy
+  import_tasks: external.yml
+  when: stage == 'live'

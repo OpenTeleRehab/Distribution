@@ -1,1 +1,11 @@
 ---
+
+admin_webapp_domain:      staging-admin.wehost.asia
+therapist_webapp_domain:  staging-therapist.wehost.asia
+keycloak_domain:          staging-auth.wehost.asia
+
+mysql_host_keycloak:      '10.10.10.151'
+mysql_name_keycloak:      'staging_keycloak'
+mysql_user_keycloak:      'staging_keycloak'
+mysql_pass_keycloak:      '{{ mysql_pass_keycloak_vault }}'
+keycloak_admin_pass:      '{{ keycloak_admin_pass_vault }}'
