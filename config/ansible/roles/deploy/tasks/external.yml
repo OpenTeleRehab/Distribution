@@ -1,12 +1,12 @@
 ---
 
-- name: Login to nexus docker private repo
+- name: Production | Login to nexus docker private repo
   docker_login:
     registry: '{{ hub_registry }}'
     username: '{{ hub_user }}'
     password: '{{ hub_pass }}'
 
-- name: Create projects directory
+- name: Production | Create projects directory
   file:
     path: '/home/{{ ansible_ssh_user }}/{{ item }}'
     state: directory
@@ -23,4 +23,20 @@
     - projects/hiv/config/therapist-web-app
     - projects/hiv/config/therapistservice
 
-- name: Add deploy configuration file
+- name: Production |  Add deployment files
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  loop:
+    - { src: 'external/docker-compose.yml.j2', dest: '/home/{{ ansible_ssh_user }}/hiv/docker-compose.yml' }
+
+- name: Production | Docker compose pull latest images
+  shell: docker-compose pull
+  args:
+    chdir: '/home/{{ ansible_ssh_user }}/hiv'
+
+- name: Production | Docker compose start all container
+  shell: docker-compose up -d
+  args:
+    chdir: '/home/{{ ansible_ssh_user }}/hiv'
