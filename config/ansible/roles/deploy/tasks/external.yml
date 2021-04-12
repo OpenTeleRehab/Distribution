@@ -5,9 +5,12 @@
     registry: '{{ hub_registry }}'
     username: '{{ hub_user }}'
     password: '{{ hub_pass }}'
-  delegate_to: live-gl-tra
+  delegate_to: '{{ item }}'
+  with_items:
+    - live-gl-tra
+    - live-vn-tra
 
-- name: Production | Create projects directory
+- name: Production | Create projects directory global server
   file:
     path: '{{ item }}'
     state: directory
@@ -16,32 +19,199 @@
     - projects/hiv/config
     - projects/hiv/config/admin-web-app
     - projects/hiv/config/adminservice
-    - projects/hiv/config/jitsi
     - projects/hiv/config/keycloak
     - projects/hiv/config/krakend
     - projects/hiv/config/patientservice
     - projects/hiv/config/rocketchat
     - projects/hiv/config/therapist-web-app
     - projects/hiv/config/therapistservice
-  delegate_to: live-gl-tra
+    - projects/hiv/config/webclient
+    - projects/hiv/config/jitsi-meet-cfg/web/letsencrypt
+    - projects/hiv/config/jitsi-meet-cfg/transcripts
+    - projects/hiv/config/jitsi-meet-cfg/prosody/config
+    - projects/hiv/config/jitsi-meet-cfg/prosody/prosody-plugins-custom
+    - projects/hiv/config/jitsi-meet-cfg/jicofo
+    - projects/hiv/config/jitsi-meet-cfg/jvb
+    - projects/hiv/config/jitsi-meet-cfg/jigasi
+    - projects/hiv/config/jitsi-meet-cfg/jibri
 
-- name: Production |  Add deployment files
+- name: Production |  Add deployment files global server
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     mode: 0755
   loop:
     - { src: 'external/docker-compose.yml.j2', dest: 'projects/hiv/docker-compose.yml' }
-  delegate_to: live-gl-tra
+    - { src: 'external/config/jitsi/env', dest: 'projects/hiv/.env' }
+    - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
+    - { src: 'external/config/webclient/default.conf.j2', dest: 'projects/hiv/config/webclient/default.conf' }
 
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
   args:
     chdir: 'projects/hiv'
-  delegate_to: live-gl-tra
 
 - name: Production | Docker compose start all container
   shell: docker-compose up -d
   args:
     chdir: 'projects/hiv'
-  delegate_to: live-gl-tra
+
+- name: Wait for containers ready
+  pause:
+    seconds: 30
+
+# Run artisan admin service
+- name: Run artisan migration
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan migrate --force'
+  args:
+    chdir: 'projects/hiv'
+  when: admin_service_build.stat.exists
+
+- name: Run artisan storage link
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan storage:link'
+  args:
+    chdir: 'projects/hiv'
+  when: admin_service_build.stat.exists
+
+- name: Run artisan clear cache
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan {{ item }}'
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
+  when: admin_service_build.stat.exists
+
+- name: Run artisan import
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:import-default-translation'
+  args:
+    chdir: 'projects/hiv'
+  when: admin_service_build.stat.exists
+
+# Run artisan therapist service
+- name: Run artisan migration
+  shell: 'docker-compose exec therapist_service /usr/bin/php artisan migrate --force'
+  args:
+    chdir: 'projects/hiv'
+  when: therapist_service_build.stat.exists
+
+- name: Run artisan storage link
+  shell: 'docker-compose exec therapist_service /usr/bin/php artisan storage:link'
+  args:
+    chdir: 'projects/hiv'
+  when: therapist_service_build.stat.exists
+
+- name: Run artisan clear cache
+  shell: 'docker-compose exec therapist_service /usr/bin/php artisan {{ item }}'
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
+  when: therapist_service_build.stat.exists
+
+# Run artisan patient service
+- name: Run artisan migration
+  shell: 'docker-compose exec patient_service /usr/bin/php artisan migrate --force'
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+
+- name: Run artisan storage link
+  shell: 'docker-compose exec patient_service /usr/bin/php artisan storage:link'
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+
+- name: Run artisan clear cache
+  shell: 'docker-compose exec patient_service /usr/bin/php artisan {{ item }}'
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
+  when: patient_service_build.stat.exists
+
+# Deploy to VN server
+- name: VN Patient | Create projects directory vn server
+  file:
+    path: '{{ item }}'
+    state: directory
+    mode: 0755
+  loop:
+    - projects/hiv/config/vn_patient
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: VN Patient |  Add deployment files VN server
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  loop:
+    - { src: 'external/vn-patient.yml.j2', dest: 'projects/hiv/docker-compose.yml' }
+    - { src: 'external/config/vn_patient/env.j2', dest: 'projects/hiv/config/vn_patient/env' }
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: VN Patient | Docker compose pull latest images
+  shell: docker-compose pull
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: VN Patient | Docker compose start all container
+  shell: docker-compose up -d
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: Wait for containers ready
+  pause:
+    seconds: 30
+
+- name: VN Patient | Run artisan migration
+  shell: 'docker-compose exec vn_patient_service /usr/bin/php artisan migrate --force'
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: VN Patient | Run artisan storage link
+  shell: 'docker-compose exec vn_patient_service /usr/bin/php artisan storage:link'
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: VN Patient | Run artisan clear cache
+  shell: 'docker-compose exec vn_patient_service /usr/bin/php artisan {{ item }}'
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
+  when: patient_service_build.stat.exists
+  delegate_to: live-vn-tra
+
+- name: Remove build file state
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ item }}'
+    state: absent
+  loops:
+    - '{{ stage }}-admin-service-build'
+    - '{{ stage }}-therapist-service-buil'
+    - '{{ stage }}-patient-service-build'
+    - '{{ stage }}-therapist-webapp-build'
+    - '{{ stage }}-admin-webapp-build'
+    - '{{ stage }}-krakend-service-build'
