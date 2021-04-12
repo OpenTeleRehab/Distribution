@@ -57,59 +57,45 @@ metadata:
   namespace: hiv
 spec:
   rules:
-    - host: {{ stage }}-rehabilitation.wehost.asia
+    - host: {{ keycloak_url }}
       http:
         paths:
           - path: /
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-webclient
               servicePort: 80
-    - host: {{ stage }}-admin-rehabilitation.wehost.asia
+    - host: {{ admin_webapp_url }}
       http:
         paths:
           - path: /
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-admin-webapp
               servicePort: 80
-    - host: {{ stage }}-api-admin-rehabilitation.wehost.asia
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: svc-{{ stage }}-{{ project_name }}-admin-service
-              servicePort: 80
-    - host: {{ stage }}-therapist-rehabilitation.wehost.asia
+    - host: {{ therapist_webapp_url }}
       http:
         paths:
           - path: /
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-therapist-webapp
               servicePort: 80
-    - host: {{ stage }}-api-therapist-rehabilitation.wehost.asia
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: svc-{{ stage }}-{{ project_name }}-therapist-service
-              servicePort: 80
-    - host: {{ stage }}-api-patient-rehabilitation.wehost.asia
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: svc-{{ stage }}-{{ project_name }}-patient-service
-              servicePort: 80
-    - host: {{ stage }}-chat-rehabilitation.wehost.asia
+    - host: {{ rocketcaht_url }}
       http:
         paths:
           - path: /
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-rocketchat
               servicePort: 3000
-    - host: {{ stage }}-meet-rehabilitation.wehost.asia
+    - host: {{ jitsi_url }}
       http:
         paths:
           - path: /
             backend:
               serviceName: svc-{{ stage }}-{{ project_name }}-jitsi-web
               servicePort: 80
+    - host: {{ api_url }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ krakend_service }}
+              servicePort: 8000
