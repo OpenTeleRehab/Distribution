@@ -208,7 +208,7 @@
   file:
     path: '/var/tmp/{{ project_id }}/{{ item }}'
     state: absent
-  loops:
+  loop:
     - '{{ stage }}-admin-service-build'
     - '{{ stage }}-therapist-service-buil'
     - '{{ stage }}-patient-service-build'
