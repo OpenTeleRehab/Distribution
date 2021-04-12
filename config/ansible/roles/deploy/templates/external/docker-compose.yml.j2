@@ -116,7 +116,7 @@ services:
 
   krakend:
     container_name: krakend
-    image: {{ image_name }}/krakend:{ version }}
+    image: {{ image_name }}/krakend:{{ version }}
     restart: unless-stopped
     networks:
       - hiv-docker-net
