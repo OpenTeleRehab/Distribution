@@ -12,6 +12,7 @@ admin_service:         'admin_service'
 therapist_service:     'therapist_service'
 patient_service:       'patient_service'
 rocketchat_service:    'rocketchat:3000'
+krakend_service:       'krakend'
 
 my_host:               '10.10.10.151'
 
