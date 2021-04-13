@@ -35,7 +35,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`staging-traefik.wehost.asia`)"
-      - "traefik.http.routers.traefik.entrypoints=web"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
 
@@ -48,7 +47,6 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.admin_webapp.rule=Host(`{{ admin_webapp_url }}`)'
-      - 'traefik.http.routers.admin_webapp.entrypoints=web'
       - 'traefik.http.routers.admin_webapp.service=admin_webapp'
       - 'traefik.http.services.admin_webapp.loadbalancer.server.port=80'
 
@@ -61,7 +59,6 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.therapist_webapp.rule=Host(`{{ therapist_webapp_url }}`)'
-      - 'traefik.http.routers.therapist_webapp.entrypoints=web'
       - 'traefik.http.routers.therapist_webapp.service=therapist_webapp'
       - 'traefik.http.services.therapist_webapp.loadbalancer.server.port=80'
 
@@ -438,7 +435,7 @@ services:
       - ./config/webclient/default.conf:/etc/nginx/conf.d/default.conf
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.webclient.rule=Host(`{{ keycloak_url }}`) || Host(`{{api_url }}`) || Host(`{{ rocketcaht_url }}`) || Host(`{{ jitsi_url }}`)'
+      - 'traefik.http.routers.webclient.rule=Host(`{{ keycloak_url }}`) || Host(`{{ rocketcaht_url }}`) || Host(`{{ jitsi_url }}`)'
       - 'traefik.http.routers.webclient.entrypoints=web'
       - 'traefik.http.routers.webclient.service=webclient'
       - 'traefik.http.services.webclient.loadbalancer.server.port=80'
