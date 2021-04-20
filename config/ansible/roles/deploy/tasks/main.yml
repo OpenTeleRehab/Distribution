@@ -6,6 +6,37 @@
     username: '{{ hub_user }}'
     password: '{{ hub_pass }}'
 
+# Get build state
+- name: AdminService | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
+  register: admin_service_build
+
+- name: AdminWebapp | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
+  register: admin_webapp_build
+
+- name: TherapistService | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
+  register: therapist_service_build
+
+- name: TherapistWebapp | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
+  register: therapist_webapp_build
+
+- name: PatientService | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
+  register: patient_service_build
+
+- name: KrakendService | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-krakend-service-build'
+  register: krakend_service_build
+
 - name: Deploy k8s namespace pvc configmap
   import_tasks: deploy-k8s-common.yml
   when: stage != 'live'
@@ -14,61 +45,31 @@
   import_tasks: clone-projects.yml
 
 ### Build Docker image Admin Service
-- name: Check build file if exist for Admin service
-  stat:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
-  register: admin_service_build
-
 - name: Build Admin service
   import_tasks: admin-service.yml
   when: admin_service_build.stat.exists
 
 ### Build Docker image Admin Webapp
-- name: Check build file if exist for Admin webapp
-  stat:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
-  register: admin_webapp_build
-
 - name: Build Admin webapp
   import_tasks: admin-webapp.yml
   when: admin_webapp_build.stat.exists
 
 ### Build Docker image Therapist Service
-- name: Check build file if exist for Therapist Service
-  stat:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
-  register: therapist_service_build
-
 - name: Build Therapist service
   import_tasks: therapist-service.yml
   when: therapist_service_build.stat.exists
 
 ### Build Docker image Therapist Webapp
-- name: Check build file if exist for Therapist webapp
-  stat:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
-  register: therapist_webapp_build
-
 - name: Build Therapist webapp
   import_tasks: therapist-webapp.yml
   when: therapist_webapp_build.stat.exists
 
 ### Build Docker image Patient Service
-- name: Check build file if exist for Patient service
-  stat:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
-  register: patient_service_build
-
 - name: Build Patient service
   import_tasks: patient-service.yml
   when: patient_service_build.stat.exists
 
 ### Build Docker image Krakend Service
-- name: Check build file if exist for Krakend service
-  stat:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-krakend-service-build'
-  register: krakend_service_build
-
 - name: Build Krakend service
   import_tasks: krakend-service.yml
   when: krakend_service_build.stat.exists
