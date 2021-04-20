@@ -1,6 +1,5 @@
 ---
 
-# Admin Service
 - name: AdminService | Clone Admin service repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
@@ -8,8 +7,8 @@
     accept_hostkey: yes
     version: master
     force: yes
+  when: admin_service_build.stat.exists
 
-# Admin Webapp
 - name: AdminWebapp | Clone Admin webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-web-app.git
@@ -17,25 +16,8 @@
     accept_hostkey: yes
     version: master
     force: yes
+  when: admin_webapp_build.stat.exists
 
-- name: AdminWebapp | Create env
-  template:
-    src: 'internal/admin-webapp/.env.j2'
-    dest: '{{ workspace }}/admin-webapp/.env'
-    mode: 0755
-  register: admin_webapp_env
-
-- name: Create build file when env changed
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ item }}'
-    state: touch
-    mode: 0755
-  loop:
-    - latest-admin-webapp-build
-    - demo-admin-webapp-build
-  when: admin_webapp_env.changed
-
-# Therapist Service
 - name: TherapistService | Clone therapist service repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/therapist-service.git
@@ -43,8 +25,8 @@
     accept_hostkey: yes
     version: master
     force: yes
+  when: therapist_service_build.stat.exists
 
-# Therapist Webapp
 - name: TherapistWebapp | Clone Therapist webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/therapist-web-app.git
@@ -52,23 +34,7 @@
     accept_hostkey: yes
     version: master
     force: yes
-
-- name: TherapistWebapp | Create env
-  template:
-    src: 'internal/therapist-webapp/.env.j2'
-    dest: '{{ workspace }}/therapist-webapp/.env'
-    mode: 0755
-  register: therapist_webapp_env
-
-- name: Create build file when env changed
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ item }}'
-    state: touch
-    mode: 0755
-  loop:
-    - latest-therapist-webapp-build
-    - demo-therapist-webapp-build
-  when: therapist_webapp_env.changed
+  when: therapist_webapp_build.stat.exists
 
 # Patient Service
 - name: PatientService | Clone Admin service repos
@@ -78,6 +44,7 @@
     accept_hostkey: yes
     version: master
     force: yes
+  when: patient_service_build.stat.exists
 
 # Krakend Service
 - name: KrakendService | Clone Krakend service repos
@@ -87,3 +54,4 @@
     accept_hostkey: yes
     version: master
     force: yes
+  when: krakend_service_build.stat.exists
