@@ -34,6 +34,7 @@
     - projects/hiv/config/jitsi-meet-cfg/jvb
     - projects/hiv/config/jitsi-meet-cfg/jigasi
     - projects/hiv/config/jitsi-meet-cfg/jibri
+  delegate_to: live-gl-tra
 
 - name: Production |  Add deployment files global server
   template:
@@ -45,16 +46,19 @@
     - { src: 'external/config/jitsi/env', dest: 'projects/hiv/.env' }
     - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
     - { src: 'external/config/webclient/default.conf.j2', dest: 'projects/hiv/config/webclient/default.conf' }
+  delegate_to: live-gl-tra
 
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
   args:
     chdir: 'projects/hiv'
+  delegate_to: live-gl-tra
 
 - name: Production | Docker compose start all container
   shell: docker-compose up -d
   args:
     chdir: 'projects/hiv'
+  delegate_to: live-gl-tra
 
 - name: Wait for containers ready
   pause:
@@ -66,12 +70,14 @@
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec admin_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec admin_service /usr/bin/php artisan {{ item }}'
@@ -83,12 +89,14 @@
     - view:clear
     - route:clear
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan import
   shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:import-default-translation'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Run artisan therapist service
 - name: Run artisan migration
@@ -96,12 +104,14 @@
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec therapist_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec therapist_service /usr/bin/php artisan {{ item }}'
@@ -113,6 +123,7 @@
     - view:clear
     - route:clear
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Run artisan patient service
 - name: Run artisan migration
@@ -120,12 +131,14 @@
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec patient_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec patient_service /usr/bin/php artisan {{ item }}'
@@ -137,6 +150,7 @@
     - view:clear
     - route:clear
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Deploy to VN server
 - name: VN Patient | Create projects directory vn server
