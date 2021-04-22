@@ -3,7 +3,7 @@
 - name: Create service file
   template:
     src: 'internal/krakend-service/service.json.j2'
-    dest: '{{ workspace }}/config/krakend/settings/service.json'
+    dest: '{{ workspace }}/krakend-service/config/krakend/settings/service.json'
     mode: 0755
 
 - name: Build docker image
