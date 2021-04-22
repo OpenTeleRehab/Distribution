@@ -7,19 +7,22 @@
     mode: 0755
 
 - name: Build docker image
-  shell: 'docker build -t {{ image_name }}:latest .'
+  shell: 'docker build -t {{ stage }}-krakend:latest .'
   args:
-    chdir: '{{ workspace }}'
+    chdir: '{{ workspace }}/krakend-service'
 
 - name: Tag docker image to hub.web-essentials.co
-  shell: 'docker tag {{{ image_name }}:latest {{ image_name }}:{{ version }}'
+  shell: 'docker tag {{ stage }}-krakend:latest {{ image_name }}/{{ stage }}/krakend:{{ item }}'
   args:
-    chdir: '{{ workspace }}'
+    chdir: '{{ workspace }}/krakend-service'
+  loop:
+    - '{{ version }}'
+    - latest
 
 - name: Push docker image to hub.web-essentials.co
-  shell: 'docker push {{ image_name }}:{{ item }}'
+  shell: 'docker push {{ image_name }}/{{ stage }}/krakend:{{ item }}'
   args:
-    chdir: '{{ workspace }}'
+    chdir: '{{ workspace }}/krakend-service'
   loop:
     - '{{ version }}'
     - latest
