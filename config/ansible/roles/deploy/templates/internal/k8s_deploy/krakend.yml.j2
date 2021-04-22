@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: {{ image_name }}/krakend:{{ version }}
+        - image: {{ image_name }}/krakend:{{ krakend_build_id }}
           name: 'app-{{ stage }}-{{ project_name }}-krakend'
           ports:
             - containerPort: 8000

@@ -3,6 +3,7 @@
 - hosts: traservers
   vars:
     keycloak_build_id: "{{ lookup('file', '/var/tmp/{{ project_id }}/keycloak-build-id.txt') }}"
+    krakend_build_id: "{{ lookup('file', '/var/tmp/{{ project_id }}/krakend-build-id.txt') }}"
   roles:
     - role: deploy
       tags: deploy
