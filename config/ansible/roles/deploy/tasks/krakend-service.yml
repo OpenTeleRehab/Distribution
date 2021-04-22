@@ -1,0 +1,25 @@
+---
+
+- name: Create service file
+  template:
+    src: 'internal/service.json.j2'
+    dest: '{{ workspace }}/config/krakend/settings/service.json'
+    mode: 0755
+
+- name: Build docker image
+  shell: 'docker build -t {{ image_name }}:latest .'
+  args:
+    chdir: '{{ workspace }}'
+
+- name: Tag docker image to hub.web-essentials.co
+  shell: 'docker tag {{{ image_name }}:latest {{ image_name }}:{{ version }}'
+  args:
+    chdir: '{{ workspace }}'
+
+- name: Push docker image to hub.web-essentials.co
+  shell: 'docker push {{ image_name }}:{{ item }}'
+  args:
+    chdir: '{{ workspace }}'
+  loop:
+    - '{{ version }}'
+    - latest

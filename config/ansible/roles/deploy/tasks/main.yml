@@ -22,6 +22,11 @@
     path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
   register: therapist_service_build
 
+- name: Krakend | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-krakend-build'
+  register: krakend_service_build
+
 - name: TherapistWebapp | Get file if exist
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
@@ -63,6 +68,11 @@
 - name: Build Patient service
   import_tasks: patient-service.yml
   when: patient_service_build.stat.exists
+
+### Build Docker image Patient Service
+- name: Build krakend service
+  import_tasks: krakend-service.yml
+  when: krakend_service_build.stat.exists
 
 ### Build webclient
 - name: Build webclient
