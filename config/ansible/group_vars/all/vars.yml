@@ -17,6 +17,7 @@ therapist_webapp_service:               'svc-{{ stage }}-{{ project_name }}-ther
 admin_service:                          'svc-{{ stage }}-{{ project_name }}-admin-service'
 therapist_service:                      'svc-{{ stage }}-{{ project_name }}-therapist-service'
 patient_service:                        'svc-{{ stage }}-{{ project_name }}-patient-service'
+vn_patient_service:                     'svc-{{ stage }}-{{ project_name }}-vn-patient-service'
 keycloak_service:                       'svc-{{ stage }}-{{ project_name }}-keycloak:8080'
 rocketchat_service:                     'svc-{{ stage }}-{{ project_name }}-rocketchat:3000'
 krakend_service:                        'svc-{{ stage }}-{{ project_name }}-krakend'
