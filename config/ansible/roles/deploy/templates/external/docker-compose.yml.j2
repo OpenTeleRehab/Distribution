@@ -117,6 +117,8 @@ services:
     restart: unless-stopped
     networks:
       - hiv-docker-net
+    extra_hosts:
+      - "{{ vn_patient_service }}:{{ vn_patient_host }}"
 
   rocketchat:
     container_name: rocketchat

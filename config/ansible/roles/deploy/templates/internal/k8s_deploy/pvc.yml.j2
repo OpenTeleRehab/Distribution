@@ -104,6 +104,40 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: 'pv-{{ stage }}-{{ project_id }}-vn-patient-service'
+  labels:
+    app: 'pv-{{ stage }}-{{ project_id }}-vn-patient-service'
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: '{{ nfs_server }}'
+    path: '{{ nfs_path }}/vn-patient-service'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'pvc-{{ stage }}-{{ project_id }}-vn-patient-service'
+  namespace: hiv
+spec:
+  selector:
+    matchLabels:
+      app: 'pv-{{ stage }}-{{ project_id }}-vn-patient-service'
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+  resources:
+    requests:
+      storage: 2Gi
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: 'pv-{{ stage }}-{{ project_id }}-rocketchat'
   labels:
     app: 'pv-{{ stage }}-{{ project_id }}-rocketchat'

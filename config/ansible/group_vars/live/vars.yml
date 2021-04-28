@@ -11,9 +11,10 @@ keycloak_service:      'keycloak:8080'
 admin_service:         'admin_service'
 therapist_service:     'therapist_service'
 patient_service:       'patient_service'
-vn_patient_service:    'vn_patient_service'
 rocketchat_service:    'rocketchat:3000'
 krakend_service:       'krakend'
+vn_patient_service:    'vn_patient_service'
+vn_patient_host:       '10.10.10.151'
 
 my_host:               '10.10.10.151'
 
