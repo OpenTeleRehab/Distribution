@@ -21,3 +21,7 @@ mysql_name_keycloak:   staging_keycloak
 mysql_user_keycloak:   staging_keycloak
 mysql_pass_keycloak:   '{{ mysql_pass_keycloak_vault }}'
 keycloak_admin_pass:   '{{ keycloak_admin_pass_vault }}'
+
+rocketchat_admin_user_id:               '{{ rocketchat_admin_user_id_vault }}'
+rocketchat_admin_auth_token:            '{{ rocketchat_admin_auth_token_vault }}'
+rocketchat_admin_pass:                  '{{ rocketchat_admin_pass_vault }}'
