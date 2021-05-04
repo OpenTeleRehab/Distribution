@@ -45,6 +45,10 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/patientservice.yml'
   when: patient_service_build.stat.exists
 
+- name: Deploy VN Patient Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/vn_patientservice.yml'
+  when: patient_service_build.stat.exists
+
 - name: Remove build file
   file:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'

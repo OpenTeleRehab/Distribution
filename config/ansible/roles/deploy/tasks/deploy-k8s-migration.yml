@@ -78,3 +78,26 @@
     - config:clear
     - view:clear
     - route:clear
+
+### VN Patient Service
+
+- name: VN-Patient-Service | Get running patient service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-vn-patient-service | cut -d " " -f1'
+  register: vn_patient_pod_name
+
+- name: VN-Patient-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: VN-Patient-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: VN-Patient-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: VN-Patient-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
