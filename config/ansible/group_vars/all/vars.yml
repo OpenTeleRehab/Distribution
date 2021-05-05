@@ -76,3 +76,7 @@ sms_verify_service_sid:                 '{{ sms_verify_service_sid_vault }}'
 sms_verify_exclude_numbers:             '85511628801,85570573327,85510662977,855966138877,855969681943,85569915581,85570666747,84386504985,358404835732'
 
 map_api_key:                            '{{ map_api_key_vault }}'
+
+pusher_app_id:                          '{{ pusher_app_id_vault }}'
+pusher_app_key:                         '{{ pusher_app_key_vault }}'
+pusher_app_secret:                      '{{ pusher_app_secret_vault }}'
