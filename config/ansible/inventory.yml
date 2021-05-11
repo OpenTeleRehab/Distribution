@@ -24,13 +24,13 @@ all:
     live_aws:
       hosts:
         live-gl-tra:
-          ansible_host: 10.10.10.150
-          ansible_user: essentials
+          ansible_host: 54.179.65.28
+          ansible_user: ubuntu
           ansible_ssh_private_key_file: ~/.ssh/id_rsa
 
         live-vn-tra:
-          ansible_host: 10.10.10.151
-          ansible_user: essentials
+          ansible_host: 103.229.42.86
+          ansible_user: ubuntu
           ansible_ssh_private_key_file: ~/.ssh/id_rsa
 
     test:

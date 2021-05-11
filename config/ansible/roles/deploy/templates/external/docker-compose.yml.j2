@@ -34,9 +34,11 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock:ro'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`staging-traefik.wehost.asia`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.open-rehab.org`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=open-rehab:$$apr1$$vlo596z0$$uUJJ9FicOxIi2jz0Y0F3A0"
 
   admin_webapp:
     container_name: admin_webapp

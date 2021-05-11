@@ -1,5 +1,6 @@
 ---
 
-my_patientservice_user:                 '{{ stage }}_vn_patientservice'
-my_patientservice_pass:                 '{{ my_patientservice_pass_vault }}'
-my_patientservice_db:                   '{{ stage }}_vn_patientservice'
+my_host:                '192.168.100.197'
+my_patientservice_user: 'vn_patient_service'
+my_patientservice_db:   'vn_patient_service'
+my_patientservice_pass: '{{ my_patientservice_pass_vault }}'

@@ -45,7 +45,6 @@
     - { src: 'external/docker-compose.yml.j2', dest: 'projects/hiv/docker-compose.yml' }
     - { src: 'external/config/jitsi/env', dest: 'projects/hiv/.env' }
     - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
-    - { src: 'external/config/webclient/default.conf.j2', dest: 'projects/hiv/config/webclient/default.conf' }
   delegate_to: live-gl-tra
 
 - name: Production | Docker compose pull latest images
