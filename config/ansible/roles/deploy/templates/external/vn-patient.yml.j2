@@ -8,44 +8,14 @@ volumes:
   vn_patient_service_vol:
 
 services:
-  traefik:
-    container_name: 'traefik'
-    image: 'traefik:v2.4'
-    restart: unless-stopped
-    networks:
-      - hiv-docker-net
-    command:
-      - '--api.dashboard=true'
-      - '--api.debug=true'
-      - '--providers.docker=true'
-      - '--providers.docker.exposedbydefault=false'
-      - '--entrypoints.web.address=:80'
-      - '--entrypoints.websecure.Address=:443'
-      - '--accessLog=true'
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock:ro'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`vn-traefik.wehost.asia`)"
-      - "traefik.http.routers.traefik.entrypoints=web"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-
   vn_patient_service:
     container_name: vn_patient_service
     image: {{ image_name }}/{{ stage }}/patient-service:{{ version }}
     restart: unless-stopped
+    ports:
+      - "80:80"
     networks:
       - hiv-docker-net
     volumes:
       - vn_patient_service_vol:/var/www/storage
       - ./config/vn_patient/env:/var/www/.env
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.vn_patient_service.rule=Host(`vn_patient_service`)'
-      - 'traefik.http.routers.vn_patient_service.entrypoints=web'
-      - 'traefik.http.routers.vn_patient_service.service=vn_patient_service'
-      - 'traefik.http.services.vn_patient_service.loadbalancer.server.port=80'
