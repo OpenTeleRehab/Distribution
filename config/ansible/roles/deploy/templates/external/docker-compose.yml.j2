@@ -68,6 +68,8 @@ services:
     container_name: admin_service
     image: {{ image_name }}/{{ stage }}/admin-service:{{ version }}
     restart: unless-stopped
+    ports:
+      - "2081:80"
     networks:
       - hiv-docker-net
     volumes:
@@ -77,6 +79,8 @@ services:
     container_name: therapist_service
     image: {{ image_name }}/{{ stage }}/therapist-service:{{ version }}
     restart: unless-stopped
+    ports:
+      - "2082:80"
     networks:
       - hiv-docker-net
     volumes:
