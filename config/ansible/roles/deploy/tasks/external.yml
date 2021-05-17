@@ -18,22 +18,21 @@
   loop:
     - projects/hiv/config
     - projects/hiv/config/admin-web-app
-    - projects/hiv/config/adminservice
+    - projects/hiv/config/adminservice/storage
     - projects/hiv/config/keycloak
     - projects/hiv/config/krakend
-    - projects/hiv/config/patientservice
+    - projects/hiv/config/patientservice/storage
     - projects/hiv/config/rocketchat
     - projects/hiv/config/therapist-web-app
-    - projects/hiv/config/therapistservice
-    - projects/hiv/config/webclient
-    - projects/hiv/config/jitsi-meet-cfg/web/letsencrypt
-    - projects/hiv/config/jitsi-meet-cfg/transcripts
-    - projects/hiv/config/jitsi-meet-cfg/prosody/config
-    - projects/hiv/config/jitsi-meet-cfg/prosody/prosody-plugins-custom
-    - projects/hiv/config/jitsi-meet-cfg/jicofo
-    - projects/hiv/config/jitsi-meet-cfg/jvb
-    - projects/hiv/config/jitsi-meet-cfg/jigasi
-    - projects/hiv/config/jitsi-meet-cfg/jibri
+    - projects/hiv/config/therapistservice/storage
+#    - projects/hiv/config/jitsi-meet-cfg/web/letsencrypt
+#    - projects/hiv/config/jitsi-meet-cfg/transcripts
+#    - projects/hiv/config/jitsi-meet-cfg/prosody/config
+#    - projects/hiv/config/jitsi-meet-cfg/prosody/prosody-plugins-custom
+#    - projects/hiv/config/jitsi-meet-cfg/jicofo
+#    - projects/hiv/config/jitsi-meet-cfg/jvb
+#    - projects/hiv/config/jitsi-meet-cfg/jigasi
+#    - projects/hiv/config/jitsi-meet-cfg/jibri
   delegate_to: live-gl-tra
 
 - name: Production |  Add deployment files global server
@@ -158,7 +157,7 @@
     state: directory
     mode: 0755
   loop:
-    - projects/hiv/config/vn_patient
+    - projects/hiv/config/vn_patient/storage
   when: patient_service_build.stat.exists
   delegate_to: live-vn-tra
 
