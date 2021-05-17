@@ -6,6 +6,7 @@ networks:
 
 volumes:
   vn_patient_service_vol:
+  vn_patient_db_vol:
 
 services:
   vn_patient_service:
@@ -17,5 +18,20 @@ services:
     networks:
       - hiv-docker-net
     volumes:
-      - vn_patient_service_vol:/var/www/storage
+      - ./config/vn_patient/storage:/var/www/storage
       - ./config/vn_patient/env:/var/www/.env
+
+  vn_patient_db:
+    container_name: vn_patient_db
+    image: mysql:8.0.23
+    restart: unless-stopped
+    networks:
+      - hiv-docker-net
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - vn_patient_db_vol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ my_root_vn_patient_pass_vault }}
+      MYSQL_DATABASE: vn_patient_service
+      MYSQL_USER: vn_patient_service
+      MYSQL_PASSWORD: {{ my_patientservice_pass }}

@@ -43,4 +43,5 @@ all:
         latest:
         demo:
         live:
+        live_aws:
         test:
