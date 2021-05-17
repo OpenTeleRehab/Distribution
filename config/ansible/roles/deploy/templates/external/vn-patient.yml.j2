@@ -13,6 +13,9 @@ services:
     container_name: vn_patient_service
     image: {{ image_name }}/{{ stage }}/patient-service:{{ version }}
     restart: unless-stopped
+    extra_hosts:
+      - "admin_service:54.179.65.28"
+      - "therapist_service:54.179.65.28"
     ports:
       - "80:80"
     networks:
