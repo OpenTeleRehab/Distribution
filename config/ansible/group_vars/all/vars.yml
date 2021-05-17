@@ -9,7 +9,7 @@ admin_webapp_url:                       '{{ stage }}-admin-rehabilitation.wehost
 therapist_webapp_url:                   '{{ stage }}-therapist-rehabilitation.wehost.asia'
 api_url:                                '{{ stage }}-api-rehabilitation.wehost.asia'
 keycloak_url:                           '{{ stage }}-auth-rehabilitation.wehost.asia'
-rocketcaht_url:                         '{{ stage }}-chat-rehabilitation.wehost.asia'
+rocketchat_url:                         '{{ stage }}-chat-rehabilitation.wehost.asia'
 jitsi_url:                              'meet-rehabilitation.wehost.asia'
 
 admin_webapp_service:                   'svc-{{ stage }}-{{ project_name }}-admin-webapp'

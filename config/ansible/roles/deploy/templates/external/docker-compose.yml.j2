@@ -140,14 +140,14 @@ services:
       - rocketchat_uploads:/app/uploads
     environment:
       - PORT=3000
-      - ROOT_URL=https://{{ rocketcaht_url }}
+      - ROOT_URL=https://{{ rocketchat_url }}
       - MONGO_URL=mongodb://rocketchat_mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://rocketchat_mongo:27017/local
     depends_on:
       - rocketchat_mongo
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.rocketchat.rule=Host(`{{ rocketcaht_url }}`)'
+      - 'traefik.http.routers.rocketchat.rule=Host(`{{ rocketchat_url }}`)'
       - 'traefik.http.routers.rocketchat.service=rocketchat'
       - 'traefik.http.services.rocketchat.loadbalancer.server.port=3000'
 

@@ -2,7 +2,7 @@
 
 admin_webapp_url:             'admin.open-rehab.org'
 therapist_webapp_url:         'therapist.open-rehab.org'
-rocketcaht_url:               'chat.open-rehab.org'
+rocketchat_url:               'chat.open-rehab.org'
 jitsi_url:                    'meet.open-rehab.org'
 
 keycloak_service:             'keycloak:8080'
