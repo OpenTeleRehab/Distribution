@@ -1,10 +1,11 @@
 ---
 
-- name: Wait for containers ready
-  pause:
-    seconds: 30
-
 ### Admin Service
+- name: Admin-Service | Wait until container ready
+  shell: |
+    while [[ $(kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-admin-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
 
 - name: Admin-Service | Get running admin service pod name
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
@@ -35,6 +36,12 @@
 
 ### Therapist Service
 
+- name: Therapist-Service | Wait until container ready
+  shell: |
+    while [[ $(kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-therapist-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
 - name: Therapist-Service | Get running admin service pod name
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-therapist-service | cut -d " " -f1'
   register: therapist_pod_name
@@ -57,6 +64,11 @@
     - route:clear
 
 ### Patient Service
+- name: Patient-Service | Wait until container ready
+  shell: |
+    while [[ $(kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-patient-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
 
 - name: Patient-Service | Get running patient service pod name
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-patient-service | cut -d " " -f1'
@@ -80,6 +92,11 @@
     - route:clear
 
 ### VN Patient Service
+- name: VN-Patient-Service | Wait until container ready
+  shell: |
+    while [[ $(kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-vn-patient-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
 
 - name: VN-Patient-Service | Get running patient service pod name
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-vn-patient-service | cut -d " " -f1'
