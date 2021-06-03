@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: mongo:3.6.9
+        - image: hub.web-essentials.co/docker/mongo:3.6.9
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
           imagePullPolicy: Always
           ports:
@@ -67,7 +67,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: mongo:3.6.9
+        - image: hub.web-essentials.co/docker/mongo:3.6.9
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db-init'
           imagePullPolicy: Always
           ports:

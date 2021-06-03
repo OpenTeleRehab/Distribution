@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: rocketchat/rocket.chat:3.12.0
+        - image: hub.web-essentials.co/docker/rocket.chat:3.12.0
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat'
           imagePullPolicy: Always
           ports:
