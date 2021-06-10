@@ -12,6 +12,7 @@
   loop:
     - default.conf
     - Dockerfile
+    - hi-task-scheduler
 
 - name: PatientService | Copy .env file
   template:
