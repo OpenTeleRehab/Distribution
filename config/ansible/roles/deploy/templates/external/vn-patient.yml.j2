@@ -34,7 +34,8 @@ services:
     volumes:
       - vn_patient_db_vol:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: {{ my_root_vn_patient_pass_vault }}
+      MYSQL_ROOT_PASSWORD: {{ hostvars['live-vn-tra']['my_root_vn_patient_pass'] }}
       MYSQL_DATABASE: vn_patient_service
       MYSQL_USER: vn_patient_service
       MYSQL_PASSWORD: {{ my_patientservice_pass }}
+
