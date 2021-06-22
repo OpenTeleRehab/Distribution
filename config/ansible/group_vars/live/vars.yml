@@ -1,9 +1,10 @@
 ---
 
-admin_webapp_url:             'admin.open-rehab.org'
-therapist_webapp_url:         'therapist.open-rehab.org'
-rocketchat_url:               'chat.open-rehab.org'
-jitsi_url:                    'meet.open-rehab.org'
+root_domain:                  'opentelerehab.com'
+admin_webapp_url:             'admin.{{ root_domain }}'
+therapist_webapp_url:         'therapist.{{ root_domain }}'
+rocketchat_url:               'chat.{{ root_domain }}'
+jitsi_url:                    'meet.{{ root_domain }}'
 
 keycloak_service:             'keycloak:8080'
 admin_service:                'admin_service'
