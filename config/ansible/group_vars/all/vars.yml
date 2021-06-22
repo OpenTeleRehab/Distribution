@@ -73,7 +73,7 @@ deployment_replica:                     '1'
 sms_sid:                                '{{ sms_sid_vault }}'
 sms_token:                              '{{ sms_token_vault }}'
 sms_verify_service_sid:                 '{{ sms_verify_service_sid_vault }}'
-sms_verify_exclude_numbers:             '85511628801,85570573327,85510662977,855966138877,855969681943,85569915581,85570666747,84386504985,358404835732,85516632704'
+sms_verify_exclude_numbers:             '85511628801,85570573327,85510662977,855966138877,855969681943,85569915581,85570666747,84386504985,358404835732,85516632704,32486023263,639672535458'
 
 map_api_key:                            '{{ map_api_key_vault }}'
 
