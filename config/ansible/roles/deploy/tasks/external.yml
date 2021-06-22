@@ -222,8 +222,8 @@
     state: absent
   loop:
     - '{{ stage }}-admin-service-build'
-    - '{{ stage }}-therapist-service-buil'
-    - '{{ stage }}-patient-service-build'
-    - '{{ stage }}-therapist-webapp-build'
     - '{{ stage }}-admin-webapp-build'
+    - '{{ stage }}-therapist-service-build'
+    - '{{ stage }}-therapist-webapp-build'
+    - '{{ stage }}-patient-service-build'
     - '{{ stage }}-krakend-service-build'
