@@ -3,19 +3,19 @@
 version: '3'
 
 services:
-  admin_web_app:
-    build: ../admin-web-app/
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
-    volumes:
-      - ../admin-web-app:/usr/src/app
-
-  therapist_web_app:
-    build: ../therapist-web-app/
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
-    volumes:
-      - ../therapist-web-app:/usr/src/app
+#  admin_web_app:
+#    build: ../admin-web-app/
+#    stdin_open: true # docker run -i
+#    tty: true        # docker run -t
+#    volumes:
+#      - ../admin-web-app:/usr/src/app
+#
+#  therapist_web_app:
+#    build: ../therapist-web-app/
+#    stdin_open: true # docker run -i
+#    tty: true        # docker run -t
+#    volumes:
+#      - ../therapist-web-app:/usr/src/app
 
 #################
 # Admin Service #
@@ -30,6 +30,8 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - admin_service_db
+    ports:
+      - 8082:80
 
   admin_service_db:
     image: mysql:8.0
@@ -42,6 +44,8 @@ services:
       MYSQL_USER: admin_service
       MYSQL_PASSWORD: admin_service
       MYSQL_DATABASE: admin_service
+    ports:
+      - 3306:3306
 
 #####################
 # Therapist Service #
@@ -56,6 +60,8 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - therapist_service_db
+    ports:
+      - 8083:80
 
   therapist_service_db:
     image: mysql:8.0
@@ -68,6 +74,8 @@ services:
       MYSQL_USER: therapist_service
       MYSQL_PASSWORD: therapist_service
       MYSQL_DATABASE: therapist_service
+    ports:
+      - 3307:3306
 
 ###################
 # Patient Service #
@@ -82,6 +90,8 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - patient_service_db
+    ports:
+      - 8084:80
 
   patient_service_db:
     image: mysql:8.0
@@ -94,6 +104,38 @@ services:
       MYSQL_USER: patient_service
       MYSQL_PASSWORD: patient_service
       MYSQL_DATABASE: patient_service
+    ports:
+      - 3308:3306
+
+########################
+# Open Library Service #
+########################
+  open_library_service:
+    image: rathaheang/nginx-php:7.4
+    environment:
+      LOCAL_USER_ID: 1001
+    volumes:
+      - ../open-library-service:/var/www/html
+      - ./config/service/default.conf:/etc/nginx/sites-available/default
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+    depends_on:
+      - open_library_service_db
+    ports:
+      - 8085:80
+
+  open_library_service_db:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - open_library_service_db_data:/var/lib/mysql
+      - ./config/mysql/open_library_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: open_library_service
+      MYSQL_PASSWORD: open_library_service
+      MYSQL_DATABASE: open_library_service
+    ports:
+     - 3309:3306
 
 ###########
 # Krakend #
@@ -126,6 +168,8 @@ services:
                   -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
     depends_on:
       - keycloak_db
+    ports:
+      - 8080:8080
 
   keycloak_db:
     image: mysql:8.0
@@ -200,8 +244,8 @@ services:
     depends_on:
       - keycloak
       - krakend
-      - admin_web_app
-      - therapist_web_app
+#      - admin_web_app
+#      - therapist_web_app
 
   # This container's job is for accessing database via user interface
   adminer:
@@ -213,7 +257,7 @@ volumes:
   admin_service_db_data:
   therapist_service_db_data:
   patient_service_db_data:
+  open_library_service_db_data:
   keycloak_db_data:
   rocketchat_db_data:
   rocketchat_uploads:
-
