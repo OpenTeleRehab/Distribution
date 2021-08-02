@@ -1,0 +1,49 @@
+---
+
+- name: AdminWebapp | Create configuration teamplates
+  template:
+    src: '{{ item }}'
+    dest: '{{ workspace }}/hicadmin-webapp/{{ item | basename | regex_replace("\.j2$", "") }}'
+    mode: 0755
+  with_fileglob:
+    - '../templates/internal/hicadmin-webapp/*.j2'
+
+- name: AdminWebapp | Create env and dockeringore
+  template:
+    src: 'internal/hicadmin-webapp/{{ item }}.j2'
+    dest: '{{ workspace }}/hicadmin-webapp/{{ item }}'
+    mode: 0755
+  loop:
+    - .dockerignore
+    - .env
+
+- name: AdminWebapp | Run yarn install
+  shell: NODE_OPTIONS=--max_old_space_size=4096 yarn install
+  args:
+    chdir: '{{ workspace }}/hicadmin-webapp'
+
+- name: AdminWebapp | Run yarn build
+  shell: NODE_OPTIONS=--max_old_space_size=4096 yarn build
+  args:
+    chdir: '{{ workspace }}/hicadmin-webapp'
+
+- name: AdminWebapp | Build docker image
+  shell: 'docker build -t {{ stage }}-hicadmin-webapp:latest .'
+  args:
+    chdir: '{{ workspace }}/hicadmin-webapp'
+
+- name: AdminWebapp | Tag docker image to hub.web-essentials.co
+  shell: 'docker tag {{ stage }}-hicadmin-webapp:latest {{ image_name }}/{{ stage }}/hicadmin-webapp:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/hicadmin-webapp'
+  loop:
+    - '{{ version }}'
+    - latest
+
+- name: AdminWebapp | Push docker image to hub.web-essentials.co
+  shell: 'docker push {{ image_name }}/{{ stage }}/hicadmin-webapp:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/hicadmin-webapp'
+  loop:
+    - '{{ version }}'
+    - latest

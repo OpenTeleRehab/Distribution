@@ -9,10 +9,28 @@
     force: yes
   when: admin_service_build.stat.exists
 
+- name: AdminService | Clone Admin service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/hic-service.git
+    dest: '{{ workspace }}/hicadmin-service'
+    accept_hostkey: yes
+    version: master
+    force: yes
+  when: admin_service_build.stat.exists
+
 - name: AdminWebapp | Clone Admin webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-web-app.git
     dest: '{{ workspace }}/admin-webapp'
+    accept_hostkey: yes
+    version: master
+    force: yes
+  when: admin_webapp_build.stat.exists
+
+- name: AdminWebapp | Clone Admin webapp repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/hic-webapp.git
+    dest: '{{ workspace }}/hicadmin-webapp'
     accept_hostkey: yes
     version: master
     force: yes
