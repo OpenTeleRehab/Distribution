@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-hicadmin-webapp'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-hicadmin-webapp'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-hicadmin-webapp'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: {{ image_name }}/{{ stage }}/hicadmin-webapp:{{ version }}
+          name: 'app-{{ stage }}-{{ project_name }}-hicadmin-webapp'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-hicadmin-webapp'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-hicadmin-webapp'

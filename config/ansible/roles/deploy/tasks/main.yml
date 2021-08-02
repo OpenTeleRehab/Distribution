@@ -12,10 +12,20 @@
     path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
   register: admin_service_build
 
+- name: HICAdminService | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-service-build'
+  register: hicadmin_service_build
+
 - name: AdminWebapp | Get file if exist
   stat:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
   register: admin_webapp_build
+
+- name: HICAdminWebapp | Get file if exist
+  stat:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-webapp-build'
+  register: hicadmin_webapp_build
 
 - name: TherapistService | Get file if exist
   stat:
@@ -49,10 +59,20 @@
   import_tasks: admin-service.yml
   when: admin_service_build.stat.exists
 
+### Build Docker image HIC Admin Service
+- name: Build HICAdmin service
+  import_tasks: hicadmin-service.yml
+  when: hicadmin_service_build.stat.exists
+
 ### Build Docker image Admin Webapp
 - name: Build Admin webapp
   import_tasks: admin-webapp.yml
   when: admin_webapp_build.stat.exists
+
+### Build Docker image HIC Admin Webapp
+- name: Build HICAdmin webapp
+  import_tasks: hicadmin-webapp.yml
+  when: hicadmin_webapp_build.stat.exists
 
 ### Build Docker image Therapist Service
 - name: Build Therapist service
