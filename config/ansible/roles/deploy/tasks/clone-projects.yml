@@ -9,14 +9,14 @@
     force: yes
   when: admin_service_build.stat.exists
 
-- name: AdminService | Clone Admin service repos
+- name: HICAdminService | Clone Admin service repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/hic-service.git
     dest: '{{ workspace }}/hicadmin-service'
     accept_hostkey: yes
     version: master
     force: yes
-  when: admin_service_build.stat.exists
+  when: hicadmin_service_build.stat.exists
 
 - name: AdminWebapp | Clone Admin webapp repos
   git:
@@ -27,14 +27,14 @@
     force: yes
   when: admin_webapp_build.stat.exists
 
-- name: AdminWebapp | Clone Admin webapp repos
+- name: HICAdminWebapp | Clone Admin webapp repos
   git:
     repo: git@git.web-essentials.asia:hiv-tra-20/hic-webapp.git
     dest: '{{ workspace }}/hicadmin-webapp'
     accept_hostkey: yes
     version: master
     force: yes
-  when: admin_webapp_build.stat.exists
+  when: hicadmin_webapp_build.stat.exists
 
 - name: TherapistService | Clone therapist service repos
   git:

@@ -10,6 +10,16 @@
     path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
     state: absent
 
+### Deploy HIC Admin Service
+- name: Deploy HICAdmin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/hicadminservice.yml'
+  when: hicadmin_service_build.stat.exists
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-service-build'
+    state: absent
+
 ### Deploy Admin Webapp
 - name: Deploy admin webapp
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/admin_webapp.yml'
@@ -18,6 +28,16 @@
 - name: Remove build file
   file:
     path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-webapp-build'
+    state: absent
+
+### Deploy HICAdmin Webapp
+- name: Deploy hicadmin webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/hicadmin_webapp.yml'
+  when: hicadmin_webapp_build.stat.exists
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-webapp-build'
     state: absent
 
 ### Deploy Thearapist Service

@@ -34,6 +34,40 @@
     - hi:import-default-translation
     - hi:import-system-limit
 
+### HIC Admin Service
+- name: HICAdmin-Service | Wait until container ready
+  shell: |
+    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-hicadmin-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
+- name: HICAdmin-Service | Get running admin service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-hicadmin-service | cut -d " " -f1'
+  register: hicadmin_pod_name
+
+- name: HICAdmin-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: Admin-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: Admin-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
+
+- name: Admin-Service | Import default system settings
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - hi:import-default-translation
+    - hi:import-system-limit
+
 ### Therapist Service
 
 - name: Therapist-Service | Wait until container ready

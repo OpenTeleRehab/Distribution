@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-hicadmin-service'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-hicadmin-service'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-hicadmin-service'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: {{ image_name }}/{{ stage }}/hicadmin-service:{{ version }}
+          name: 'app-{{ stage }}-{{ project_name }}-hicadmin-service'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+          - name: configmap-{{ stage }}-{{ project_name }}-env
+            mountPath: /var/www/.env
+            subPath: hicadmin-service-env
+          - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
+            mountPath: /var/www/.env.dusk.local
+            subPath: hicadmin-service-env-dusk-local
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+      - name: configmap-{{ stage }}-{{ project_name }}-env
+        configMap:
+          name: configmap-{{ stage }}-{{ project_name }}-hicadmin-service-env
+      - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
+        configMap:
+          name: configmap-{{ stage }}-{{ project_name }}-hicadmin-service-env-dusk-local
+      - name: 'vol-{{ stage }}-{{ project_name }}'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-hicadmin-service'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-hicadmin-service'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-hicadmin-service'
