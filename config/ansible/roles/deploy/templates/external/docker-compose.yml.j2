@@ -103,6 +103,7 @@ services:
       - hiv-docker-net
     volumes:
       - ./config/keycloak/theme.properties:/opt/jboss/keycloak/themes/hi/login/theme.properties
+      - ./config/keycloak/theme.properties:/opt/jboss/keycloak/themes/open-library/login/theme.properties
     environment:
       DB_VENDOR: MYSQL
       DB_ADDR: {{ my_host }}
