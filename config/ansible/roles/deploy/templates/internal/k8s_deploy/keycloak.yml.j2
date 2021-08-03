@@ -25,6 +25,9 @@ spec:
             - name: configmap-{{ stage }}-{{ project_name }}-theme-properties
               mountPath: /opt/jboss/keycloak/themes/hi/login/theme.properties
               subPath: theme-properties
+            - name: configmap-{{ stage }}-{{ project_name }}-theme-properties
+              mountPath: /opt/jboss/keycloak/themes/open-library/login/theme.properties
+              subPath: theme-properties
             - name: tz-config
               mountPath: /etc/localtime
           env:
