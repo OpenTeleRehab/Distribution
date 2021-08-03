@@ -190,7 +190,7 @@ metadata:
   name: configmap-{{ stage }}-{{ project_name }}-hicadmin-service-env
   namespace: hiv
 data:
-  admin-service-env: |
+  hicadmin-service-env: |
     APP_NAME=HI
     APP_ENV=production
     APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
@@ -365,7 +365,7 @@ metadata:
   name: configmap-{{ stage }}-{{ project_name }}-hicadmin-service-env-dusk-local
   namespace: hiv
 data:
-  admin-service-env-dusk-local: |
+  hicadmin-service-env-dusk-local: |
     APP_NAME=HI
         APP_ENV=testing
         APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
