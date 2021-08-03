@@ -68,6 +68,8 @@ keycloak_hi_realm_public_key:           '{{ keycloak_hi_realm_public_key_vault }
 keycloak_hi_therapist_realm_public_key: '{{ keycloak_hi_therapist_realm_public_key_vault }}'
 keycloak_hi_backend_secret:             '{{ keycloak_hi_backend_secret_vault }}'
 keycloak_hi_therapistbackend_secret:    '{{ keycloak_hi_therapist_backend_secret_vault }}'
+keycloak_hi_library_backend_secret:     '{{ keycloak_hi_library_backend_secret_vault }}'
+keycloak_hi_library_realm_public_key:   '{{ keycloak_hi_library_realm_public_key_vault }}'
 
 rocketchat_admin_user_id:               '{{ rocketchat_admin_user_id_vault }}'
 rocketchat_admin_auth_token:            '{{ rocketchat_admin_auth_token_vault }}'
