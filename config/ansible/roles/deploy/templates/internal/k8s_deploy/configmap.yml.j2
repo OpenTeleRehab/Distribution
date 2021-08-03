@@ -239,15 +239,15 @@ data:
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
 
     KEYCLOAK_URL=http://{{ keycloak_service }}
-    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_realm_public_key }}
+    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_library_realm_public_key }}
     KEYCLOAK_ALLOWED_RESOURCES=account
     KEYCLOAK_LOAD_USER_FROM_DATABASE=true
     KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
     KEYCLOAK_BACKEND_CLIENT=hi_backend
-    KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+    KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_library_backend_secret }}
     KEYCLOAK_BACKEND_USERNAME=hi_backend
     KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
-    KEYCLOAK_REAMLS_NAME=hi
+    KEYCLOAK_REAMLS_NAME=hi-library
 
     REACT_APP_BASE_URL=https://{{ hicadmin_webapp_url }}/
 
