@@ -196,6 +196,7 @@ data:
     APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
     APP_DEBUG=false
     APP_URL=https://{{ hicadmin_webapp_url }}
+    CONFIRM_URL=https://{{ hicadmin_webapp_url }}/api/library
 
     LOG_CHANNEL=stack
 
@@ -217,12 +218,12 @@ data:
     REDIS_PORT=6379
 
     MAIL_MAILER=smtp
-    MAIL_HOST=smtp.mailtrap.io
-    MAIL_PORT=2525
-    MAIL_USERNAME=null
-    MAIL_PASSWORD=null
-    MAIL_ENCRYPTION=null
-    MAIL_FROM_ADDRESS=null
+    MAIL_HOST=10.10.10.37
+    MAIL_PORT=1025
+    MAIL_USERNAME=
+    MAIL_PASSWORD=
+    MAIL_ENCRYPTION=
+    MAIL_FROM_ADDRESS=noreply@web-essentials.co
     MAIL_FROM_NAME="${APP_NAME}"
 
     AWS_ACCESS_KEY_ID=
