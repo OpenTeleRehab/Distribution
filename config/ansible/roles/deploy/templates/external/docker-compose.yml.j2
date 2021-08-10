@@ -195,6 +195,7 @@ services:
           - ${XMPP_DOMAIN}
     volumes:
       - ${CONFIG}/web:/config:Z
+      - ${CONFIG}/web/log/watermark.svg:/usr/share/jitsi-meet/images/watermark.svg
       - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
     labels:
       - 'traefik.enable=true'

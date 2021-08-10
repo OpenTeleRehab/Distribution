@@ -43,6 +43,7 @@
   loop:
     - { src: 'external/docker-compose.yml.j2', dest: 'projects/hiv/docker-compose.yml' }
     - { src: 'external/config/jitsi/env', dest: 'projects/hiv/.env' }
+    - { src: 'external/config/jitsi/watermark.svg', dest: 'projects/hiv/config/jitsi-meet-cfg/web/logo/watermark.svg' }
     - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
   delegate_to: live-gl-tra
 
