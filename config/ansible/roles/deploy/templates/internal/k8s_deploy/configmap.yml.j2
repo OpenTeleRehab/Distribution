@@ -196,7 +196,6 @@ data:
     APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
     APP_DEBUG=false
     APP_URL=https://{{ hicadmin_webapp_url }}
-    CONFIRM_URL=https://{{ hicadmin_webapp_url }}/api/library
 
     LOG_CHANNEL=stack
 
@@ -251,6 +250,7 @@ data:
     KEYCLOAK_REAMLS_NAME=hi-library
 
     REACT_APP_BASE_URL=https://{{ hicadmin_webapp_url }}/
+    REACT_APP_CONTRIBUTE_CONFIRM_URL=https://{{ hicadmin_webapp_url }}/contribute/confirm-submission
 
     # Thumbnail image dimensions
     THUMBNAIL_IMAGE_WIDTH=320
