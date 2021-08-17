@@ -89,3 +89,5 @@ map_api_key:                            '{{ map_api_key_vault }}'
 pusher_app_id:                          '{{ pusher_app_id_vault }}'
 pusher_app_key:                         '{{ pusher_app_key_vault }}'
 pusher_app_secret:                      '{{ pusher_app_secret_vault }}'
+
+google_translate_api_key:               '{{ google_translate_api_key_vault }}'
