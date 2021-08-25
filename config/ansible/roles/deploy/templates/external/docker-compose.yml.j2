@@ -42,7 +42,7 @@ services:
 
   admin_webapp:
     container_name: admin_webapp
-    image: {{ image_name }}/{{ stage }}/admin-webapp:{{ version }}
+    image: {{ image_name }}/{{ stage }}/admin-webapp:latest
     restart: unless-stopped
     networks:
       - hiv-docker-net
@@ -54,7 +54,7 @@ services:
 
   therapist_webapp:
     container_name: therapist_webapp
-    image: {{ image_name }}/{{ stage }}/therapist-webapp:{{ version }}
+    image: {{ image_name }}/{{ stage }}/therapist-webapp:latest
     restart: unless-stopped
     networks:
       - hiv-docker-net
@@ -66,7 +66,7 @@ services:
 
   admin_service:
     container_name: admin_service
-    image: {{ image_name }}/{{ stage }}/admin-service:{{ version }}
+    image: {{ image_name }}/{{ stage }}/admin-service:latest
     restart: unless-stopped
     ports:
       - "2081:80"
@@ -77,7 +77,7 @@ services:
 
   therapist_service:
     container_name: therapist_service
-    image: {{ image_name }}/{{ stage }}/therapist-service:{{ version }}
+    image: {{ image_name }}/{{ stage }}/therapist-service:latest
     restart: unless-stopped
     ports:
       - "2082:80"
@@ -88,7 +88,7 @@ services:
 
   patient_service:
     container_name: patient_service
-    image: {{ image_name }}/{{ stage }}/patient-service:{{ version }}
+    image: {{ image_name }}/{{ stage }}/patient-service:latest
     restart: unless-stopped
     networks:
       - hiv-docker-net
@@ -120,7 +120,7 @@ services:
 
   krakend:
     container_name: krakend
-    image: {{ image_name }}/{{ stage }}/krakend:{{ version }}
+    image: {{ image_name }}/{{ stage }}/krakend:latest
     restart: unless-stopped
     networks:
       - hiv-docker-net
