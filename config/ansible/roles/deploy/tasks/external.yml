@@ -47,6 +47,16 @@
     - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
   delegate_to: live-gl-tra
 
+- name: Production | Sync storage
+  synchronize:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    recursive: yes
+  loop:
+    - { src: '{{ workspace }}/admin-service/storage/', dest: 'projects/hiv/config/adminservice/storage/' }
+    - { src: '{{ workspace }}/therapist-service/storage/', dest: 'projects/hiv/config/therapistservice/storage/' }
+    - { src: '{{ workspace }}/patient-service/storage/', dest: 'projects/hiv/config/patientservice/storage/' }
+
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
   args:
@@ -172,6 +182,14 @@
     - { src: 'external/config/vn_patient/env.j2', dest: 'projects/hiv/config/vn_patient/env' }
   when: patient_service_build.stat.exists
   delegate_to: live-vn-tra
+
+- name: Production | Sync storage
+  synchronize:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    recursive: yes
+  loop:
+    - { src: '{{ workspace }}/patient-service/storage/', dest: 'projects/hiv/config/vn_patient/storage/' }
 
 - name: VN Patient | Docker compose pull latest images
   shell: docker-compose pull
