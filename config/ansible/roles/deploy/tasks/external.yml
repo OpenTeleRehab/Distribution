@@ -53,9 +53,9 @@
     dest: '{{ item.dest }}'
     recursive: yes
   loop:
-    - { src: '{{ workspace }}/admin-service/storage/', dest: '/home/{{ ansible_user }}/projects/hiv/config/adminservice/storage/' }
-    - { src: '{{ workspace }}/therapist-service/storage/', dest: '/home/{{ ansible_user }}/projects/hiv/config/therapistservice/storage/' }
-    - { src: '{{ workspace }}/patient-service/storage/', dest: '/home/{{ ansible_user }}/projects/hiv/config/patientservice/storage/' }
+    - { src: '{{ workspace }}/admin-service/storage/', dest: '/home/{{ ssh_user }}/projects/hiv/config/adminservice/storage/' }
+    - { src: '{{ workspace }}/therapist-service/storage/', dest: '/home/{{ ssh_user }}/projects/hiv/config/therapistservice/storage/' }
+    - { src: '{{ workspace }}/patient-service/storage/', dest: '/home/{{ ssh_user }}/projects/hiv/config/patientservice/storage/' }
 
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
@@ -189,7 +189,7 @@
     dest: '{{ item.dest }}'
     recursive: yes
   loop:
-    - { src: '{{ workspace }}/patient-service/storage/', dest: '/home/{{ ansible_user }}/projects/hiv/config/vn_patient/storage/' }
+    - { src: '{{ workspace }}/patient-service/storage/', dest: '/home/{{ ssh_user }}/projects/hiv/config/vn_patient/storage/' }
 
 - name: VN Patient | Docker compose pull latest images
   shell: docker-compose pull
