@@ -1,5 +1,6 @@
 ---
 
+ssh_user:                     'ubuntu'
 root_domain:                  'opentelerehab.com'
 admin_webapp_url:             'admin.{{ root_domain }}'
 therapist_webapp_url:         'therapist.{{ root_domain }}'
