@@ -180,8 +180,8 @@
   when: patient_service_build.stat.exists
   delegate_to: live-vn-tra
 
-- name: Production | Sync storage
-  shell: rsync -avz '{{ item.src }} {{ item.dest }}'
+- name: Production | Sync storage vn
+  shell: 'rsync -avz {{ item.src }} {{ item.dest }}'
   loop:
     - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@103.229.42.86:/home/{{ ssh_user }}/projects/hiv/config/vn_patient/storage/' }
 
