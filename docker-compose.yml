@@ -111,7 +111,7 @@ services:
 # Open Library Service #
 ########################
   open_library_service:
-    image: rathaheang/nginx-php:7.4
+    build: ../open-library-service/
     environment:
       LOCAL_USER_ID: 1001
     volumes:
