@@ -12,6 +12,7 @@
   loop:
     - default.conf
     - Dockerfile
+    - queue-worker.conf
 
 - name: AdminService | Copy .env
   template:
