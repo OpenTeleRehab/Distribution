@@ -1,5 +1,18 @@
 FROM nginx:1.19.3
 
+# Install cron service
+RUN apt-get update && apt-get install -y cron
+
+# Add crontab file in the cron directory
+COPY crontab /etc/cron.d/sitemap
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/sitemap
+
+# Start service cron
+COPY cronstart /usr/sbin
+ENTRYPOINT ["cronstart"]
+
 # Create app directory
 WORKDIR /usr/share/nginx/html
 
