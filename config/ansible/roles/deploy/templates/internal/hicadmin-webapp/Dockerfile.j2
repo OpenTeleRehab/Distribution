@@ -1,17 +1,13 @@
 FROM nginx:1.19.3
 
 # Install cron service
-RUN apt-get update && apt-get install -y cron && apt-get install -y wget
+RUN apt-get update && apt-get install -y cron wget supervisor
 
 # Add crontab file in the cron directory
+COPY supervisord/*.conf /etc/supervisor/conf.d/
 COPY crontab /etc/cron.d/sitemap
 
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/sitemap
-
-# Start service cron
-COPY cronstart /usr/sbin
-ENTRYPOINT ["cronstart"]
+RUN mkdir -p /var/log/supervisor
 
 # Create app directory
 WORKDIR /usr/share/nginx/html
