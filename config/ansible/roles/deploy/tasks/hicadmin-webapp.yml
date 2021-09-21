@@ -1,6 +1,6 @@
 ---
 
-- name: AdminWebapp | Create configuration teamplates
+- name: HICAdminWebapp | Create configuration teamplates
   template:
     src: '{{ item }}'
     dest: '{{ workspace }}/hicadmin-webapp/{{ item | basename | regex_replace("\.j2$", "") }}'
@@ -8,7 +8,20 @@
   with_fileglob:
     - '../templates/internal/hicadmin-webapp/*.j2'
 
-- name: AdminWebapp | Create env and dockeringore
+- name: HICAdminWebapp | Create supervisord directory
+  file:
+    path: '{{ workspace }}/hicadmin-webapp/supervisord'
+    state: directory
+
+- name: HICAdminWebapp | Create supervisord conf
+  template:
+    src: '{{ item }}'
+    dest: '{{ workspace }}/hicadmin-webapp/supervisord/{{ item | basename | regex_replace("\.j2$", "") }}'
+    mode: 0755
+  with_fileglob:
+    - '../templates/internal/hicadmin-webapp/supervisord/*.j2'
+
+- name: HICAdminWebapp | Create env and dockeringore
   template:
     src: 'internal/hicadmin-webapp/{{ item }}.j2'
     dest: '{{ workspace }}/hicadmin-webapp/{{ item }}'
@@ -17,22 +30,22 @@
     - .dockerignore
     - .env
 
-- name: AdminWebapp | Run yarn install
+- name: HICAdminWebapp | Run yarn install
   shell: NODE_OPTIONS=--max_old_space_size=4096 yarn install
   args:
     chdir: '{{ workspace }}/hicadmin-webapp'
 
-- name: AdminWebapp | Run yarn build
+- name: HICAdminWebapp | Run yarn build
   shell: NODE_OPTIONS=--max_old_space_size=4096 yarn build
   args:
     chdir: '{{ workspace }}/hicadmin-webapp'
 
-- name: AdminWebapp | Build docker image
+- name: HICAdminWebapp | Build docker image
   shell: 'docker build -t {{ stage }}-hicadmin-webapp:latest .'
   args:
     chdir: '{{ workspace }}/hicadmin-webapp'
 
-- name: AdminWebapp | Tag docker image to hub.web-essentials.co
+- name: HICAdminWebapp | Tag docker image to hub.web-essentials.co
   shell: 'docker tag {{ stage }}-hicadmin-webapp:latest {{ image_name }}/{{ stage }}/hicadmin-webapp:{{ item }}'
   args:
     chdir: '{{ workspace }}/hicadmin-webapp'
@@ -40,7 +53,7 @@
     - '{{ version }}'
     - latest
 
-- name: AdminWebapp | Push docker image to hub.web-essentials.co
+- name: HICAdminWebapp | Push docker image to hub.web-essentials.co
   shell: 'docker push {{ image_name }}/{{ stage }}/hicadmin-webapp:{{ item }}'
   args:
     chdir: '{{ workspace }}/hicadmin-webapp'
