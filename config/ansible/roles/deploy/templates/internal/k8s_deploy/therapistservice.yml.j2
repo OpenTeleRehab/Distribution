@@ -30,7 +30,7 @@ spec:
             mountPath: /var/www/.env
             subPath: therapist-service-env
           - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-            mountPath: /var/www/.env
+            mountPath: /var/www/.env.dusk.local
             subPath: therapist-service-env-dusk-local
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /var/www/storage

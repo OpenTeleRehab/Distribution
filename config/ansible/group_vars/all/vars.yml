@@ -84,6 +84,13 @@ sms_token:                              '{{ sms_token_vault }}'
 sms_verify_service_sid:                 '{{ sms_verify_service_sid_vault }}'
 sms_verify_exclude_numbers:             '85516632704'
 
+smtp_host:                              'email-smtp.us-east-1.amazonaws.com'
+smtp_port:                              '587'
+smtp_user:                              '{{ smtp_user_vault }}'
+smtp_pass:                              '{{ smtp_pass_vault }}'
+smtp_encryption:                        'tls'
+smtp_mail_from_address:                 'noreply@opentelerehab.com'
+
 map_api_key:                            '{{ map_api_key_vault }}'
 
 pusher_app_id:                          '{{ pusher_app_id_vault }}'
