@@ -177,10 +177,10 @@ data:
     FFMPEG_TIMEOUT=3600
     FFMPEG_THREADS=12
 
-    THERAPIST_SERVICE_URL=http://{{ therapist_service }}
-    PATIENT_SERVICE_URL=http://{{ patient_service }}
     THERAPIST_APP_URL=https://{{ therapist_webapp_url }}
-    ADMIN_SERVICE_URL=http://{{ admin_service }}
+    ADMIN_SERVICE_URL=http://{{ krakend_service }}/admin
+    THERAPIST_SERVICE_URL=http://{{ krakend_service }}/therapist
+    PATIENT_SERVICE_URL=http://{{ krakend_service }}/patient
 
 ---
 
