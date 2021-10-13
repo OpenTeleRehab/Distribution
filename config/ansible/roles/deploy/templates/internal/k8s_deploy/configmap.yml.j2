@@ -178,9 +178,9 @@ data:
     FFMPEG_THREADS=12
 
     THERAPIST_APP_URL=https://{{ therapist_webapp_url }}
-    ADMIN_SERVICE_URL=http://{{ krakend_service }}/admin
-    THERAPIST_SERVICE_URL=http://{{ krakend_service }}/therapist
-    PATIENT_SERVICE_URL=http://{{ krakend_service }}/patient
+    ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+    THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
+    PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
 
 ---
 
@@ -590,8 +590,8 @@ data:
     KEYCLOAK_REAMLS_NAME=hi-therapist
 
     REACT_APP_BASE_URL=https://{{ therapist_webapp_url }}/
-    ADMIN_SERVICE_URL=http://{{ krakend_service }}/admin
-    PATIENT_SERVICE_URL=http://{{ krakend_service }}/patient
+    ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+    PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
 
     ROCKET_CHAT_URL=http://{{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
