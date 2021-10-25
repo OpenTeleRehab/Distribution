@@ -30,6 +30,10 @@ my_patientservice_user:       'patient_service'
 my_patientservice_db:         'patient_service'
 my_patientservice_pass:       '{{ my_patientservice_pass_vault }}'
 
+my_hicadminservice_user:      'library_service'
+my_hicadminservice_db:        'library_service'
+my_hicadminservice_pass:      '{{ my_hicadminservice_pass_vault }}'
+
 mysql_name_keycloak:          'keycloak_service'
 mysql_user_keycloak:          'keycloak_service'
 mysql_pass_keycloak:          '{{ mysql_pass_keycloak_vault }}'
