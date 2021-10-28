@@ -11,7 +11,7 @@ volumes:
 services:
   vn_patient_service:
     container_name: vn_patient_service
-    image: {{ image_name }}/{{ stage }}/patient-service:{{ version }}
+    image: {{ image_name }}/{{ stage }}/patient-service:latest
     restart: unless-stopped
     environment:
       LOCAL_USER_ID: 1000
