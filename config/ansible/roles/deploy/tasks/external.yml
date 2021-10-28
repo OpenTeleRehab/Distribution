@@ -53,7 +53,7 @@
   loop:
     - { src: '{{ workspace }}/admin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/adminservice/storage/' }
     - { src: '{{ workspace }}/therapist-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/therapistservice/storage/' }
-    - { src: '{{ workspace }}/hicadmin_service_build/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/libraryservice/storage/' }
+    - { src: '{{ workspace }}/hicadmin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/libraryservice/storage/' }
     - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/patientservice/storage/' }
 
 - name: Production | Docker compose pull latest images
