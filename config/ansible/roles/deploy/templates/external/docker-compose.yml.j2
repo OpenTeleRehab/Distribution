@@ -115,7 +115,7 @@ services:
 
   library_service:
     container_name: library_service
-    image: {{ image_name }}/{{ stage }}/hicadmin-service::latest
+    image: {{ image_name }}/{{ stage }}/hicadmin-service:latest
     restart: unless-stopped
     environment:
       LOCAL_USER_ID: 1000
