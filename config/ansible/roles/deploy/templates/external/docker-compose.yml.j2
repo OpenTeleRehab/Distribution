@@ -192,7 +192,7 @@ services:
       - hiv-docker-net
     volumes:
       - rocketchat_db_data:/data/db
-    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+    command: mongod --smallfiles --oplogSize 512 --replSet rs0 --storageEngine=mmapv1
 
   rocketchat_mongo-init-replica:
     container_name: rocketchat_mongo-init-replica

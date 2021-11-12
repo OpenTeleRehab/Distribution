@@ -27,7 +27,7 @@ spec:
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /data/db
           command: ["/bin/sh","-c"]
-          args: ["mongod --bind_ip 0.0.0.0 --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1"]
+          args: ["mongod --bind_ip 0.0.0.0 --smallfiles --oplogSize 512 --replSet rs0 --storageEngine=mmapv1"]
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}'
         persistentVolumeClaim:
