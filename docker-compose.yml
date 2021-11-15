@@ -107,10 +107,41 @@ services:
     ports:
       - 3308:3306
 
+######################
+# VN Patient Service #
+######################
+  patient_vn_service:
+    image: rathaheang/nginx-php:7.4
+    environment:
+      LOCAL_USER_ID: 1001
+    volumes:
+      - ../patient-service:/var/www/html
+      - ./config/service/default.conf:/etc/nginx/sites-available/default
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ../patient-service/.env_vn:/var/www/html/.env
+    depends_on:
+      - vn_patient_service_db
+    ports:
+      - 8086:80
+
+  vn_patient_service_db:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - vn_patient_service_db_data:/var/lib/mysql
+      - ./config/mysql/patient_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: patient_service
+      MYSQL_PASSWORD: patient_service
+      MYSQL_DATABASE: patient_service
+    ports:
+      - 3310:3306
+
 ########################
 # Open Library Service #
 ########################
-  open_library_service:
+  library_service:
     build: ../open-library-service/
     environment:
       LOCAL_USER_ID: 1001
@@ -143,11 +174,16 @@ services:
   krakend:
     image: devopsfaith/krakend:1.1.1
     volumes:
-      - ./config/krakend:/etc/krakend
+      - ../krakend/config/krakend:/etc/krakend
+    environment:
+      FC_ENABLE: 1
+      FC_SETTINGS: settings
     depends_on:
       - admin_service
       - therapist_service
       - patient_service
+    ports:
+      - 8000:8000
 
 ############
 # Keycloak #
@@ -257,6 +293,7 @@ volumes:
   admin_service_db_data:
   therapist_service_db_data:
   patient_service_db_data:
+  vn_patient_service_db_data:
   open_library_service_db_data:
   keycloak_db_data:
   rocketchat_db_data:
