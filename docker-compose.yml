@@ -2,26 +2,129 @@
 
 version: '3'
 
-services:
-#  admin_web_app:
-#    build: ../admin-web-app/
-#    stdin_open: true # docker run -i
-#    tty: true        # docker run -t
-#    volumes:
-#      - ../admin-web-app:/usr/src/app
-#
-#  therapist_web_app:
-#    build: ../therapist-web-app/
-#    stdin_open: true # docker run -i
-#    tty: true        # docker run -t
-#    volumes:
-#      - ../therapist-web-app:/usr/src/app
+networks:
+  hiv-docker-net:
+  meet.jitsi:
 
-#################
-# Admin Service #
-#################
+volumes:
+  admin_service_db_data:
+  therapist_service_db_data:
+  patient_service_db_data:
+  vn_patient_service_db_data:
+  open_library_service_db_data:
+  keycloak_db_data:
+  rocketchat_db_data:
+  rocketchat_uploads:
+
+services:
+  proxy:
+    image: traefik:v2.5
+    networks:
+      - hiv-docker-net
+    volumes:
+    - '/var/run/docker.sock:/var/run/docker.sock:ro'
+    - './config/docker/traefik-config.yaml:/etc/traefik/traefik.yaml'
+    - './config/docker/ssl:/certs/'
+    ports:
+    - '80:80'
+    - '443:443'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.proxy.rule=Host(`local-traefik.wehost.asia`)"
+      - "traefik.http.routers.proxy.tls=true"
+      - "traefik.http.routers.proxy.service=api@internal"
+      - "traefik.http.services.proxy.loadbalancer.server.port=8080"
+
+  ############ ###
+  ### Keycloak ###
+  ################
+  keycloak:
+    build: ../keycloak/
+    networks:
+      - hiv-docker-net
+    environment:
+      DB_VENDOR: MYSQL
+      DB_ADDR: keycloak_db
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: keycloak
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+      PROXY_ADDRESS_FORWARDING: 'true'
+      JAVA_OPTS: '-Dkeycloak.profile.feature.scripts=enabled
+                  -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms64m -Xmx512m
+                  -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
+                  -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
+    depends_on:
+      - keycloak_db
+
+  keycloak_db:
+    image: mysql:8.0
+    networks:
+      - hiv-docker-net
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - keycloak_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: keycloak
+      MYSQL_DATABASE: keycloak
+
+  ###########
+  # Krakend #
+  ###########
+  krakend:
+    image: docker.io/devopsfaith/krakend:1.1.1
+    networks:
+      - hiv-docker-net
+    volumes:
+      - ../krakend/config/krakend:/etc/krakend
+    environment:
+      FC_ENABLE: 1
+      FC_SETTINGS: settings
+
+  #############
+  ### Client ###
+  #############
+  client_web_app:
+    image: nginx:1.19.3
+    networks:
+      - hiv-docker-net
+    volumes:
+      - ./config/docker/client-webapp/default.conf:/etc/nginx/conf.d/default.conf
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.client-webapp.tls=true'
+      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-hi-library.wehost.asia`)'
+      - 'traefik.http.routers.client-webapp.service=client-webapp'
+      - 'traefik.http.services.client-webapp.loadbalancer.server.port=80'
+
+  #############
+  ### Admin ###
+  #############
+  admin_web_app:
+    image: node:14.17.6
+    command:
+      - npm
+      - start
+    working_dir: /usr/src/app
+    volumes:
+      - ../admin-web-app:/usr/src/app
+    networks:
+      - hiv-docker-net
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    depends_on:
+      - keycloak
+      - krakend
+
   admin_service:
     build: ../admin-service
+    networks:
+      - hiv-docker-net
     environment:
       LOCAL_USER_ID: 1001
     volumes:
@@ -30,28 +133,46 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - admin_service_db
-    ports:
-      - 8082:80
 
   admin_service_db:
-    image: mysql:8.0
+    image: docker.io/mysql:8.0
+    networks:
+      - hiv-docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - admin_service_db_data:/var/lib/mysql
       - ./config/mysql/admin_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: admin_service
+      MYS0L_USER: admin_service
       MYSQL_PASSWORD: admin_service
       MYSQL_DATABASE: admin_service
-    ports:
-      - 3306:3306
 
-#####################
-# Therapist Service #
-#####################
+  #############
+  ### Therapist ###
+  #############
+  therapist_web_app:
+    image: node:14.17.6
+    command:
+      - npm
+      - start
+    working_dir: /usr/src/app
+    volumes:
+      - ../therapist-web-app:/usr/src/app
+    networks:
+      - hiv-docker-net
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    depends_on:
+      - keycloak
+      - krakend
+
   therapist_service:
     image: rathaheang/nginx-php:7.4
+    networks:
+      - hiv-docker-net
     environment:
       LOCAL_USER_ID: 1001
     volumes:
@@ -59,12 +180,13 @@ services:
       - ./config/service/default.conf:/etc/nginx/sites-available/default
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
+      - keycloak
       - therapist_service_db
-    ports:
-      - 8083:80
 
   therapist_service_db:
-    image: mysql:8.0
+    image: docker.io/mysql:8.0
+    networks:
+      - hiv-docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - therapist_service_db_data:/var/lib/mysql
@@ -74,14 +196,14 @@ services:
       MYSQL_USER: therapist_service
       MYSQL_PASSWORD: therapist_service
       MYSQL_DATABASE: therapist_service
-    ports:
-      - 3307:3306
 
-###################
-# Patient Service #
-###################
+  ###################
+  # Patient Service #
+  ###################
   patient_service:
     image: rathaheang/nginx-php:7.4
+    networks:
+      - hiv-docker-net
     environment:
       LOCAL_USER_ID: 1001
     volumes:
@@ -91,10 +213,12 @@ services:
     depends_on:
       - patient_service_db
     ports:
-      - 8084:80
+      - "8084:80"
 
   patient_service_db:
     image: mysql:8.0
+    networks:
+      - hiv-docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - patient_service_db_data:/var/lib/mysql
@@ -105,13 +229,15 @@ services:
       MYSQL_PASSWORD: patient_service
       MYSQL_DATABASE: patient_service
     ports:
-      - 3308:3306
+      - "3308:3306"
 
-######################
-# VN Patient Service #
-######################
+  ######################
+  # VN Patient Service #
+  ######################
   patient_vn_service:
     image: rathaheang/nginx-php:7.4
+    networks:
+      - hiv-docker-net
     environment:
       LOCAL_USER_ID: 1001
     volumes:
@@ -122,10 +248,12 @@ services:
     depends_on:
       - vn_patient_service_db
     ports:
-      - 8086:80
+      - "8086:80"
 
   vn_patient_service_db:
     image: mysql:8.0
+    networks:
+      - hiv-docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - vn_patient_service_db_data:/var/lib/mysql
@@ -138,9 +266,27 @@ services:
     ports:
       - 3310:3306
 
-########################
-# Open Library Service #
-########################
+  #############
+  ### Open Library ###
+  #############
+  library_web_app:
+    image: node:14.17.6
+    command:
+      - npm
+      - start
+    working_dir: /usr/src/app
+    volumes:
+      - ../open-library-web-app:/usr/src/app
+    networks:
+      - hiv-docker-net
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    depends_on:
+      - keycloak
+      - krakend
+
   library_service:
     build: ../open-library-service/
     environment:
@@ -150,9 +296,10 @@ services:
       - ./config/service/default.conf:/etc/nginx/sites-available/default
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
+      - keycloak
       - open_library_service_db
     ports:
-      - 8085:80
+      - "8085:80"
 
   open_library_service_db:
     image: mysql:8.0
@@ -165,62 +312,10 @@ services:
       MYSQL_USER: open_library_service
       MYSQL_PASSWORD: open_library_service
       MYSQL_DATABASE: open_library_service
-    ports:
-     - 3309:3306
 
-###########
-# Krakend #
-###########
-  krakend:
-    image: devopsfaith/krakend:1.1.1
-    volumes:
-      - ../krakend/config/krakend:/etc/krakend
-    environment:
-      FC_ENABLE: 1
-      FC_SETTINGS: settings
-    depends_on:
-      - admin_service
-      - therapist_service
-      - patient_service
-    ports:
-      - 8000:8000
-
-############
-# Keycloak #
-############
-  keycloak:
-    build: ../keycloak/
-    environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: keycloak_db
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: keycloak
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
-      JAVA_OPTS: '-Dkeycloak.profile.feature.scripts=enabled
-                  -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms64m -Xmx512m
-                  -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
-                  -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
-    depends_on:
-      - keycloak_db
-    ports:
-      - 8080:8080
-
-  keycloak_db:
-    image: mysql:8.0
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - keycloak_db_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: keycloak
-      MYSQL_DATABASE: keycloak
-
-###############
-# Rocket chat #
-###############
+  #############
+  ### Rocket Chat ###
+  #############
   rocketchat:
     image: rocketchat/rocket.chat:3.12.0
     command: >
@@ -268,33 +363,10 @@ services:
     depends_on:
       - mongo
 
-#########
-# Proxy #
-#########
-  proxy:
-    image: nginx:stable
-    ports:
-      - 80:80
-    volumes:
-      - ./config/proxy/default-proxy.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - keycloak
-      - krakend
-#      - admin_web_app
-#      - therapist_web_app
-
   # This container's job is for accessing database via user interface
   adminer:
     image: library/adminer:4.7.8
+    networks:
+      - hiv-docker-net
     ports:
       - 8060:8080
-
-volumes:
-  admin_service_db_data:
-  therapist_service_db_data:
-  patient_service_db_data:
-  vn_patient_service_db_data:
-  open_library_service_db_data:
-  keycloak_db_data:
-  rocketchat_db_data:
-  rocketchat_uploads:
