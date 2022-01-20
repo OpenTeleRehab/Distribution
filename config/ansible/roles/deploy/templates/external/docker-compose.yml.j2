@@ -51,6 +51,9 @@ services:
       - 'traefik.http.routers.admin_webapp.rule=Host(`{{ admin_webapp_url }}`)'
       - 'traefik.http.routers.admin_webapp.service=admin_webapp'
       - 'traefik.http.services.admin_webapp.loadbalancer.server.port=80'
+    depends_on:
+      - keycloak
+      - krakend
 
   therapist_webapp:
     container_name: therapist_webapp
@@ -63,6 +66,9 @@ services:
       - 'traefik.http.routers.therapist_webapp.rule=Host(`{{ therapist_webapp_url }}`)'
       - 'traefik.http.routers.therapist_webapp.service=therapist_webapp'
       - 'traefik.http.services.therapist_webapp.loadbalancer.server.port=80'
+    depends_on:
+      - keycloak
+      - krakend
 
   library_webapp:
     container_name: library_webapp
@@ -75,6 +81,9 @@ services:
       - 'traefik.http.routers.library_webapp.rule=Host(`{{ hicadmin_webapp_url }}`)'
       - 'traefik.http.routers.library_webapp.service=library_webapp'
       - 'traefik.http.services.library_webapp.loadbalancer.server.port=80'
+    depends_on:
+      - keycloak
+      - krakend
 
   admin_service:
     container_name: admin_service
