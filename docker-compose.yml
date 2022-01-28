@@ -96,7 +96,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.client-webapp.tls=true'
-      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-hi-library.wehost.asia`)'
+      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-nonhi-admin.wehost.asia`) || Host(`local-nonhi-therapist.wehost.asia`) || Host(`local-nonhi-patient.wehost.asia`) || Host(`local-hi-library.wehost.asia`)'
       - 'traefik.http.routers.client-webapp.service=client-webapp'
       - 'traefik.http.services.client-webapp.loadbalancer.server.port=80'
 
