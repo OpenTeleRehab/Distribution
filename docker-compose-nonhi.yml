@@ -1,0 +1,58 @@
+---
+
+version: '3'
+
+networks:
+  hiv-docker-net:
+
+volumes:
+  nonhi_admin_service_db_data:
+
+services:
+  #############
+  ### Non HI Admin ###
+  #############
+  nonhi_admin_web_app:
+    image: node:14.17.6
+    command:
+      - npm
+      - start
+    working_dir: /usr/src/app
+    volumes:
+      - ../admin-web-app:/usr/src/app
+      - ../admin-web-app/.env.example.nonhi:/usr/src/app/.env.development
+    networks:
+      - hiv-docker-net
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+
+  nonhi_admin_service:
+    build: ../admin-service
+    networks:
+      - hiv-docker-net
+    environment:
+      LOCAL_USER_ID: 1001
+    volumes:
+      - ../admin-service:/var/www/html
+      - ../admin-service/.env.example.nonhi:/var/www/html/.env
+      - ./config/service/default.conf:/etc/nginx/sites-available/default
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+    depends_on:
+      - nonhi_admin_service_db
+
+  nonhi_admin_service_db:
+    image: docker.io/mysql:8.0
+    networks:
+      - hiv-docker-net
+    command:
+      --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - nonhi_admin_service_db_data:/var/lib/mysql
+      - ./config/mysql/nonhi_admin_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYS0L_USER: nonhi_admin_service
+      MYSQL_PASSWORD: nonhi_admin_service
+      MYSQL_DATABASE: nonhi_admin_service
