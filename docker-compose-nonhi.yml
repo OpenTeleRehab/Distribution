@@ -7,10 +7,12 @@ networks:
 
 volumes:
   nonhi_admin_service_db_data:
+  nonhi_therapist_service_db_data:
+  nonhi_patient_service_db_data:
 
 services:
   #############
-  ### Non HI Admin ###
+  ### NonHI Admin ###
   #############
   nonhi_admin_web_app:
     image: node:14.17.6
@@ -41,6 +43,8 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_admin_service_db
+    ports:
+      - 8090:80
 
   nonhi_admin_service_db:
     image: docker.io/mysql:8.0
@@ -50,9 +54,91 @@ services:
       --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - nonhi_admin_service_db_data:/var/lib/mysql
-      - ./config/mysql/nonhi_admin_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+      - ./config/mysql/admin_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYS0L_USER: nonhi_admin_service
       MYSQL_PASSWORD: nonhi_admin_service
       MYSQL_DATABASE: nonhi_admin_service
+
+  #############
+  ### NonHI Therapist ###
+  #############
+  nonhi_therapist_web_app:
+    image: node:14.17.6
+    command:
+      - npm
+      - start
+    working_dir: /usr/src/app
+    volumes:
+      - ../therapist-web-app:/usr/src/app
+      - ../therapist-web-app/.env.example.nonhi:/usr/src/app/.env.development
+    networks:
+      - hiv-docker-net
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+
+  nonhi_therapist_service:
+    image: rathaheang/nginx-php:7.4
+    networks:
+      - hiv-docker-net
+    environment:
+      LOCAL_USER_ID: 1001
+    volumes:
+      - ../therapist-service:/var/www/html
+      - ../therapist-service/.env.example.nonhi:/var/www/html/.env
+      - ./config/service/default.conf:/etc/nginx/sites-available/default
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+    depends_on:
+      - nonhi_therapist_service_db
+    ports:
+      - 8091:80
+
+  nonhi_therapist_service_db:
+    image: docker.io/mysql:8.0
+    networks:
+      - hiv-docker-net
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - nonhi_therapist_service_db_data:/var/lib/mysql
+      - ./config/mysql/therapist_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: nonhi_therapist_service
+      MYSQL_PASSWORD: nonhi_therapist_service
+      MYSQL_DATABASE: nonhi_therapist_service
+
+  #############
+  ### NonHI Patient ###
+  #############
+  nonhi_patient_service:
+    image: rathaheang/nginx-php:7.4
+    networks:
+      - hiv-docker-net
+    environment:
+      LOCAL_USER_ID: 1001
+    volumes:
+      - ../patient-service:/var/www/html
+      - ../patient-service/.env.example.nonhi:/var/www/html/.env
+      - ./config/service/default.conf:/etc/nginx/sites-available/default
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+    depends_on:
+      - nonhi_patient_service_db
+    ports:
+      - 8092:80
+
+  nonhi_patient_service_db:
+    image: docker.io/mysql:8.0
+    networks:
+      - hiv-docker-net
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - nonhi_patient_service_db_data:/var/lib/mysql
+      - ./config/mysql/patient_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: nonhi_patient_service
+      MYSQL_PASSWORD: nonhi_patient_service
+      MYSQL_DATABASE: nonhi_patient_service
