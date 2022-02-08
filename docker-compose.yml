@@ -96,7 +96,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.client-webapp.tls=true'
-      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-nonhi-admin.wehost.asia`) || Host(`local-nonhi-therapist.wehost.asia`) || Host(`local-nonhi-patient.wehost.asia`) || Host(`local-hi-library.wehost.asia`)'
+      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-nonhi-admin.wehost.asia`) || Host(`local-nonhi-therapist.wehost.asia`) || Host(`local-nonhi-patient.wehost.asia`) || Host(`local-library.wehost.asia`)'
       - 'traefik.http.routers.client-webapp.service=client-webapp'
       - 'traefik.http.services.client-webapp.loadbalancer.server.port=80'
 
@@ -133,6 +133,8 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - admin_service_db
+    ports:
+      - "8082:80"
 
   admin_service_db:
     image: docker.io/mysql:8.0
@@ -182,6 +184,8 @@ services:
     depends_on:
       - keycloak
       - therapist_service_db
+    ports:
+      - "8083:80"
 
   therapist_service_db:
     image: docker.io/mysql:8.0
@@ -264,7 +268,7 @@ services:
       MYSQL_PASSWORD: patient_service
       MYSQL_DATABASE: patient_service
     ports:
-      - 3310:3306
+      - "3310:3306"
 
   #############
   ### Open Library ###
@@ -330,20 +334,32 @@ services:
       - rocketchat_uploads:/app/uploads
     environment:
       - PORT=3000
-      - ROOT_URL=http://localhost:3000
+      - ROOT_URL=https://local-hi-chat.wehost.asia
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
       - MAIL_URL=smtp://smtp.email
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.rocketchat.tls=true'
+      - 'traefik.http.routers.rocketchat.rule=Host(`local-hi-chat.wehost.asia`)'
+      - 'traefik.http.routers.rocketchat.service=rocketchat'
+      - 'traefik.http.services.rocketchat.loadbalancer.server.port=3000'
+    networks:
+      - hiv-docker-net
+    stdin_open: true
+    tty: true
     depends_on:
       - mongo
     ports:
-      - 3000:3000
+      - "3000:3000"
 
   mongo:
     image: mongo:3.6.9
     volumes:
       - rocketchat_db_data:/data/db
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+    networks:
+      - hiv-docker-net
 
   # this container's job is just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
@@ -369,4 +385,4 @@ services:
     networks:
       - hiv-docker-net
     ports:
-      - 8060:8080
+      - "8060:8080"
