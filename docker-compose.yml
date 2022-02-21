@@ -12,6 +12,7 @@ volumes:
   patient_service_db_data:
   vn_patient_service_db_data:
   open_library_service_db_data:
+  patient_phone_service_db_data:
   keycloak_db_data:
   rocketchat_db_data:
   rocketchat_uploads:
@@ -96,7 +97,7 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.client-webapp.tls=true'
-      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-nonhi-admin.wehost.asia`) || Host(`local-nonhi-therapist.wehost.asia`) || Host(`local-nonhi-patient.wehost.asia`) || Host(`local-library.wehost.asia`)'
+      - 'traefik.http.routers.client-webapp.rule=Host(`local-hi-admin.wehost.asia`) || Host(`local-hi-therapist.wehost.asia`) || Host(`local-hi-patient.wehost.asia`) || Host(`local-nonhi-admin.wehost.asia`) || Host(`local-nonhi-therapist.wehost.asia`) || Host(`local-nonhi-patient.wehost.asia`) || Host(`local-hi-phone.wehost.asia`) || Host(`local-library.wehost.asia`)'
       - 'traefik.http.routers.client-webapp.service=client-webapp'
       - 'traefik.http.services.client-webapp.loadbalancer.server.port=80'
 
@@ -269,6 +270,40 @@ services:
       MYSQL_DATABASE: patient_service
     ports:
       - "3310:3306"
+
+  ######################
+  # Patient Phone Service #
+  ######################
+  patient_phone_service:
+    image: rathaheang/nginx-php:7.4
+    networks:
+      - hiv-docker-net
+    environment:
+      LOCAL_USER_ID: 1001
+    volumes:
+      - ../patient-phone-service:/var/www/html
+      - ./config/service/default.conf:/etc/nginx/sites-available/default
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+    depends_on:
+      - patient_phone_service_db
+    ports:
+      - "8087:80"
+
+  patient_phone_service_db:
+    image: mysql:8.0
+    networks:
+      - hiv-docker-net
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - patient_phone_service_db_data:/var/lib/mysql
+      - ./config/mysql/patient_phone_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: patient_phone_service
+      MYSQL_PASSWORD: patient_phone_service
+      MYSQL_DATABASE: patient_phone_service
+    ports:
+      - "3311:3306"
 
   #############
   ### Open Library ###
