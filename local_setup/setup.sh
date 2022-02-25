@@ -10,6 +10,7 @@ git clone git@git.web-essentials.asia:hiv-tra-20/keycloak.git ../keycloak
 git clone git@git.web-essentials.asia:hiv-tra-20/krakend.git ../krakend
 git clone git@git.web-essentials.asia:hiv-tra-20/hic-service.git ../open-library-service
 git clone git@git.web-essentials.asia:hiv-tra-20/hic-webapp.git ../open-library-web-app
+git clone git@git.web-essentials.asia:hiv-tra-20/patient-phone-service.git ../patient-phone-service
 
 echo "* Run composer to install dependencies"
 composer install --prefer-dist -vvv -d ../admin-service || exit -1
