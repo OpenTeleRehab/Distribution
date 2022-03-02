@@ -3,6 +3,8 @@
 project_id:                             'hiv-tra-20'
 project_name:                           'tra'
 
+git_branch:                             'master'
+
 k8s_namespace:                          'hiv'
 website_url:                            '{{ stage }}-rehabilitation.wehost.asia'
 admin_webapp_url:                       '{{ stage }}-admin-rehabilitation.wehost.asia'
