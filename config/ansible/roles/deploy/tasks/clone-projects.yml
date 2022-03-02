@@ -5,7 +5,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
     dest: '{{ workspace }}/admin-service'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: admin_service_build.stat.exists
 
@@ -23,7 +23,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/admin-web-app.git
     dest: '{{ workspace }}/admin-webapp'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: admin_webapp_build.stat.exists
 
@@ -41,7 +41,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/therapist-service.git
     dest: '{{ workspace }}/therapist-service'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: therapist_service_build.stat.exists
 
@@ -50,7 +50,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/therapist-web-app.git
     dest: '{{ workspace }}/therapist-webapp'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: therapist_webapp_build.stat.exists
 
@@ -60,7 +60,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/patient-service.git
     dest: '{{ workspace }}/patient-service'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: patient_service_build.stat.exists
 
@@ -70,6 +70,6 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/krakend.git
     dest: '{{ workspace }}/krakend-service'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: krakend_service_build.stat.exists
