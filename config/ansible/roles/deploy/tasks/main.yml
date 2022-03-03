@@ -89,7 +89,12 @@
   import_tasks: patient-service.yml
   when: patient_service_build.stat.exists
 
-### Build Docker image Patient Service
+### Build Docker image Phone Service
+- name: Build Phone service
+  import_tasks: phone-service.yml
+  when: phone_service_build.stat.exists
+
+### Build Docker image Krakend Service
 - name: Build krakend service
   import_tasks: krakend-service.yml
   when: krakend_service_build.stat.exists
