@@ -138,6 +138,40 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: 'pv-{{ stage }}-{{ project_id }}-phone-service'
+  labels:
+    app: 'pv-{{ stage }}-{{ project_id }}-phone-service'
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    server: '{{ nfs_server }}'
+    path: '{{ nfs_path }}/phone-service'
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: 'pvc-{{ stage }}-{{ project_id }}-phone-service'
+  namespace: hiv
+spec:
+  selector:
+    matchLabels:
+      app: 'pv-{{ stage }}-{{ project_id }}-phone-service'
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+  resources:
+    requests:
+      storage: 2Gi
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: 'pv-{{ stage }}-{{ project_id }}-vn-patient-service'
   labels:
     app: 'pv-{{ stage }}-{{ project_id }}-vn-patient-service'

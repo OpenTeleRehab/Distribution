@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-phone-service'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-phone-service'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-phone-service'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: {{ image_name }}/{{ stage }}/phone-service:{{ version }}
+          name: 'app-{{ stage }}-{{ project_name }}-phone-service'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+          - name: configmap-{{ stage }}-{{ project_name }}-env
+            mountPath: /var/www/.env
+            subPath: phone-service-env
+          - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
+            mountPath: /var/www/.env.dusk
+            subPath: phone-service-dusk-local
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+      - name: configmap-{{ stage }}-{{ project_name }}-env
+        configMap:
+          name: configmap-{{ stage }}-{{ project_name }}-phone-service-env
+      - name: 'vol-{{ stage }}-{{ project_name }}'
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_id }}-phone-service'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-phone-service'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 80
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-phone-service'
