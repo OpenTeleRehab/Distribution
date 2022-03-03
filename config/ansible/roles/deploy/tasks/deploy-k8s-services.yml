@@ -74,6 +74,16 @@
     path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
     state: absent
 
+### Deploy Phone Service
+- name: Deploy Phone Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/phoneservice.yml'
+  when: phone_service_build.stat.exists
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-phone-service-build'
+    state: absent
+
 ### Deploy keycloak
 - name: Deploy keycloak
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'

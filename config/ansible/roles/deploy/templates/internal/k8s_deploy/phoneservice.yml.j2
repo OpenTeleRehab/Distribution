@@ -29,9 +29,6 @@ spec:
           - name: configmap-{{ stage }}-{{ project_name }}-env
             mountPath: /var/www/.env
             subPath: phone-service-env
-          - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-            mountPath: /var/www/.env.dusk
-            subPath: phone-service-dusk-local
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /var/www/storage
       volumes:
