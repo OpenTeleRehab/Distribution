@@ -70,7 +70,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/patient-phone-service.git
     dest: '{{ workspace }}/phone-service'
     accept_hostkey: yes
-    version: '{{ git_branch }}'
+    version: 'master'
     force: yes
   when: phone_service_build.stat.exists
 
