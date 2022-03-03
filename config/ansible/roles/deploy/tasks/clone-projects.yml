@@ -64,6 +64,16 @@
     force: yes
   when: patient_service_build.stat.exists
 
+# Phone Service
+- name: PhoneService | Clone phone service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/patient-phone-service.git
+    dest: '{{ workspace }}/phone-service'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
+  when: phone_service_build.stat.exists
+
 # Krakend Service
 - name: KrakendService | Clone Krakend service repos
   git:

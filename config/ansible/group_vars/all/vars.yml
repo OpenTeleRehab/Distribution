@@ -62,6 +62,10 @@ my_patientservice_user:                 '{{ stage }}_patientservice'
 my_patientservice_pass:                 '{{ my_patientservice_pass_vault }}'
 my_patientservice_db:                   '{{ stage }}_patientservice'
 
+my_phoneservice_db:                     '{{ stage }}_phoneservice'
+my_phoneservice_user:                   '{{ my_phoneservice_pass_vault }}'
+my_phoneservice_pass:                   '{{ stage }}_phoneservice'
+
 my_keycloak_user:                       '{{ stage }}_{{ project_name }}_keycloak'
 my_keycloak_pass:                       '{{ my_keycloak_pass_vault }}'
 my_keycloak_db:                         '{{ stage }}_{{ project_name }}_keycloak'

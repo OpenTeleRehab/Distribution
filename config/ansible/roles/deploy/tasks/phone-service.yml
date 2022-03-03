@@ -1,0 +1,46 @@
+---
+
+- name: Sync local storage to shared folder
+  shell: 'rsync -avz --chmod=ugo=rwX {{ workspace }}/phone-service/storage/ /export/{{ stage }}/{{ project_id }}/phone-service/'
+  when: stage != 'live'
+
+- name: PhoneService | Copy deployment configuration
+  template:
+    src: 'internal/phone-service/{{ item }}.j2'
+    dest: '{{ workspace }}/phone-service/{{ item }}'
+    mode: 0755
+  loop:
+    - default.conf
+    - Dockerfile
+
+- name: PhoneService | Copy .env file
+  template:
+    src: 'internal/phone-service/env.j2'
+    dest: '{{ workspace }}/phone-service/.env'
+    mode: 0755
+
+- name: PhoneService | Run composer to install dependencies
+  shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
+  args:
+    chdir: '{{ workspace }}/phone-service'
+
+- name: PhoneService | Build docker image
+  shell: 'docker build -t {{ stage }}-phone-service:latest .'
+  args:
+    chdir: '{{ workspace }}/phone-service'
+
+- name: PhoneService | Tag docker image to hub.web-essentials.co
+  shell: 'docker tag {{ stage }}-phone-service:latest {{ image_name }}/{{ stage }}/phone-service:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/phone-service'
+  loop:
+    - '{{ version }}'
+    - latest
+
+- name: PhoneService | Push docker image to hub.web-essentials.co
+  shell: 'docker push {{ image_name }}/{{ stage }}/phone-service:{{ item }}'
+  args:
+    chdir: '{{ workspace }}/phone-service'
+  loop:
+    - '{{ version }}'
+    - latest
