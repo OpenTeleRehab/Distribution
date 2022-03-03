@@ -23,6 +23,7 @@ admin_service:                          'svc-{{ stage }}-{{ project_name }}-admi
 hicadmin_service:                       'svc-{{ stage }}-{{ project_name }}-hicadmin-service'
 therapist_service:                      'svc-{{ stage }}-{{ project_name }}-therapist-service'
 patient_service:                        'svc-{{ stage }}-{{ project_name }}-patient-service'
+phone_service:                          'svc-{{ stage }}-{{ project_name }}-phone-service'
 vn_patient_service:                     'svc-{{ stage }}-{{ project_name }}-vn-patient-service'
 keycloak_service:                       'svc-{{ stage }}-{{ project_name }}-keycloak:8080'
 rocketchat_service:                     'svc-{{ stage }}-{{ project_name }}-rocketchat:3000'
