@@ -80,6 +80,6 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/krakend.git
     dest: '{{ workspace }}/krakend-service'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: krakend_service_build.stat.exists
