@@ -14,7 +14,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/hic-service.git
     dest: '{{ workspace }}/hicadmin-service'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: hicadmin_service_build.stat.exists
 
@@ -32,7 +32,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/hic-webapp.git
     dest: '{{ workspace }}/hicadmin-webapp'
     accept_hostkey: yes
-    version: master
+    version: '{{ git_branch }}'
     force: yes
   when: hicadmin_webapp_build.stat.exists
 
