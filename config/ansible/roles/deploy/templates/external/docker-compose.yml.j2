@@ -139,10 +139,27 @@ services:
     depends_on:
       - admin_service
 
+  phone_service:
+    container_name: phone_service
+    image: {{ image_name }}/{{ stage }}/phone-service:latest
+    restart: unless-stopped
+    ports:
+      - "2083:80"
+    environment:
+      LOCAL_USER_ID: 1000
+    networks:
+      - hiv-docker-net
+    volumes:
+      - ./config/phoneservice/storage:/var/www/storage
+    depends_on:
+      - admin_service
+
   keycloak:
     container_name: keycloak
     image: {{ image_name }}/keycloak:latest
     restart: unless-stopped
+    ports:
+      - "8080:8080"
     networks:
       - hiv-docker-net
     volumes:
