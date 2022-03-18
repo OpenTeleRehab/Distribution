@@ -26,6 +26,7 @@
     - projects/hiv/config/therapist-web-app
     - projects/hiv/config/therapistservice/storage
     - projects/hiv/config/libraryservice/storage
+    - projects/hiv/config/phoneservice/storage
 #    - projects/hiv/config/jitsi-meet-cfg/web/letsencrypt
 #    - projects/hiv/config/jitsi-meet-cfg/transcripts
 #    - projects/hiv/config/jitsi-meet-cfg/prosody/config
@@ -55,6 +56,7 @@
     - { src: '{{ workspace }}/therapist-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/therapistservice/storage/' }
     - { src: '{{ workspace }}/hicadmin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/libraryservice/storage/' }
     - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/patientservice/storage/' }
+    - { src: '{{ workspace }}/phone-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/phoneservice/storage/' }
 
 - name: Production | Docker compose pull latest images
   shell: docker-compose pull
@@ -185,6 +187,32 @@
     - view:clear
     - route:clear
   when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
+
+# Run artisan phone service
+- name: Run artisan migration
+  shell: 'docker-compose exec phone_service /usr/bin/php artisan migrate --force'
+  args:
+    chdir: 'projects/hiv'
+  when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
+
+- name: Run artisan storage link
+  shell: 'docker-compose exec phone_service /usr/bin/php artisan storage:link'
+  args:
+    chdir: 'projects/hiv'
+  when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
+
+- name: Run artisan clear cache
+  shell: 'docker-compose exec phone_service /usr/bin/php artisan {{ item }}'
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - cache:clear
+    - config:clear
+    - view:clear
+    - route:clear
   delegate_to: live-gl-tra
 
 # Deploy to VN server
