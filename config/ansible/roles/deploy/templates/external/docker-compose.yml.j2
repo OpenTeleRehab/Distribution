@@ -183,6 +183,8 @@ services:
     container_name: krakend
     image: {{ image_name }}/{{ stage }}/krakend:latest
     restart: unless-stopped
+    ports:
+      - "8000:8000"
     networks:
       - hiv-docker-net
     extra_hosts:
