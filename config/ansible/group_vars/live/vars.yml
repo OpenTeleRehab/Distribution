@@ -17,6 +17,7 @@ rocketchat_service:           'rocketchat:3000'
 krakend_service:              'krakend'
 vn_patient_service:           'vn_patient_service'
 vn_patient_host:              '103.229.42.86'
+phone_service:                'phone_service'
 
 my_host:                      'production-db.cwgm5sdsswey.ap-southeast-1.rds.amazonaws.com'
 my_adminservice_user:         'admin_service'
