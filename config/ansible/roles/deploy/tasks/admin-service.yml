@@ -13,6 +13,7 @@
     - default.conf
     - Dockerfile
     - hi-task-scheduler
+    - hi-task-scheduler-sync
 
 - name: AdminService | Copy .env
   template:
