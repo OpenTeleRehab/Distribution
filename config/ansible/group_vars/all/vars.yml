@@ -106,3 +106,5 @@ pusher_app_key:                         '{{ pusher_app_key_vault }}'
 pusher_app_secret:                      '{{ pusher_app_secret_vault }}'
 
 google_translate_api_key:               '{{ google_translate_api_key_vault }}'
+
+firebase_server_api_key:                '{{ firebase_server_api_key_vault }}'
