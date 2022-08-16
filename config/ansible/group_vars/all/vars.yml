@@ -14,7 +14,7 @@ therapist_webapp_url:                   '{{ stage }}-therapist-{{ root_domain }}
 api_url:                                '{{ stage }}-api-{{ root_domain }}'
 keycloak_url:                           '{{ stage }}-auth-{{ root_domain }}'
 rocketchat_url:                         '{{ stage }}-chat-{{ root_domain }}'
-jitsi_url:                              'meet-opentelerehab.com'
+jitsi_url:                              'meet.opentelerehab.com'
 
 admin_webapp_service:                   'svc-{{ stage }}-{{ project_name }}-admin-webapp'
 hicadmin_webapp_service:                'svc-{{ stage }}-{{ project_name }}-hicadmin-webapp'
