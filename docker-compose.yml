@@ -58,6 +58,8 @@ services:
                   -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
     depends_on:
       - keycloak_db
+    ports:
+      - 8080:8080
 
   keycloak_db:
     image: mysql:8.0
@@ -149,7 +151,7 @@ services:
       - ./config/mysql/admin_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYS0L_USER: admin_service
+      MYSQL_USER: admin_service
       MYSQL_PASSWORD: admin_service
       MYSQL_DATABASE: admin_service
 
