@@ -253,7 +253,7 @@ services:
 
   jitsi_web:
     container_name: jitsi_web
-    image: jitsi/web:stable-5765-1
+    image: jitsi/web:${TAG}
     restart: ${RESTART_POLICY}
     networks:
       hiv-docker-net:
@@ -361,7 +361,7 @@ services:
   # XMPP server
   jitsi_prosody:
     container_name: jitsi_prosody
-    image: jitsi/prosody:stable-5765-1
+    image: jitsi/prosody:${TAG}
     restart: ${RESTART_POLICY}
     networks:
       hiv-docker-net:
@@ -432,7 +432,7 @@ services:
   # Focus component
   jitsi_jicofo:
     container_name: jitsi_jicofo
-    image: jitsi/jicofo:stable-5765-1
+    image: jitsi/jicofo:${TAG}
     restart: ${RESTART_POLICY}
     networks:
       hiv-docker-net:
@@ -480,7 +480,7 @@ services:
   # Video bridge
   jitsi_jvb:
     container_name: jitsi_jvb
-    image: jitsi/jvb:stable-5765-1
+    image: jitsi/jvb:${TAG}
     restart: ${RESTART_POLICY}
     networks:
       hiv-docker-net:
