@@ -3,6 +3,7 @@ FROM hub.web-essentials.co/webessentials/nginx-php:7.4
 ADD . /var/www
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY hi-task-scheduler /etc/cron.d/hi-task-scheduler
+COPY queue-worker.conf /etc/supervisor/conf.d/queue-worker.conf
 RUN chown -R www-data:www-data /var/www
 
 RUN apt-get update -y && apt-get install ffmpeg -y
