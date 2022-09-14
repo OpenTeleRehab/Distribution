@@ -13,6 +13,7 @@
     - default.conf
     - Dockerfile
     - hi-task-scheduler
+    - queue-worker.conf
 
 - name: AdminService | Copy .env
   template:
