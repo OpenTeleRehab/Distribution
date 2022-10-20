@@ -43,8 +43,6 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_admin_service_db
-    ports:
-      - 8090:80
 
   nonhi_admin_service_db:
     image: docker.io/mysql:8.0
@@ -93,8 +91,6 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_therapist_service_db
-    ports:
-      - 8091:80
 
   nonhi_therapist_service_db:
     image: docker.io/mysql:8.0
@@ -126,8 +122,6 @@ services:
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_patient_service_db
-    ports:
-      - 8092:80
 
   nonhi_patient_service_db:
     image: docker.io/mysql:8.0
