@@ -15,6 +15,8 @@ git clone git@git.web-essentials.asia:hiv-tra-20/phone-service.git ../phone-serv
 echo "* Run composer to install dependencies"
 composer install --prefer-dist -vvv -d ../admin-service || exit -1
 composer install --prefer-dist -vvv -d ../therapist-service || exit -1
+composer install --prefer-dist -vvv -d ../patient-service || exit -1
+composer install --prefer-dist -vvv -d ../phone-service || exit -1
 composer install --prefer-dist -vvv -d ../open-library-service || exit -1
 
 echo "* Run install NPM package dependencies"
@@ -23,7 +25,6 @@ yarn --cwd ../therapist-web-app
 yarn --cwd ../open-library-web-app
 
 echo "* Up docker with docker-compose"
-docker-compose build
 docker-compose up -d
 
 if [ $? -eq 0 ]; then
@@ -35,15 +36,20 @@ else
   ./local_setup/setup.sh || exit -1
 fi
 
+echo "* Restore Rocket chat DB"
+docker-compose exec -T mongo mongorestore --archive < ./config/mongo/rocketchat_dump.gz
+
 echo "* Add host to /etc/hosts"
-hostname="local-rehabilitation.wehost.asia test.local-rehabilitation.wehost.asia"
-admin_hostname="local-admin-rehabilitation.wehost.asia test.local-admin-rehabilitation.wehost.asia"
-open_library_hostname="local-library-opentelerahab.wehost.asia test.library-opentelerahab.wehost.asia"
-count=$(grep -o "$hostname" /etc/hosts | wc -l)
+admin_hostname="local-hi-admin.wehost.asia test.local-hi-admin.wehost.asia"
+therapist_hostname="local-hi-therapist.wehost.asia test.local-hi-therapist.wehost.asia"
+chat_hostname="local-hi-chat.wehost.asia"
+open_library_hostname="local-hi-library.wehost.asia test.local-hi-library.wehost.asia"
+none_hi="local-nonhi-admin.wehost.asia local-nonhi-therapist.wehost.asia local-nonhi-patient.wehost.asia"
+count=$(grep -o "$admin_hostname" /etc/hosts | wc -l)
 if [ $count != 0 ];then
     echo "==> Skip: host already existed."
 else
-    sudo bash -c "echo 0.0.0.0 ${hostname} ${admin_hostname} ${open_library_hostname} >> /etc/hosts"
+    sudo bash -c "echo 0.0.0.0 ${admin_hostname} ${therapist_hostname} ${chat_hostname} ${open_library_hostname} ${none_hi} >> /etc/hosts"
 fi
 
 echo "*** DONE ***"

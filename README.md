@@ -40,28 +40,10 @@ This repository is where OpenRehab App implemented in Microservices and using do
     > Note: Actually, the script is trying to kill all conflict ports but sometimes it could not. So if there are conflict ports, you have to kill it first then rerun the script.
     Here is the command to kill the port in Linux: `sudo kill $(sudo lsof -t -i:PORT_TO_FREE)`.
 
-* Verify installation by visit [http://local-rehabilitation.wehost.asia](http://local-rehabilitation.wehost.asia) on the browser.
-
-## Configure Keycloak
-
-* Try login through [http://local-rehabilitation.wehost.asia/auth](http://local-rehabilitation.wehost.asia/auth) with credentials from `docker-compose.yml`
-
-  > If it does not work, copy all content from file `docker-compose-dev.yml` (expose static port) to replace `docker-compose.yml` and restart all containers `docker-compose up -d`
-
-  > Re-try login through [http://localhost:8080/auth/](http://localhost:8080/auth/) with same credentials
-
-* Import and update Realm Settings
-
-  1. Export Realm from Latest or Demo `hi` and `hi-therapist`
-  2. Import those two Realm into your local running Keycloak
-  3. Update `Frontend URL` of each Realm Settings to `http://local-rehabilitation.wehost.asia/auth` or `http://localhost:8080/auth/` (depend on which URL you have logged in success)
-
-* Create default user to generate access token (DO NOT DELETE these users)
-
-  __Note:__ These users should have primary client roles: `manager-users`, `query-groups`, and `query-users` (Client Roles -> realm-management)
-
-  1. Create `hi_backend` with password `hi_backendDBPWD` on `hi` Realm
-  2. Create `therapist_backend` with password `therapist_backendDBPWD` on `therapist` Realm
+* Verify installation by visiting site below:
+  * [Admin Portal](https://local-hi-admin.wehost.asia)
+  * [Therapist Portal](https://local-hi-therapist.wehost.asia)
+  * [Library Portal](https://local-hi-library.wehost.asia)
 
 ## Configure environment variables
 
@@ -100,3 +82,10 @@ This repository is where OpenRehab App implemented in Microservices and using do
     ```bash
     docker-compose kill
     ```
+
+### Rocket Chat Configuration
+  Please follow [Installation Doc](https://confluence.web-essentials.co/display/TRA/Rocket+Chat+Configuration+for+OpenRehab)
+
+### Common Issues
+* Invalid ssl certificate
+  * Download [fullchain.pem](https://packages.web-essentials.asia/boxes/devssl/wehost.asia/fullchain.pem), [privkey.pem](https://packages.web-essentials.asia/boxes/devssl/wehost.asia/privkey.pem) files, and replace them into `./config/docker/ssl/`. Then please restart the docker containers.
