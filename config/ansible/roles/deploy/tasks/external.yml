@@ -102,9 +102,12 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:import-default-translation'
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan {{ item }}'
   args:
     chdir: 'projects/hiv'
+  loop:
+    - hi:import-default-translation
+    - hi:create-backend-user
   when: admin_service_build.stat.exists
   delegate_to: live-gl-tra
 
@@ -135,6 +138,13 @@
   when: therapist_service_build.stat.exists
   delegate_to: live-gl-tra
 
+- name: Run artisan import
+  shell: 'docker-compose exec therapist_service /usr/bin/php artisan hi:create-backend-user'
+  args:
+    chdir: 'projects/hiv'
+  when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
+
 # Run artisan patient service
 - name: Run artisan migration
   shell: 'docker-compose exec patient_service /usr/bin/php artisan migrate --force'
@@ -159,6 +169,13 @@
     - config:clear
     - view:clear
     - route:clear
+  when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
+
+- name: Run artisan import
+  shell: 'docker-compose exec patient_service /usr/bin/php artisan hi:create-backend-user'
+  args:
+    chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
   delegate_to: live-gl-tra
 
@@ -285,6 +302,13 @@
     - route:clear
   when: patient_service_build.stat.exists
   delegate_to: live-vn-tra
+
+- name: Run artisan import
+  shell: 'docker-compose exec vn_patient_service /usr/bin/php artisan hi:create-backend-user'
+  args:
+    chdir: 'projects/hiv'
+  when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Remove build file state
   file:
