@@ -160,6 +160,14 @@ data:
     KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
     KEYCLOAK_REAMLS_NAME=hi
 
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
     REACT_APP_BASE_URL=https://{{ admin_webapp_url }}/
 
     # Thumbnail image dimensions
@@ -251,6 +259,9 @@ data:
     KEYCLOAK_BACKEND_USERNAME=hi_backend
     KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
     KEYCLOAK_REAMLS_NAME=hi-library
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     REACT_APP_BASE_URL=https://{{ hicadmin_webapp_url }}/
     REACT_APP_CONTRIBUTE_CONFIRM_URL=https://{{ hicadmin_webapp_url }}/contribute/confirm-submission
@@ -344,6 +355,14 @@ data:
         KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
         KEYCLOAK_REAMLS_NAME=hi
 
+        GADMIN_KEYCLOAK_REAMLS_NAME=hi
+        GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+        THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+        THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+        PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
         REACT_APP_BASE_URL=https://{{ admin_webapp_url }}/
 
         # Thumbnail image dimensions
@@ -429,6 +448,9 @@ data:
         KEYCLOAK_BACKEND_USERNAME=hi_backend
         KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
         KEYCLOAK_REAMLS_NAME=hi
+
+        GADMIN_KEYCLOAK_REAMLS_NAME=hi
+        GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
         REACT_APP_BASE_URL=https://{{ hicadmin_webapp_url }}/
 
@@ -516,9 +538,19 @@ data:
         KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
         KEYCLOAK_REAMLS_NAME=hi-therapist
 
+        GADMIN_KEYCLOAK_REAMLS_NAME=hi
+        GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+        THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+        THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+        PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
         REACT_APP_BASE_URL=https://{{ therapist_webapp_url }}/
+
         GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
         ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+        PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
 
         ROCKET_CHAT_URL=http://{{ rocketchat_service }}
         ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
@@ -592,7 +624,16 @@ data:
     KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
     KEYCLOAK_REAMLS_NAME=hi-therapist
 
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
     REACT_APP_BASE_URL=https://{{ therapist_webapp_url }}/
+
     GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
@@ -668,10 +709,25 @@ data:
 
     FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
 
+    KEYCLOAK_URL=http://{{ keycloak_service }}
+    KEYCLOAK_BACKEND_CLIENT=hi_backend
+    KEYCLOAK_BACKEND_USERNAME=hi_backend
+    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    ADMIN_KEYCLOAK_REAMLS_NAME=hi
+    ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
     GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
-    PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
     PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
     ROCKET_CHAT_URL=http://{{ rocketchat_service }}
@@ -742,8 +798,28 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
+    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+
+    KEYCLOAK_URL=http://{{ keycloak_service }}
+    KEYCLOAK_BACKEND_CLIENT=hi_backend
+    KEYCLOAK_BACKEND_USERNAME=hi_backend
+    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    ADMIN_KEYCLOAK_REAMLS_NAME=hi
+    ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
+    GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
+    PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
     ROCKET_CHAT_URL=http://{{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
@@ -882,8 +958,28 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
+    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+
+    KEYCLOAK_URL=http://{{ keycloak_service }}
+    KEYCLOAK_BACKEND_CLIENT=hi_backend
+    KEYCLOAK_BACKEND_USERNAME=hi_backend
+    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    ADMIN_KEYCLOAK_REAMLS_NAME=hi
+    ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
+    GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
+    PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
     ROCKET_CHAT_URL=http://{{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
@@ -953,8 +1049,28 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
+    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+
+    KEYCLOAK_URL=http://{{ keycloak_service }}
+    KEYCLOAK_BACKEND_CLIENT=hi_backend
+    KEYCLOAK_BACKEND_USERNAME=hi_backend
+    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    ADMIN_KEYCLOAK_REAMLS_NAME=hi
+    ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
+    GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
+    PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
     ROCKET_CHAT_URL=http://{{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
