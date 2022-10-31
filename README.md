@@ -41,9 +41,15 @@ This repository is where OpenRehab App implemented in Microservices and using do
     Here is the command to kill the port in Linux: `sudo kill $(sudo lsof -t -i:PORT_TO_FREE)`.
 
 * Verify installation by visiting site below:
-  * [Admin Portal](https://local-hi-admin.wehost.asia)
-  * [Therapist Portal](https://local-hi-therapist.wehost.asia)
-  * [Library Portal](https://local-hi-library.wehost.asia)
+  * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
+    * super-admin@we.co / sup3r@Admin
+    * organization-admin@we.co / 0rganization@Admin
+    * country-admin@we.co / c0untry@Admin
+    * clinic-admin@we.co / cl1nic@Admin
+  * [Therapist Portal](https://local-hi-therapist.wehost.asia) with user access below:
+    * therapist@we.co / th3rapist@WE
+  * [Library Portal](https://local-hi-library.wehost.asia) with user access below:
+    * admin@we.co / admin@user
 
 ## Configure environment variables
 
