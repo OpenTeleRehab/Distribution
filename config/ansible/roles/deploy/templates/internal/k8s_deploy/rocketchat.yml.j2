@@ -18,13 +18,11 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: hub.web-essentials.co/docker/rocket.chat:3.18.2
+        - image: rocket.chat:4.8.6
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat'
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
-          command: ["/bin/sh","-c"]
-          args: ["for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"]
           env:
             - name: ROOT_URL
               value: https://{{ stage }}-chat-rehabilitation.wehost.asia
