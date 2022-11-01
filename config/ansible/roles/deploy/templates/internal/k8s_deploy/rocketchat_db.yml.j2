@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: hub.web-essentials.co/docker/mongo:4.0
+        - image: mongo:4.4.17
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db'
           imagePullPolicy: Always
           ports:
@@ -27,7 +27,7 @@ spec:
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /data/db
           command: ["/bin/sh","-c"]
-          args: ["mongod --bind_ip 0.0.0.0 --smallfiles --oplogSize 512 --replSet rs0 --storageEngine=mmapv1"]
+          args: ["mongod --bind_ip 0.0.0.0 --oplogSize 512 --replSet rs0"]
       volumes:
       - name: 'vol-{{ stage }}-{{ project_name }}'
         persistentVolumeClaim:
@@ -67,7 +67,7 @@ spec:
       imagePullSecrets:
         - name: secret-{{ project_name }}
       containers:
-        - image: hub.web-essentials.co/docker/mongo:4.0
+        - image: mongo:4.4.17
           name: 'app-{{ stage }}-{{ project_name }}-rocketchat-db-init'
           imagePullPolicy: Always
           ports:
@@ -82,14 +82,3 @@ spec:
                    echo \"Tried $$i times. Waiting 5 secs...\";
                    sleep 5;
                  done; (exit $$s)"]
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: 'svc-{{ stage }}-{{ project_name }}-rocketchat-db-init'
-  namespace: '{{ k8s_namespace }}'
-spec:
-  ports:
-    - port: 27017
-  selector:
-    app: 'app-{{ stage }}-{{ project_name }}-rocketchat-db-init'
