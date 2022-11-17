@@ -79,7 +79,7 @@ services:
     tty: true
 
   nonhi_therapist_service:
-    image: rathaheang/nginx-php:7.4
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
@@ -110,7 +110,7 @@ services:
   ### NonHI Patient ###
   #############
   nonhi_patient_service:
-    image: rathaheang/nginx-php:7.4
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
