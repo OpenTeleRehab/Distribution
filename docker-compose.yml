@@ -76,7 +76,7 @@ services:
   # Krakend #
   ###########
   krakend:
-    image: docker.io/devopsfaith/krakend:1.1.1
+    image: docker.io/devopsfaith/krakend:2.1.2
     networks:
       - hiv-docker-net
     volumes:
@@ -89,7 +89,7 @@ services:
   ### Client ###
   #############
   client_web_app:
-    image: nginx:1.19.3
+    image: nginx:1.22.1
     networks:
       - hiv-docker-net
     volumes:
@@ -175,7 +175,7 @@ services:
       - krakend
 
   therapist_service:
-    image: rathaheang/nginx-php:7.4
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
@@ -207,7 +207,7 @@ services:
   # Patient Service #
   ###################
   patient_service:
-    image: rathaheang/nginx-php:7.4
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
@@ -238,7 +238,7 @@ services:
   # VN Patient Service #
   ######################
   patient_vn_service:
-    image: rathaheang/nginx-php:7.4
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
@@ -270,7 +270,7 @@ services:
   # Phone Service #
   ######################
   phone_service:
-    image: rathaheang/nginx-php:7.4
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
