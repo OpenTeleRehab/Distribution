@@ -76,7 +76,7 @@ services:
   # Krakend #
   ###########
   krakend:
-    image: docker.io/devopsfaith/krakend:2.1.2
+    image: docker.io/devopsfaith/krakend:2.1.3
     networks:
       - hiv-docker-net
     volumes:
