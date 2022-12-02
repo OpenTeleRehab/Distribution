@@ -109,7 +109,7 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan create backend user
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:create-backend-user'
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
@@ -143,7 +143,7 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec therapist_service /usr/bin/php artisan hi:create-backend-user'
+  shell: 'docker-compose exec therapist_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
@@ -177,7 +177,7 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec patient_service /usr/bin/php artisan hi:create-backend-user'
+  shell: 'docker-compose exec patient_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
@@ -308,7 +308,7 @@
   delegate_to: live-vn-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec vn_patient_service /usr/bin/php artisan hi:create-backend-user'
+  shell: 'docker-compose exec vn_patient_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
