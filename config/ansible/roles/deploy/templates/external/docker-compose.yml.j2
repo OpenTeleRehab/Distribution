@@ -99,6 +99,7 @@ services:
       - "2081:80"
     networks:
       - hiv-docker-net
+    working_dir: /var/www
     volumes:
       - ./config/adminservice/storage:/var/www/storage
 
@@ -112,6 +113,7 @@ services:
       - "2082:80"
     networks:
       - hiv-docker-net
+    working_dir: /var/www
     volumes:
       - ./config/therapistservice/storage:/var/www/storage
     depends_on:
@@ -125,6 +127,7 @@ services:
       LOCAL_USER_ID: 1000
     networks:
       - hiv-docker-net
+    working_dir: /var/www
     volumes:
       - ./config/patientservice/storage:/var/www/storage
     depends_on:
@@ -138,6 +141,7 @@ services:
       LOCAL_USER_ID: 1000
     networks:
       - hiv-docker-net
+    working_dir: /var/www
     volumes:
       - ./config/libraryservice/storage:/var/www/storage
     depends_on:
@@ -153,6 +157,7 @@ services:
       LOCAL_USER_ID: 1000
     networks:
       - hiv-docker-net
+    working_dir: /var/www
     volumes:
       - ./config/phoneservice/storage:/var/www/storage
     depends_on:
