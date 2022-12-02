@@ -23,6 +23,7 @@ services:
       - "80:80"
     networks:
       - hiv-docker-net
+    working_dir: /var/www
     volumes:
       - ./config/vn_patient/storage:/var/www/storage
       - ./config/vn_patient/env:/var/www/.env
