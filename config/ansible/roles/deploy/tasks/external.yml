@@ -102,12 +102,16 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan {{ item }}'
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:import-default-translation'
   args:
     chdir: 'projects/hiv'
-  loop:
-    - hi:import-default-translation
-    - hi:create-backend-user
+  when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
+
+- name: Run artisan create backend user
+  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:create-backend-user'
+  args:
+    chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
   delegate_to: live-gl-tra
 
