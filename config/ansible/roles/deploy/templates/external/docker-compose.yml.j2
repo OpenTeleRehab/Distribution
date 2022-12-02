@@ -196,18 +196,10 @@ services:
 
   rocketchat:
     container_name: rocketchat
-    image: rocketchat/rocket.chat:3.12.0
+    image: rocketchat/rocket.chat:5.2.0
     restart: unless-stopped
     networks:
       - hiv-docker-net
-    command: >
-      bash -c
-        "for i in `seq 1 30`; do
-          node main.js &&
-          s=$$? && break || s=$$?;
-          echo \"Tried $$i times. Waiting 5 secs...\";
-          sleep 5;
-        done; (exit $$s)"
     volumes:
       - rocketchat_uploads:/app/uploads
     environment:
@@ -225,31 +217,16 @@ services:
 
   rocketchat_mongo:
     container_name: rocketchat_mongo
-    image: mongo:3.6.9
+    image: bitnami/mongodb:4.4.15
     networks:
       - hiv-docker-net
     volumes:
-      - rocketchat_db_data:/data/db
-    command: mongod --smallfiles --oplogSize 512 --replSet rs0 --storageEngine=mmapv1
-
-  rocketchat_mongo-init-replica:
-    container_name: rocketchat_mongo-init-replica
-    image: mongo:3.6.9
-    networks:
-      - hiv-docker-net
-    command: >
-      bash -c
-        "for i in `seq 1 30`; do
-          mongo rocketchat_mongo/rocketchat --eval \"
-            rs.initiate({
-              _id: 'rs0',
-              members: [ { _id: 0, host: 'localhost:27017' } ]})\" &&
-          s=$$? && break || s=$$?;
-          echo \"Tried $$i times. Waiting 5 secs...\";
-          sleep 5;
-        done; (exit $$s)"
-    depends_on:
-      - rocketchat_mongo
+      - rocketchat_db_data:/bitnami/mongodb
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: rs0
+      MONGODB_INITIAL_PRIMARY_HOST: rocketchat_mongo
+      ALLOW_EMPTY_PASSWORD: 'yes'
 
   jitsi_web:
     container_name: jitsi_web
