@@ -1,6 +1,6 @@
 # Overview
 
-This repository is where OpenRehab App implemented in Microservices and using docker-compose and single sign on with keycloak.
+This repository is where OpenTeleRehab is implemented in Microservices and using docker-compose and single sign on with keycloak.
 
 # Maintainer
 
