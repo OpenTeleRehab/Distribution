@@ -89,11 +89,11 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/keycloak.yml'
 
 ### Deploy rocketchat
-- name: Deploy mongodb rocketchat
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat_db.yml'
+# - name: Deploy mongodb rocketchat
+#   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat_db.yml'
 
-- name: Deploy rocketchat
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
+# - name: Deploy rocketchat
+#   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
 
 ### Deploy jitsi
 - name: Deploy jitsi
