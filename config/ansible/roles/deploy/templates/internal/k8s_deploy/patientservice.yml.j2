@@ -21,6 +21,7 @@ spec:
         - image: {{ image_name }}/{{ stage }}/patient-service:{{ version }}
           name: 'app-{{ stage }}-{{ project_name }}-patient-service'
           imagePullPolicy: Always
+          workingDir: /var/www
           ports:
             - containerPort: 80
           volumeMounts:

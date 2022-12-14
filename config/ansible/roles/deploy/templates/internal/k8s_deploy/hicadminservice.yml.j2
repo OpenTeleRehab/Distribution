@@ -21,6 +21,7 @@ spec:
         - image: {{ image_name }}/{{ stage }}/hicadmin-service:{{ version }}
           name: 'app-{{ stage }}-{{ project_name }}-hicadmin-service'
           imagePullPolicy: Always
+          workingDir: /var/www
           ports:
             - containerPort: 80
           volumeMounts:
