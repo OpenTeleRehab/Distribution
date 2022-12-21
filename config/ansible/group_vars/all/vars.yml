@@ -92,6 +92,7 @@ deployment_replica:                     '1'
 sms_sid:                                '{{ sms_sid_vault }}'
 sms_token:                              '{{ sms_token_vault }}'
 sms_verify_service_sid:                 '{{ sms_verify_service_sid_vault }}'
+sms_phone_number:                       '{{ sms_phone_number_vault }}'
 sms_verify_exclude_numbers:             '85516632704,855886991260,855966138877'
 
 smtp_host:                              'email-smtp.us-east-1.amazonaws.com'
