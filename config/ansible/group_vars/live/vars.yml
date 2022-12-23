@@ -6,7 +6,6 @@ admin_webapp_url:             'admin.{{ root_domain }}'
 therapist_webapp_url:         'therapist.{{ root_domain }}'
 hicadmin_webapp_url:          'library.{{ root_domain }}'
 rocketchat_url:               'chat.{{ root_domain }}'
-jitsi_url:                    'meet.{{ root_domain }}'
 
 keycloak_service:             'keycloak:8080'
 admin_service:                'admin_service'
@@ -50,3 +49,7 @@ rocketchat_admin_auth_token:  '{{ rocketchat_admin_auth_token_vault }}'
 rocketchat_admin_pass:        '{{ rocketchat_admin_pass_vault }}'
 
 google_translate_api_key:     '{{ google_translate_api_key_vault }}'
+
+twilio_account_sid:           '{{ twilio_account_sid_vault }}'
+twilio_api_key:               '{{ twilio_api_key_vault }}'
+twilio_api_key_secret:        '{{ twilio_api_key_secret_vault }}'
