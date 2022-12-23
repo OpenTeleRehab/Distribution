@@ -6,6 +6,7 @@ admin_webapp_url:             'admin.{{ root_domain }}'
 therapist_webapp_url:         'therapist.{{ root_domain }}'
 hicadmin_webapp_url:          'library.{{ root_domain }}'
 rocketchat_url:               'chat.{{ root_domain }}'
+jitsi_url:                    'meet.{{ root_domain }}'
 
 keycloak_service:             'keycloak:8080'
 admin_service:                'admin_service'
