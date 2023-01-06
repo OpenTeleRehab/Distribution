@@ -50,7 +50,7 @@
     repo: git@git.web-essentials.asia:hiv-tra-20/therapist-web-app.git
     dest: '{{ workspace }}/therapist-webapp'
     accept_hostkey: yes
-    version: 'develop'
+    version: '{{ git_branch }}'
     force: yes
   when: therapist_webapp_build.stat.exists
 
