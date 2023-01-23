@@ -34,6 +34,7 @@
     - hi:import-default-translation
     - hi:import-system-limit
     - hi:create-backend-user
+    - hi:generate-thumbnails
 
 ### HIC Admin Service
 - name: HIC-Admin-Service | Wait until container ready
