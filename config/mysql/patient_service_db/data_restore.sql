@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
 --
 -- Host: localhost    Database: patient_service
 -- ------------------------------------------------------
--- Server version	8.0.29
+-- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,11 +32,11 @@ CREATE TABLE `activities` (
   `pain_level` tinyint DEFAULT NULL,
   `sets` tinyint DEFAULT NULL,
   `reps` tinyint DEFAULT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `submitted_date` timestamp NULL DEFAULT NULL,
   `satisfaction` tinyint DEFAULT NULL,
   `created_by` int DEFAULT NULL,
-  `additional_information` text COLLATE utf8mb4_unicode_ci,
+  `additional_information` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `completed_sets` tinyint DEFAULT NULL,
   `completed_reps` tinyint DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -67,9 +67,9 @@ CREATE TABLE `appointments` (
   `end_date` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `therapist_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `patient_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `therapist_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `patient_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_by_therapist` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -93,11 +93,11 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
@@ -123,8 +123,8 @@ DROP TABLE IF EXISTS `goals`;
 CREATE TABLE `goals` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `treatment_plan_id` int NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `frequency` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `frequency` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -147,7 +147,7 @@ DROP TABLE IF EXISTS `migrations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -171,11 +171,11 @@ DROP TABLE IF EXISTS `oauth_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_access_tokens` (
-  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
   `client_id` bigint unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `scopes` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `revoked` tinyint(1) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -191,6 +191,7 @@ CREATE TABLE `oauth_access_tokens` (
 
 LOCK TABLES `oauth_access_tokens` WRITE;
 /*!40000 ALTER TABLE `oauth_access_tokens` DISABLE KEYS */;
+INSERT INTO `oauth_access_tokens` VALUES ('6ffaece5375a2384bd27e653b2c5bc717d37db77ca933ee8382e97931e2a0837665bdb1b9b0541ca',5,3,'HI Access Token','[]',0,'2023-01-30 08:41:49','2023-01-30 08:41:49','2024-01-30 08:41:49'),('77c46631ae7be3bad7b8624199f798744728266f491decbc2fac07ab127904ef234ddfbcee6e0151',5,3,'HI Access Token','[]',0,'2023-01-30 09:08:59','2023-01-30 09:08:59','2024-01-30 09:08:59');
 /*!40000 ALTER TABLE `oauth_access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,10 +203,10 @@ DROP TABLE IF EXISTS `oauth_auth_codes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_auth_codes` (
-  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned NOT NULL,
   `client_id` bigint unsigned NOT NULL,
-  `scopes` text COLLATE utf8mb4_unicode_ci,
+  `scopes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -232,10 +233,10 @@ DROP TABLE IF EXISTS `oauth_clients`;
 CREATE TABLE `oauth_clients` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint unsigned DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `secret` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `provider` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `redirect` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `personal_access_client` tinyint(1) NOT NULL,
   `password_client` tinyint(1) NOT NULL,
   `revoked` tinyint(1) NOT NULL,
@@ -243,7 +244,7 @@ CREATE TABLE `oauth_clients` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `oauth_clients_user_id_index` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +253,7 @@ CREATE TABLE `oauth_clients` (
 
 LOCK TABLES `oauth_clients` WRITE;
 /*!40000 ALTER TABLE `oauth_clients` DISABLE KEYS */;
-INSERT INTO `oauth_clients` VALUES (1,NULL,'hi Personal Access Client','OlelDNCVmJSfHz1z36fo7OYJ7TwoFXZsZVjTJGiM',NULL,'http://localhost',1,0,0,'2022-10-25 03:41:15','2022-10-25 03:41:15'),(2,NULL,'hi Password Grant Client','8LJOHfZS7FCx5klIdzbiUvsHNxIAfaGO5fiLH58h','users','http://localhost',0,1,0,'2022-10-25 03:41:15','2022-10-25 03:41:15');
+INSERT INTO `oauth_clients` VALUES (1,NULL,'hi Personal Access Client','OlelDNCVmJSfHz1z36fo7OYJ7TwoFXZsZVjTJGiM',NULL,'http://localhost',1,0,0,'2022-10-25 03:41:15','2022-10-25 03:41:15'),(2,NULL,'hi Password Grant Client','8LJOHfZS7FCx5klIdzbiUvsHNxIAfaGO5fiLH58h','users','http://localhost',0,1,0,'2022-10-25 03:41:15','2022-10-25 03:41:15'),(3,NULL,'hi Personal Access Client','OF7g0thcQcVQA7vdINaILZIb4CzVYkzrcQxiDkR7',NULL,'http://localhost',1,0,0,'2023-01-30 08:36:40','2023-01-30 08:36:40'),(4,NULL,'hi Password Grant Client','B1COt9hKFIs4jfuW0KZtYrb8Cj0yT9sBeDQxKgLj','users','http://localhost',0,1,0,'2023-01-30 08:36:40','2023-01-30 08:36:40');
 /*!40000 ALTER TABLE `oauth_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,7 +270,7 @@ CREATE TABLE `oauth_personal_access_clients` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -278,7 +279,7 @@ CREATE TABLE `oauth_personal_access_clients` (
 
 LOCK TABLES `oauth_personal_access_clients` WRITE;
 /*!40000 ALTER TABLE `oauth_personal_access_clients` DISABLE KEYS */;
-INSERT INTO `oauth_personal_access_clients` VALUES (1,1,'2022-10-25 03:41:15','2022-10-25 03:41:15');
+INSERT INTO `oauth_personal_access_clients` VALUES (1,1,'2022-10-25 03:41:15','2022-10-25 03:41:15'),(2,3,'2023-01-30 08:36:40','2023-01-30 08:36:40');
 /*!40000 ALTER TABLE `oauth_personal_access_clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,8 +291,8 @@ DROP TABLE IF EXISTS `oauth_refresh_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `oauth_refresh_tokens` (
-  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `access_token_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `revoked` tinyint(1) NOT NULL,
   `expires_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -316,8 +317,8 @@ DROP TABLE IF EXISTS `password_resets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_resets` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -343,7 +344,7 @@ CREATE TABLE `questionnaire_answers` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `activity_id` int NOT NULL,
   `question_id` int NOT NULL,
-  `answer` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `answer` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -366,12 +367,12 @@ DROP TABLE IF EXISTS `treatment_plans`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `treatment_plans` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `patient_id` int DEFAULT NULL,
   `start_date` timestamp NULL DEFAULT NULL,
   `end_date` timestamp NULL DEFAULT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `total_of_weeks` smallint NOT NULL DEFAULT '1',
@@ -402,30 +403,30 @@ CREATE TABLE `users` (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `clinic_id` int NOT NULL,
   `country_id` int NOT NULL,
-  `gender` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_of_birth` datetime DEFAULT NULL,
-  `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `identity` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `identity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `therapist_id` int NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `otp_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `otp_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `language_id` int DEFAULT NULL,
   `term_and_condition_id` int DEFAULT NULL,
-  `chat_user_id` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `chat_password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `chat_user_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `chat_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `chat_rooms` json DEFAULT NULL,
   `last_login` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `secondary_therapists` json DEFAULT NULL,
-  `dial_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dial_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `privacy_and_policy_id` int DEFAULT NULL,
   `completed_percent` double(8,2) NOT NULL DEFAULT '0.00',
   `total_pain_threshold` int NOT NULL DEFAULT '0',
@@ -436,12 +437,12 @@ CREATE TABLE `users` (
   `daily_tasks` int NOT NULL DEFAULT '0',
   `daily_logins` int NOT NULL DEFAULT '0',
   `daily_answers` int NOT NULL DEFAULT '0',
-  `firebase_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `firebase_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `last_reminder` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_identity_unique` (`identity`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -450,7 +451,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (4,NULL,NULL,NULL,NULL,'2022-10-25 03:59:51','2022-10-25 03:59:52','Ipsum','Lorem',1,1,'male','2009-01-05 00:00:00',NULL,'P0001000100004','85511628801',1,1,NULL,NULL,NULL,'WBDxj6oMY5TNnhvXH','3a227caf2cb3465e5a1268a8edd0f02a93e9d3c6c4dc429a78c19a78e9b2333a','[\"SAgppwc6kohYo8St5WBDxj6oMY5TNnhvXH\"]',NULL,NULL,'[]','855',NULL,0.00,0,0,0,0,0,0,0,0,NULL,NULL);
+INSERT INTO `users` VALUES (4,NULL,NULL,NULL,NULL,'2022-10-25 03:59:51','2022-10-25 03:59:52','Ipsum','Lorem',1,1,'male','2009-01-05 00:00:00',NULL,'P0001000100004','85511628801',1,1,NULL,NULL,NULL,'WBDxj6oMY5TNnhvXH','3a227caf2cb3465e5a1268a8edd0f02a93e9d3c6c4dc429a78c19a78e9b2333a','[\"SAgppwc6kohYo8St5WBDxj6oMY5TNnhvXH\"]',NULL,NULL,'[]','855',NULL,0.00,0,0,0,0,0,0,0,0,NULL,NULL),(5,'hi_backend',NULL,'$2y$10$hD76ouv8HVHj2q5lgc338urHZrw5r5iz3LZ8h8Hh4tzFkkPsGIWly',NULL,'2023-01-30 08:23:12','2023-01-30 09:08:59','DO NOT DELETE!','DO NOT DELETE!',0,0,'',NULL,NULL,NULL,'',0,1,NULL,NULL,NULL,NULL,NULL,NULL,'2023-01-30 09:08:59',NULL,NULL,NULL,NULL,0.00,0,0,0,0,0,0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -463,4 +464,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-25  4:23:23
+-- Dump completed on 2023-01-30  9:14:43
