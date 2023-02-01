@@ -135,6 +135,7 @@ services:
       - ../admin-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/queue-worker.conf:/etc/supervisor/conf.d/queue-worker.conf
     depends_on:
       - admin_service_db
 
