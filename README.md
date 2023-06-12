@@ -8,11 +8,7 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
 # Required Dependencies
 
-* PHP >= 7.3
-* [NodeJS](https://nodejs.org/en/download/package-manager/) version >= 10.0.0 < 15.0.0
-* [Yarn](https://yarnpkg.com/lang/en/docs/install/#debian-stable) version == 1.22.x
 * [Git](https://git-scm.com/) version >= 2.0.0
-* [Composer](https://getcomposer.org/)
 * [Docker](https://docs.docker.com/install/) version >= 17.12.0
 * [docker-compose](https://docs.docker.com/compose/install/#install-compose) >= 1.12.0
 
@@ -28,7 +24,6 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
     ```bash
     cd ~/dev/docker-projects/hiv/distribution
-    sudo chown -R ${USER}:${USER} .
     ```
 
 * Run script to set up
