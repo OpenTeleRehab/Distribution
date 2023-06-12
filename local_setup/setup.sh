@@ -66,4 +66,15 @@ else
     sudo bash -c "echo 0.0.0.0 ${admin_hostname} ${therapist_hostname} ${chat_hostname} ${open_library_hostname} ${none_hi} >> /etc/hosts"
 fi
 
-echo "*** DONE ***"
+echo "*** READY ***"
+echo -e "
+  * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
+    * super-admin@we.co / sup3r@Admin
+    * organization-admin@we.co / 0rganization@Admin
+    * country-admin@we.co / c0untry@Admin
+    * clinic-admin@we.co / cl1nic@Admin
+  * [Therapist Portal](https://local-hi-therapist.wehost.asia) with user access below:
+    * therapist@we.co / th3rapist@WE
+  * [Library Portal](https://local-hi-library.wehost.asia) with user access below:
+    * admin@we.co / admin@user
+"
