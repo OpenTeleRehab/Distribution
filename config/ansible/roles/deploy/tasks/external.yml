@@ -5,12 +5,14 @@
     registry: '{{ hub_registry }}'
     username: '{{ hub_user }}'
     password: '{{ hub_pass }}'
+  delegate_to: live-gl-tra
 
 - name: Production | Create projects directory global server
   file:
     path: '{{ item }}'
     state: directory
     mode: 0755
+  delegate_to: live-gl-tra
   loop:
     - projects/hiv/config
     - projects/hiv/config/admin-web-app
@@ -35,6 +37,7 @@
     - { src: 'external/vn-patient.yml.j2', dest: 'projects/hiv/vn-patient-compose.yml' }
     - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
     - { src: 'external/config/vn_patient/env.j2', dest: 'projects/hiv/config/vn_patient/env' }
+  delegate_to: live-gl-tra
 
 - name: Production | Sync storage
   shell: 'rsync -avz {{ item.src }} {{ item.dest }}'
@@ -53,6 +56,7 @@
   loop:
     - docker-compose.yml
     - vn-patient-compose.yml
+  delegate_to: live-gl-tra
 
 - name: Docker compose start all container
   shell: "docker-compose -f {{ item }} up -d"
@@ -61,6 +65,7 @@
   loop:
     - docker-compose.yml
     - vn-patient-compose.yml
+  delegate_to: live-gl-tra
 
 - name: Wait for containers ready
   pause:
@@ -72,12 +77,14 @@
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec admin_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec admin_service /usr/bin/php artisan {{ item }}'
@@ -89,18 +96,21 @@
     - view:clear
     - route:clear
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan import
   shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:import-default-translation'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan create backend user
   shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Run artisan therapist service
 - name: Run artisan migration
@@ -108,12 +118,14 @@
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec therapist_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec therapist_service /usr/bin/php artisan {{ item }}'
@@ -125,12 +137,14 @@
     - view:clear
     - route:clear
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan import
   shell: 'docker-compose exec therapist_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Run artisan patient service
 - name: Run artisan migration
@@ -138,12 +152,14 @@
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec patient_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec patient_service /usr/bin/php artisan {{ item }}'
@@ -155,12 +171,14 @@
     - view:clear
     - route:clear
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan import
   shell: 'docker-compose exec patient_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Run artisan library service
 - name: Run artisan migration
@@ -168,12 +186,14 @@
   args:
     chdir: 'projects/hiv'
   when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec library_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec library_service /usr/bin/php artisan {{ item }}'
@@ -185,6 +205,7 @@
     - view:clear
     - route:clear
   when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 # Run artisan phone service
 - name: Run artisan migration
@@ -192,12 +213,14 @@
   args:
     chdir: 'projects/hiv'
   when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan storage link
   shell: 'docker-compose exec phone_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: hicadmin_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
   shell: 'docker-compose exec phone_service /usr/bin/php artisan {{ item }}'
@@ -208,6 +231,7 @@
     - config:clear
     - view:clear
     - route:clear
+  delegate_to: live-gl-tra
 
 ### VIETNAME
 - name: VN Patient | Run artisan migration
@@ -215,12 +239,14 @@
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: VN Patient | Run artisan storage link
   shell: 'docker-compose -f vn-patient-compose.yml exec vn_patient_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: VN Patient | Run artisan clear cache
   shell: 'docker-compose -f vn-patient-compose.yml exec vn_patient_service /usr/bin/php artisan {{ item }}'
@@ -232,11 +258,13 @@
     - view:clear
     - route:clear
   when: patient_service_build.stat.exists
+  delegate_to: live-gl-tra
 
 - name: Run artisan import
   shell: 'docker-compose -f vn-patient-compose.yml exec vn_patient_service /usr/bin/php artisan hi:create-backend-user &'
   args:
     chdir: 'projects/hiv'
+  delegate_to: live-gl-tra
 
 - name: Remove build file state
   file:
