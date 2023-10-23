@@ -15,11 +15,11 @@ services:
     restart: unless-stopped
     environment:
       LOCAL_USER_ID: 1000
-    extra_hosts:
-      - "admin_service:54.179.65.28"
-      - "therapist_service:54.179.65.28"
-      - "phone_service:54.179.65.28"
-      - "keycloak:54.179.65.28"
+    # extra_hosts:
+    #   - "admin_service:54.179.65.28"
+    #   - "therapist_service:54.179.65.28"
+    #   - "phone_service:54.179.65.28"
+    #   - "keycloak:54.179.65.28"
     ports:
       - "80:80"
     networks:
@@ -43,4 +43,3 @@ services:
       MYSQL_DATABASE: vn_patient_service
       MYSQL_USER: vn_patient_service
       MYSQL_PASSWORD: {{ hostvars['live-vn-tra']['my_patientservice_pass'] }}
-
