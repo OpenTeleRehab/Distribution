@@ -51,7 +51,7 @@
   args:
     chdir: 'projects/hiv'
   loop:
-    - docker-compose.yaml
+    - docker-compose.yml
     - vn-patient-compose.yml
 
 - name: Docker compose start all container
@@ -59,7 +59,7 @@
   args:
     chdir: 'projects/hiv'
   loop:
-    - docker-compose.yaml
+    - docker-compose.yml
     - vn-patient-compose.yml
 
 - name: Wait for containers ready
