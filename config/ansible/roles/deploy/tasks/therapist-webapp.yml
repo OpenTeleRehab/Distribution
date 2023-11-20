@@ -17,6 +17,9 @@
     - .dockerignore
     - .env
 
+- name: Switch node version 14.x
+  shell: "/usr/bin/n 14.21.3"
+
 - name: TherapistWebapp | Run yarn install
   shell: NODE_OPTIONS=--max_old_space_size=4096 yarn install
   args:
