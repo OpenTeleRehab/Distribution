@@ -277,3 +277,14 @@
     - '{{ stage }}-therapist-webapp-build'
     - '{{ stage }}-patient-service-build'
     - '{{ stage }}-krakend-service-build'
+
+### RELOAD WEB SERVICES
+- name: Docker restart web servivces
+  shell: "docker-compose restart {{ item }}"
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - admin_webapp
+    - library_webapp
+    - therapist_webapp
+  delegate_to: live-gl-tra
