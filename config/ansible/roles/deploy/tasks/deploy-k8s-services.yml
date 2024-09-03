@@ -96,8 +96,8 @@
 #   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/rocketchat.yml'
 
 ### Deploy jitsi
-- name: Deploy jitsi
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/jitsi.yml'
+# - name: Deploy jitsi
+#   shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/jitsi.yml'
 
 ### Deploy Krakend
 - name: Deploy krakend
