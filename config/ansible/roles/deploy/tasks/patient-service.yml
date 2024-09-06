@@ -20,6 +20,12 @@
     dest: '{{ workspace }}/patient-service/.env'
     mode: 0755
 
+- name: PatientService | Copy firebase-auth.json files
+  template:
+    src: 'internal/patient-service/firebase-auth.json.vault'
+    dest: '{{ workspace }}/patient-service/storage/app/firebase-auth.json'
+    mode: 0755
+
 - name: PatientService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
   args:
