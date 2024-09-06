@@ -51,8 +51,6 @@ rocketchat_admin_pass:        '{{ rocketchat_admin_pass_vault }}'
 
 google_translate_api_key:     '{{ google_translate_api_key_vault }}'
 
-firebase_server_api_key:      '{{ firebase_server_api_key_vault }}'
-
 twilio_account_sid:           '{{ twilio_account_sid_vault }}'
 twilio_api_key:               '{{ twilio_api_key_vault }}'
 twilio_api_key_secret:        '{{ twilio_api_key_secret_vault }}'
