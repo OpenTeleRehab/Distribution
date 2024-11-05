@@ -26,6 +26,11 @@ cp ../patient-service/.env.example ../patient-service/.env
 cp ../phone-service/.env.example ../phone-service/.env
 cp ../open-library-service/.env.example ../open-library-service/.env
 
+uid=$(id -u)
+cp -rf ./dot-env.example ./.env
+sed -i "s/USER_ID=*/USER_ID=$uid/g" ./.env
+
+
 echo "* Run composer to install dependencies"
 docker-compose run --no-deps admin_service composer install --prefer-dist -vvv
 docker-compose run --no-deps therapist_service composer install --prefer-dist -vvv
