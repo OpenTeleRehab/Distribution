@@ -130,7 +130,7 @@ services:
     networks:
       - hiv-docker-net
     environment:
-      LOCAL_USER_ID: 1001
+      LOCAL_USER_ID: ${USER_ID}
     volumes:
       - ../admin-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
@@ -180,7 +180,7 @@ services:
     networks:
       - hiv-docker-net
     environment:
-      LOCAL_USER_ID: 1001
+      LOCAL_USER_ID: ${USER_ID}
     volumes:
       - ../therapist-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
@@ -212,7 +212,7 @@ services:
     networks:
       - hiv-docker-net
     environment:
-      LOCAL_USER_ID: 1001
+      LOCAL_USER_ID: ${USER_ID}
     volumes:
       - ../patient-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
@@ -243,7 +243,7 @@ services:
     networks:
       - hiv-docker-net
     environment:
-      LOCAL_USER_ID: 1001
+      LOCAL_USER_ID: ${USER_ID}
     volumes:
       - ../patient-service:/var/www/html
       - ../patient-service/.env.example.vn:/var/www/html/.env
@@ -275,7 +275,7 @@ services:
     networks:
       - hiv-docker-net
     environment:
-      LOCAL_USER_ID: 1001
+      LOCAL_USER_ID: ${USER_ID}
     volumes:
       - ../phone-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
@@ -322,7 +322,7 @@ services:
   library_service:
     build: ../open-library-service/
     environment:
-      LOCAL_USER_ID: 1001
+      LOCAL_USER_ID: ${USER_ID}
     volumes:
       - ../open-library-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
