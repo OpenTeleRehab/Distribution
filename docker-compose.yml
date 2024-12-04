@@ -134,7 +134,7 @@ services:
     volumes:
       - ../admin-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
       - ./config/service/queue-worker.conf:/etc/supervisor/conf.d/queue-worker.conf
     depends_on:
       - admin_service_db
@@ -176,7 +176,7 @@ services:
       - krakend
 
   therapist_service:
-    image: wehostasia/nginx-php:7.4
+    image: wehostasia/laravel:nginx-php-8.3
     networks:
       - hiv-docker-net
     environment:
@@ -184,7 +184,7 @@ services:
     volumes:
       - ../therapist-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
     depends_on:
       - keycloak
       - therapist_service_db
@@ -208,7 +208,7 @@ services:
   # Patient Service #
   ###################
   patient_service:
-    image: wehostasia/nginx-php:7.4
+    image: wehostasia/laravel:nginx-php-8.3
     networks:
       - hiv-docker-net
     environment:
@@ -216,7 +216,7 @@ services:
     volumes:
       - ../patient-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
     depends_on:
       - patient_service_db
 
@@ -239,7 +239,7 @@ services:
   # VN Patient Service #
   ######################
   patient_vn_service:
-    image: wehostasia/nginx-php:7.4
+    image: wehostasia/laravel:nginx-php-8.3
     networks:
       - hiv-docker-net
     environment:
@@ -248,7 +248,7 @@ services:
       - ../patient-service:/var/www/html
       - ../patient-service/.env.example.vn:/var/www/html/.env
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
     depends_on:
       - vn_patient_service_db
 
@@ -271,7 +271,7 @@ services:
   # Phone Service #
   ######################
   phone_service:
-    image: wehostasia/nginx-php:7.4
+    image: wehostasia/laravel:nginx-php-8.3
     networks:
       - hiv-docker-net
     environment:
@@ -279,7 +279,7 @@ services:
     volumes:
       - ../phone-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
     depends_on:
       - phone_service_db
 
