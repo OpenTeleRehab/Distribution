@@ -3,7 +3,10 @@
 version: '3'
 
 networks:
-  hiv-docker-net:
+  docker-net:
+    name: docker-net
+    external:
+      true
 
 volumes:
   admin_service_db_data:
@@ -20,7 +23,7 @@ services:
   proxy:
     image: traefik:v2.5
     networks:
-      - hiv-docker-net
+      - docker-net
     volumes:
     - '/var/run/docker.sock:/var/run/docker.sock:ro'
     - './config/docker/traefik-config.yaml:/etc/traefik/traefik.yaml'
@@ -41,7 +44,7 @@ services:
   keycloak:
     build: ../keycloak/
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       DB_VENDOR: MYSQL
       DB_ADDR: keycloak_db
@@ -61,7 +64,7 @@ services:
   keycloak_db:
     image: mysql:8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - keycloak_db_data:/var/lib/mysql
@@ -78,7 +81,7 @@ services:
   krakend:
     image: docker.io/devopsfaith/krakend:2.7.2
     networks:
-      - hiv-docker-net
+      - docker-net
     volumes:
       - ../krakend/config/krakend:/etc/krakend
     environment:
@@ -91,7 +94,7 @@ services:
   client_web_app:
     image: nginx:1.22.1
     networks:
-      - hiv-docker-net
+      - docker-net
     volumes:
       - ./config/docker/client-webapp/default.conf:/etc/nginx/conf.d/default.conf
       #- ./config/docker/client-webapp/default_none_hi.conf:/etc/nginx/conf.d/default_none_hi.conf
@@ -116,7 +119,7 @@ services:
     volumes:
       - ../admin-web-app:/usr/src/app
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       NODE_ENV: development
     stdin_open: true
@@ -128,7 +131,7 @@ services:
   admin_service:
     build: ../admin-service
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       LOCAL_USER_ID: ${USER_ID}
     volumes:
@@ -142,7 +145,7 @@ services:
   admin_service_db:
     image: docker.io/mysql:8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - admin_service_db_data:/var/lib/mysql
@@ -166,7 +169,7 @@ services:
     volumes:
       - ../therapist-web-app:/usr/src/app
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       NODE_ENV: development
     stdin_open: true
@@ -178,7 +181,7 @@ services:
   therapist_service:
     image: wehostasia/laravel:nginx-php-8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       LOCAL_USER_ID: ${USER_ID}
     volumes:
@@ -192,7 +195,7 @@ services:
   therapist_service_db:
     image: docker.io/mysql:8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - therapist_service_db_data:/var/lib/mysql
@@ -210,7 +213,7 @@ services:
   patient_service:
     image: wehostasia/laravel:nginx-php-8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       LOCAL_USER_ID: ${USER_ID}
     volumes:
@@ -223,7 +226,7 @@ services:
   patient_service_db:
     image: mysql:8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - patient_service_db_data:/var/lib/mysql
@@ -241,7 +244,7 @@ services:
   patient_vn_service:
     image: wehostasia/laravel:nginx-php-8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       LOCAL_USER_ID: ${USER_ID}
     volumes:
@@ -255,7 +258,7 @@ services:
   vn_patient_service_db:
     image: mysql:8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - vn_patient_service_db_data:/var/lib/mysql
@@ -273,7 +276,7 @@ services:
   phone_service:
     image: wehostasia/laravel:nginx-php-8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       LOCAL_USER_ID: ${USER_ID}
     volumes:
@@ -286,7 +289,7 @@ services:
   phone_service_db:
     image: mysql:8.3
     networks:
-      - hiv-docker-net
+      - docker-net
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - phone_service_db_data:/var/lib/mysql
@@ -310,7 +313,7 @@ services:
     volumes:
       - ../open-library-web-app:/usr/src/app
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       NODE_ENV: development
     stdin_open: true
@@ -328,7 +331,7 @@ services:
       - ./config/service/default.conf:/etc/nginx/sites-available/default
       - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     networks:
-      - hiv-docker-net
+      - docker-net
     depends_on:
       - keycloak
       - open_library_service_db
@@ -341,7 +344,7 @@ services:
       - ./config/mysql/open_library_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
       - ./config/mysql/open_library_service_db/data_restore.sql:/docker-entrypoint-initdb.d/data_restore.sql
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: open_library_service
@@ -368,7 +371,7 @@ services:
       - 'traefik.http.routers.rocketchat.service=rocketchat'
       - 'traefik.http.services.rocketchat.loadbalancer.server.port=3000'
     networks:
-      - hiv-docker-net
+      - docker-net
     stdin_open: true
     tty: true
     depends_on:
@@ -379,7 +382,7 @@ services:
     volumes:
       - rocketchat_db_data:/bitnami/mongodb
     networks:
-      - hiv-docker-net
+      - docker-net
     environment:
       MONGODB_REPLICA_SET_MODE: primary
       MONGODB_REPLICA_SET_NAME: rs0
@@ -390,6 +393,6 @@ services:
   adminer:
     image: library/adminer:4.7.8
     networks:
-      - hiv-docker-net
+      - docker-net
     ports:
       - "8060:8080"
