@@ -70,6 +70,22 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
 ### Enjoy your development on `admin-web-app` or `therapist-web-app`
 
+# Setup apache superset
+
+  ```bash
+  make
+  make docker-net
+  make apache-superset
+  ```
+
+# Setup Presto
+
+  ```bash
+  make
+  make docker-net
+  make presto
+  ```
+
 # Useful docker command
 
 * Manually up docker

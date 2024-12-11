@@ -30,6 +30,8 @@ fi
 #
 if [ -f "${REQUIREMENTS_LOCAL}" ]; then
   echo "Installing local overrides at ${REQUIREMENTS_LOCAL}"
+  # MySQL connection
+  # apt-get update && apt-get install -y python3-dev default-libmysqlclient-dev build-essential pkg-config
   pip install --no-cache-dir -r "${REQUIREMENTS_LOCAL}"
 else
   echo "Skipping local overrides"
