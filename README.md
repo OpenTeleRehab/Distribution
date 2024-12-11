@@ -86,6 +86,12 @@ This repository is where OpenRehab App implemented in Microservices and using do
   make presto
   ```
 
+## Presto configuration files
+
+  ```bash
+  ./config/docker/presto/etc
+  ```
+
 # Useful docker command
 
 * Manually up docker
