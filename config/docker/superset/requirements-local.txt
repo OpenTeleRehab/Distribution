@@ -1,2 +1,0 @@
-pyhive==0.7.0
-# mysqlclient==2.2.6
