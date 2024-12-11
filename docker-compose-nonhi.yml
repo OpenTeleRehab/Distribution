@@ -40,7 +40,7 @@ services:
       - ../admin-service:/var/www/html
       - ../admin-service/.env.example.nonhi:/var/www/html/.env
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_admin_service_db
 
@@ -79,7 +79,7 @@ services:
     tty: true
 
   nonhi_therapist_service:
-    image: wehostasia/laravel:nginx-php-8.3
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
@@ -88,7 +88,7 @@ services:
       - ../therapist-service:/var/www/html
       - ../therapist-service/.env.example.nonhi:/var/www/html/.env
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_therapist_service_db
 
@@ -110,7 +110,7 @@ services:
   ### NonHI Patient ###
   #############
   nonhi_patient_service:
-    image: wehostasia/laravel:nginx-php-8.3
+    image: wehostasia/nginx-php:7.4
     networks:
       - hiv-docker-net
     environment:
@@ -119,7 +119,7 @@ services:
       - ../patient-service:/var/www/html
       - ../patient-service/.env.example.nonhi:/var/www/html/.env
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
     depends_on:
       - nonhi_patient_service_db
 
