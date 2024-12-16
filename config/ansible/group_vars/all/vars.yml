@@ -33,7 +33,7 @@ nfs_server:                             '10.10.10.26'
 nfs_path:                               '/volume1/export/{{ stage }}/{{ project_id }}'
 
 app_context:                            'Production'
-php_bin:                                '/opt/php-versions/php74/bin/php'
+php_bin:                                '/usr/bin/php8.3'
 composer_bin:                           '/usr/local/bin/composer'
 composer_flags:                         '--no-dev --prefer-dist --no-interaction'
 
