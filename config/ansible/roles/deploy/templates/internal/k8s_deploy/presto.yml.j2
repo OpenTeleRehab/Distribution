@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-presto'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-presto'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-presto'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      containers:
+        - image: prestodb/presto:0.289
+          name: 'app-{{ stage }}-{{ project_name }}-presto'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+          - name: vol-{{ stage }}-{{ project_name }}-presto-catalog
+            mountPath: /opt/presto-server/etc/catalog
+          - name: vol-{{ stage }}-{{ project_name }}
+            mountPath: /var/lib/presto/data
+            subPath: presto/data
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+      - name: vol-{{ stage }}-{{ project_name }}-presto-catalog
+        configMap:
+          name: configmap-{{ stage }}-{{ project_name }}-presto-catalog
+      - name: vol-{{ stage }}-{{ project_name }}
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_name }}'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-presto'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-presto'

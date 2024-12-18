@@ -128,3 +128,6 @@ superset_redis_host: 'svc-{{ stage }}-{{ project_name }}-superset-redis'
 superset_redis_port: '6379'
 
 superset_secret_key: '{{ superset_secret_key_vault }}'
+
+# Presto
+presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
