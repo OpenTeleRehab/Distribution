@@ -228,10 +228,16 @@ spec:
           volumeMounts:
           - name: tz-config
             mountPath: /etc/localtime
+          - name: vol-{{ stage }}-{{ project_name }}
+            mountPath: /data
+            subPath: superset-redis
       volumes:
       - name: tz-config
         hostPath:
           path: {{ tz_path }}
+      - name: vol-{{ stage }}-{{ project_name }}
+        persistentVolumeClaim:
+          claimName: 'pvc-{{ stage }}-{{ project_name }}'
 
 ---
 apiVersion: v1
