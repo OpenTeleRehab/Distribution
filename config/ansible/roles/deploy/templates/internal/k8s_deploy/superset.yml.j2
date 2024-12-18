@@ -1,0 +1,225 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-superset'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-superset'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-superset'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      command:
+        - /app/docker/docker-bootstrap.sh
+      args:
+        - app-gunicorn
+      envFrom:
+      - configMapRef:
+          name: configmap-{{ stage }}-{{ project_name }}-superset-env
+      containers:
+        - image: {{ superset_image }}
+          name: 'app-{{ stage }}-{{ project_name }}-superset'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8088
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-superset'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 8088
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-superset'
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-superset-init'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-superset-init'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-superset-init'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      command:
+        - /app/docker/docker-init.sh
+      envFrom:
+      - configMapRef:
+          name: configmap-{{ stage }}-{{ project_name }}-superset-env
+      containers:
+        - image: {{ superset_image }}
+          name: 'app-{{ stage }}-{{ project_name }}-superset-init'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8088
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-superset-worker'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-superset-worker'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-superset-worker'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      command:
+        - /app/docker/docker-bootstrap.sh
+      args:
+        - worker
+      envFrom:
+      - configMapRef:
+          name: configmap-{{ stage }}-{{ project_name }}-superset-env
+      containers:
+        - image: {{ superset_image }}
+          name: 'app-{{ stage }}-{{ project_name }}-superset-worker'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8088
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-superset-worker-beat'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-superset-worker-beat'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-superset-worker-beat'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      command:
+        - /app/docker/docker-bootstrap.sh
+      args:
+        - worker
+      envFrom:
+      - configMapRef:
+          name: configmap-{{ stage }}-{{ project_name }}-superset-env
+      containers:
+        - image: {{ superset_image }}
+          name: 'app-{{ stage }}-{{ project_name }}-superset-worker-beat'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8088
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'app-{{ stage }}-{{ project_name }}-superset-redis'
+  namespace: '{{ k8s_namespace }}'
+  annotations:
+    reloader.stakater.com/auto: 'true'
+spec:
+  selector:
+    matchLabels:
+      app: 'app-{{ stage }}-{{ project_name }}-superset-redis'
+  template:
+    metadata:
+      labels:
+        app: 'app-{{ stage }}-{{ project_name }}-superset-redis'
+    spec:
+      imagePullSecrets:
+        - name: secret-{{ project_name }}
+      envFrom:
+      - configMapRef:
+          name: configmap-{{ stage }}-{{ project_name }}-superset-env
+      containers:
+        - image: {{ superset_redis_image }}
+          name: 'app-{{ stage }}-{{ project_name }}-superset-redis'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+          - name: tz-config
+            mountPath: /etc/localtime
+      volumes:
+      - name: tz-config
+        hostPath:
+          path: {{ tz_path }}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'svc-{{ stage }}-{{ project_name }}-superset-redis'
+  namespace: '{{ k8s_namespace }}'
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: 'app-{{ stage }}-{{ project_name }}-superset-redis'
