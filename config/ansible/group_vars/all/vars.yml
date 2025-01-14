@@ -113,6 +113,7 @@ google_translate_api_key:               '{{ google_translate_api_key_vault }}'
 twilio_account_sid:                     '{{ twilio_account_sid_vault }}'
 twilio_api_key:                         '{{ twilio_api_key_vault }}'
 twilio_api_key_secret:                  '{{ twilio_api_key_secret_vault }}'
+twilio_auth_token:                      '{{ twilio_auth_token_vault }}'
 
 # Apache superset
 superset_image:   'apache/superset:4.1.1'
