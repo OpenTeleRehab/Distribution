@@ -25,6 +25,14 @@
     src: 'internal/patient-service/firebase-auth.json.vault'
     dest: '{{ workspace }}/patient-service/storage/app/firebase-auth.json'
     mode: 0755
+  when: stage == 'live'
+
+- name: PatientService | Copy firebase-auth-dev.json files
+  template:
+    src: 'internal/patient-service/firebase-auth-dev.json.vault'
+    dest: '{{ workspace }}/patient-service/storage/app/firebase-auth.json'
+    mode: 0755
+  when: stage != 'live'
 
 - name: PatientService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
