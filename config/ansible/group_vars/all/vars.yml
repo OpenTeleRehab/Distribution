@@ -34,6 +34,7 @@ nfs_path:                               '/volume1/export/{{ stage }}/{{ project_
 
 app_context:                            'Production'
 php_bin:                                '/usr/bin/php8.3'
+php_7_bin:                              '/opt/php-versions/php74/bin/php'
 composer_bin:                           '/usr/local/bin/composer'
 composer_flags:                         '--no-dev --prefer-dist --no-interaction'
 
