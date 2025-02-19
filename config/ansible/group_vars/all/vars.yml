@@ -33,7 +33,7 @@ nfs_server:                             '10.10.10.26'
 nfs_path:                               '/volume1/export/{{ stage }}/{{ project_id }}'
 
 app_context:                            'Production'
-php_bin:                                '/opt/php-versions/php74/bin/php'
+php_bin:                                '/usr/bin/php8.3'
 composer_bin:                           '/usr/local/bin/composer'
 composer_flags:                         '--no-dev --prefer-dist --no-interaction'
 
@@ -113,3 +113,24 @@ google_translate_api_key:               '{{ google_translate_api_key_vault }}'
 twilio_account_sid:                     '{{ twilio_account_sid_vault }}'
 twilio_api_key:                         '{{ twilio_api_key_vault }}'
 twilio_api_key_secret:                  '{{ twilio_api_key_secret_vault }}'
+twilio_auth_token:                      '{{ twilio_auth_token_vault }}'
+
+firebase_project_id:                    'opentelerehab-dev'
+
+# Apache superset
+superset_image:   'apache/superset:4.1.1'
+superset_host:    '{{ stage }}-superset-rehabilitation.wehost.asia'
+database_dialect: 'mysql'
+superset_db_port: '3306'
+superset_db_user: '{{ stage }}_{{ project_name }}_superset'
+superset_db_pass: '{{ superset_db_pass_vault }}'
+superset_db_name: '{{ stage }}_{{ project_name }}_superset'
+
+superset_redis_image: 'redis:7.4.1'
+superset_redis_host: 'svc-{{ stage }}-{{ project_name }}-superset-redis'
+superset_redis_port: '6379'
+
+superset_secret_key: '{{ superset_secret_key_vault }}'
+
+# Presto
+presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'

@@ -1,0 +1,47 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-superset-env
+  namespace: {{ k8s_namespace }}
+data:
+  DATABASE_DB: '{{ superset_db_name }}'
+  DATABASE_HOST: '{{ my_host }}'
+
+  DATABASE_PASSWORD: '{{ superset_db_pass }}'
+  DATABASE_USER: '{{ superset_db_user }}'
+
+  EXAMPLES_DB: 'examples'
+  EXAMPLES_HOST: 'db'
+  EXAMPLES_USER: 'examples'
+
+  EXAMPLES_PASSWORD: 'examples'
+  EXAMPLES_PORT: '5432'
+
+  DATABASE_PORT: '{{ superset_db_port }}'
+  DATABASE_DIALECT: '{{ database_dialect }}'
+
+  MYSQL_DATABASE: '{{ superset_db_name }}'
+  MYSQL_USER: '{{ superset_db_user }}'
+  MYSQL_PASSWORD: '{{ superset_db_pass }}'
+  MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+
+  PYTHONPATH: '/app/pythonpath:/app/docker/pythonpath_dev'
+  REDIS_HOST: '{{ superset_redis_host }}'
+  REDIS_PORT: '{{ superset_redis_port }}'
+
+  FLASK_DEBUG: 'true'
+  SUPERSET_ENV: 'production'
+  SUPERSET_LOAD_EXAMPLES: 'no'
+  CYPRESS_CONFIG: 'false'
+  SUPERSET_PORT: '8088'
+  MAPBOX_API_KEY: ''
+
+  SUPERSET_SECRET_KEY: '{{ superset_secret_key }}'
+
+  TALISMAN_ENABLED: 'yes'
+
+  ENABLE_PLAYWRIGHT: 'false'
+  PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+  BUILD_SUPERSET_FRONTEND_IN_DOCKER: 'true'

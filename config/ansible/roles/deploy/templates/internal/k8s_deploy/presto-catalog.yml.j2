@@ -1,0 +1,23 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-presto-catalog
+  namespace: {{ k8s_namespace }}
+data:
+  therapist_service.properties: |
+    connector.name=mysql
+    connection-url=jdbc:mysql://{{ my_host }}:3306
+    connection-user={{ my_therapistservice_user }}
+    connection-password={{ my_therapistservice_pass }}
+  patient_service.properties: |
+    connector.name=mysql
+    connection-url=jdbc:mysql://{{ my_host }}:3306
+    connection-user={{ my_patientservice_user }}
+    connection-password={{ my_patientservice_pass }}
+  admin_service.properties: |
+    connector.name=mysql
+    connection-url=jdbc:mysql://{{ my_host }}:3306
+    connection-user={{ my_adminservice_user }}
+    connection-password={{ my_adminservice_pass }}

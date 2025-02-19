@@ -352,7 +352,7 @@ services:
   ### Rocket Chat ###
   #############
   rocketchat:
-    image: rocketchat/rocket.chat:5.2.0
+    image: rocketchat/rocket.chat:7.1.0
     volumes:
       - rocketchat_uploads:/app/uploads
     environment:
@@ -375,7 +375,7 @@ services:
       - mongo
 
   mongo:
-    image: bitnami/mongodb:4.4.15
+    image: bitnami/mongodb:7.0.15
     volumes:
       - rocketchat_db_data:/bitnami/mongodb
     networks:
