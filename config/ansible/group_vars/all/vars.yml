@@ -38,6 +38,7 @@ php_7_bin:                              '/opt/php-versions/php74/bin/php'
 composer_bin:                           '/usr/local/bin/composer'
 composer_flags:                         '--no-dev --prefer-dist --no-interaction'
 
+service_docker_image:                   'wehostasia/laravel:nginx-php-8.3'
 hub_registry:                           'hub.web-essentials.co'
 hub_user:                               'docker'
 hub_pass:                               '{{ hub_pass_vault }}'
