@@ -1,1 +1,3 @@
 ---
+
+rocketchat_service: 'https://{{ stage }}-chat-rehabilitation.wehost.asia'

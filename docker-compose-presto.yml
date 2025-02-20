@@ -1,0 +1,28 @@
+# -----------------------------------------------------------------------
+x-presto-image: &presto-image prestodb/presto:0.289
+
+x-presto-volumes:
+  &presto-volumes # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+  - ./config/docker/presto/etc/:/opt/presto-server/etc/
+
+networks:
+  docker-net:
+    name: docker-net
+    external: true
+# -----------------------------------------------------------------------
+
+services:
+  presto:
+    image: *presto-image
+    container_name: presto_app
+    networks:
+      - docker-net
+    volumes: *presto-volumes
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.presto.tls=true'
+      - 'traefik.http.routers.presto.rule=Host(`local-hi-presto.wehost.asia`)'
+      - 'traefik.http.routers.presto.service=presto'
+      - 'traefik.http.services.presto.loadbalancer.server.port=8080'
+      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.routers.client_web_app.middlewares=serviceheaders"
