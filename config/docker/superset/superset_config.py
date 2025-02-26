@@ -1,0 +1,6 @@
+FEATURE_FLAGS = {
+    "ENABLE_TEMPLATE_PROCESSING": True,
+    "EMBEDDED_SUPERSET": True,
+}
+
+GUEST_ROLE_NAME= 'embed_dashboard'

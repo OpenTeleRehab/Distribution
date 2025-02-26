@@ -134,5 +134,11 @@ superset_redis_port: '6379'
 
 superset_secret_key: '{{ superset_secret_key_vault }}'
 
+superset_guest_token_secret: '{{ superset_guest_token_secret_vault }}'
+superset_admin_user: '{{ superset_admin_user_vault }}'
+superset_admin_password: '{{ superset_admin_password_vault }}'
+superset_dashboard_id_for_global_admin: '8f41f453-fe23-40f0-ae0f-35a890ea7bcb'
+superset_dashboard_id_for_country_admin: '8f41f453-fe23-40f0-ae0f-35a890ea7bcb'
+superset_dashboard_id_for_clinic_admin: '8f41f453-fe23-40f0-ae0f-35a890ea7bcb'
 # Presto
 presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
