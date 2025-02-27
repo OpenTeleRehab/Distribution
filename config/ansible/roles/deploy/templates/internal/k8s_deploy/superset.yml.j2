@@ -36,6 +36,8 @@ spec:
               mountPath: /app/docker
             - name: vol-{{ stage }}-{{ project_name }}-superset-home
               mountPath: /app/superset_home
+            - name: vol-{{ stage }}-{{ project_name }}-superset_config
+              mountPath: /app/pythonpath/superset_config.py
       containers:
         - image: {{ superset_image }}
           name: 'app-{{ stage }}-{{ project_name }}-superset'
@@ -59,6 +61,8 @@ spec:
             mountPath: /app/docker
           - name: vol-{{ stage }}-{{ project_name }}-superset-home
             mountPath: /app/superset_home
+          - name: vol-{{ stage }}-{{ project_name }}-superset_config
+            mountPath: /app/pythonpath/superset_config.py
       volumes:
       - name: tz-config
         hostPath:
@@ -126,6 +130,8 @@ spec:
             mountPath: /app/docker
           - name: vol-{{ stage }}-{{ project_name }}-superset-home
             mountPath: /app/superset_home
+          - name: vol-{{ stage }}-{{ project_name }}-superset_config
+            mountPath: /app/pythonpath/superset_config.py
       volumes:
       - name: tz-config
         hostPath:
@@ -182,6 +188,8 @@ spec:
             mountPath: /app/docker
           - name: vol-{{ stage }}-{{ project_name }}-superset-home
             mountPath: /app/superset_home
+          - name: vol-{{ stage }}-{{ project_name }}-superset_config
+            mountPath: /app/pythonpath/superset_config.py
       volumes:
       - name: tz-config
         hostPath:
