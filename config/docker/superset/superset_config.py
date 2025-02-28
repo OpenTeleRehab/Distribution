@@ -3,6 +3,10 @@ FEATURE_FLAGS = {
     "EMBEDDED_SUPERSET": True,
 }
 
+HTTP_HEADERS = {
+    "X-Frame-Options": "ALLOWALL",
+}
+
 GUEST_ROLE_NAME= 'embed_dashboard'
 
 CACHE_CONFIG = {
