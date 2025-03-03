@@ -13,6 +13,7 @@ endef
 # host name
 SUPERSET_HOST ?= local-hi-superset.wehost.asia
 PRESTO_HOST ?= local-hi-presto.wehost.asia
+TRINO_HOST ?= local-hi-trino.wehost.asia
 
 DOCKER_COMPOSE := docker compose
 # The default target
@@ -49,7 +50,18 @@ help:
 	@echo "  make presto-ps"
 	@echo "  make presto-kill"
 	@echo "  make presto-exec"
-
+	$(call echo_section,"===================================")
+	$(call echo_section,"=========== TRINO ================")
+	$(call echo_section,"https://$(TRINO_HOST)")
+	$(call echo_section,"===================================")
+	$(call echo_title, "Start trino service")
+	@echo "  make trino"
+	@echo "  "
+	$(call echo_title, "Other command trino service:")
+	@echo "  make trino-compose"
+	@echo "  make trino-ps"
+	@echo "  make trino-kill"
+	@echo "  make trino-exec"
 docker-net:
 	docker network create docker-net
 ### Apache Superset ###
@@ -108,6 +120,31 @@ presto-exec:
 
 presto-compose:
 	@$(DOCKER_COMPOSE) -f docker-compose-presto.yml $(filter-out $@,$(MAKECMDGOALS))
+
+### Trino ###
+trino:
+	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml up -d
+	$(call echo_title, "Add host to /etc/hosts")
+	@if [ `grep -o "$(TRINO_HOST)" /etc/hosts | wc -l` = 0 ]; then\
+		sudo bash -c "echo 0.0.0.0 $(TRINO_HOST) >> /etc/hosts";\
+	else\
+		echo "==> Skip: host already existed.";\
+	fi
+
+trino-docker:
+	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml $(filter-out $@,$(MAKECMDGOALS))
+
+trino-ps:
+	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml ps
+
+trino-kill:
+	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml kill
+
+trino-exec:
+	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml exec trino /bin/bash
+
+trino-compose:
+	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml $(filter-out $@,$(MAKECMDGOALS))
 
 %:
 	@:
