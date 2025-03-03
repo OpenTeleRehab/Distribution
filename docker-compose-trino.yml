@@ -3,7 +3,7 @@ x-trino-image: &trino-image trinodb/trino:470
 
 x-trino-volumes:
   &trino-volumes # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
-  - ./config/docker/trino/etc/:/etc/trino/etc/
+  - ./config/docker/trino/:/etc/trino/
 
 networks:
   docker-net:
