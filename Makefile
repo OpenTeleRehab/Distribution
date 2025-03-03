@@ -124,7 +124,9 @@ presto-compose:
 ### Trino ###
 trino:
 	@$(DOCKER_COMPOSE) -f docker-compose-trino.yml up -d
-	$(call echo_title, "Add host to /etc/hosts")
+	$(call echo_title, "Add host to /etc/hosts" https://$(TRINO_HOST))
+	$(call echo_title, https://$(TRINO_HOST))
+	$(call echo_title, username: admin)
 	@if [ `grep -o "$(TRINO_HOST)" /etc/hosts | wc -l` = 0 ]; then\
 		sudo bash -c "echo 0.0.0.0 $(TRINO_HOST) >> /etc/hosts";\
 	else\
