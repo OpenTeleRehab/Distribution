@@ -44,6 +44,8 @@ help:
 	$(call echo_title, "Start all database services")
 	@echo "  make up-db-services"
 	$(call echo_title, "Restore all database services")
+	$(call echo_section, "Make sure you have the database dump files in ./config/db_dump")
+	$(call echo_section, "Database must restore success before continue to the next step")
 	@echo "  make restore-all-dbs"
 	$(call echo_title, "Clone and pull code repositories")
 	@echo "  make git-pull"
