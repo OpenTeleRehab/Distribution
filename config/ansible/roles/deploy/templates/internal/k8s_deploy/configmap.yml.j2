@@ -192,6 +192,13 @@ data:
 
     GOOGLE_TRANSLATE_API_KEY={{ google_translate_api_key_vault }}
 
+    SUPERSET_BASE_URL=http://{{ superset_service }}:8088
+    SUPERSET_ADMIN_USER={{ superset_admin_user }}
+    SUPERSET_ADMIN_PASSWORD={{ superset_admin_password }}
+    SUPERSET_DASHBOARD_ID_FOR_GLOBAL_ADMIN={{ superset_dashboard_id_for_global_admin }}
+    SUPERSET_DASHBOARD_ID_FOR_COUNTRY_ADMIN={{ superset_dashboard_id_for_country_admin }}
+    SUPERSET_DASHBOARD_ID_FOR_CLINIC_ADMIN={{ superset_dashboard_id_for_clinic_admin }}
+
 ---
 
 apiVersion: v1
@@ -287,6 +294,8 @@ data:
     ADMIN_SERVICE_URL=http://{{ admin_service }}
 
     GOOGLE_TRANSLATE_API_KEY={{ google_translate_api_key }}
+
+    GLOBAL_ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
 
 ---
 
@@ -555,11 +564,14 @@ data:
         ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
         PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
 
-        ROCKET_CHAT_URL=http://{{ rocketchat_service }}
+        ROCKET_CHAT_URL={{ rocketchat_service }}
         ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
         ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
         ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+        TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+        TWILIO_API_KEY={{ twilio_api_key }}
+        TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
 
 
 ---
@@ -644,11 +656,18 @@ data:
     ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
     PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
 
-    ROCKET_CHAT_URL=http://{{ rocketchat_service }}
+    ROCKET_CHAT_URL={{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+    SMS_SID={{ sms_sid }}
+    SMS_TOKEN={{ sms_token }}
+    SMS_PHONE_NUMBER={{ sms_phone_number }}
+
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
 
 
 ---
@@ -713,7 +732,8 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
-    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+    FIREBASE_PROJECT_ID={{ firebase_project_id }}
+    FIREBASE_SERVICE_ACCOUNT_FILE=app/firebase-auth.json
 
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
@@ -736,11 +756,15 @@ data:
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
     PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
-    ROCKET_CHAT_URL=http://{{ rocketchat_service }}
+    ROCKET_CHAT_URL={{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
+    TWILIO_AUTH_TOKEN={{ twilio_auth_token }}
 
 
 ---
@@ -804,7 +828,8 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
-    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+    FIREBASE_PROJECT_ID=opentelerehab-e6c99
+    FIREBASE_SERVICE_ACCOUNT_FILE=app/firebase-auth.json
 
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
@@ -827,10 +852,14 @@ data:
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
     PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
-    ROCKET_CHAT_URL=http://{{ rocketchat_service }}
+    ROCKET_CHAT_URL={{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
 
 
 
@@ -964,7 +993,8 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
-    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+    FIREBASE_PROJECT_ID={{ firebase_project_id }}
+    FIREBASE_SERVICE_ACCOUNT_FILE=app/firebase-auth.json
 
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
@@ -987,11 +1017,15 @@ data:
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
     PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
-    ROCKET_CHAT_URL=http://{{ rocketchat_service }}
+    ROCKET_CHAT_URL={{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
 
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
+    TWILIO_AUTH_TOKEN={{ twilio_auth_token }}
 
 
 ---
@@ -1055,7 +1089,8 @@ data:
     SMS_VERIFY_SERVICE_SID={{ sms_verify_service_sid }}
     SMS_VERIFY_EXCLUDE_NUMBERS={{ sms_verify_exclude_numbers }}
 
-    FIREBASE_SERVER_API_KEY={{ firebase_server_api_key }}
+    FIREBASE_PROJECT_ID=opentelerehab-e6c99
+    FIREBASE_SERVICE_ACCOUNT_FILE=app/firebase-auth.json
 
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
@@ -1078,10 +1113,14 @@ data:
     THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
     PHONE_SERVICE_URL=http://{{ krakend_service }}:8000/phone
 
-    ROCKET_CHAT_URL=http://{{ rocketchat_service }}
+    ROCKET_CHAT_URL={{ rocketchat_service }}
     ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
     ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
     ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
 
 
 

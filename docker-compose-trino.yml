@@ -1,0 +1,28 @@
+# -----------------------------------------------------------------------
+x-trino-image: &trino-image trinodb/trino:470
+
+x-trino-volumes:
+  &trino-volumes # /app/pythonpath_docker will be appended to the PYTHONPATH in the final container
+  - ./config/docker/trino/:/etc/trino/
+
+networks:
+  docker-net:
+    name: docker-net
+    external: true
+# -----------------------------------------------------------------------
+
+services:
+  trino:
+    image: *trino-image
+    container_name: trino_app
+    networks:
+      - docker-net
+    volumes: *trino-volumes
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.trino.tls=true'
+      - 'traefik.http.routers.trino.rule=Host(`local-hi-trino.wehost.asia`)'
+      - 'traefik.http.routers.trino.service=trino'
+      - 'traefik.http.services.trino.loadbalancer.server.port=8080'
+      - "traefik.http.middlewares.serviceheaders.headers.accesscontrolalloworiginlist=*"
+      - "traefik.http.routers.client_web_app.middlewares=serviceheaders"

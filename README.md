@@ -8,56 +8,52 @@ This repository is where OpenTeleRehab is implemented in Microservices and using
 
 # Required Dependencies
 
-* PHP >= 7.3
-* [NodeJS](https://nodejs.org/en/download/package-manager/) version >= 10.0.0 < 15.0.0
-* [Yarn](https://yarnpkg.com/lang/en/docs/install/#debian-stable) version == 1.22.x
 * [Git](https://git-scm.com/) version >= 2.0.0
-* [Composer](https://getcomposer.org/)
 * [Docker](https://docs.docker.com/install/) version >= 17.12.0
 * [docker-compose](https://docs.docker.com/compose/install/#install-compose) >= 1.12.0
 
 # Local environment with Docker
 
-* Clone project to your development workspace
+## Clone project to your development workspace
 
-    ```bash
     git clone git@git.web-essentials.asia:hiv-tra-20/Distribution.git ~/dev/docker-projects/hiv/distribution
-    ```
 
-* Navigate to your project
 
-    ```bash
+## Navigate to your project
+
     cd ~/dev/docker-projects/hiv/distribution
-    sudo chown -R ${USER}:${USER} .
-    ```
 
-* Run script to set up
+## Using make to setup*
 
-    ```bash
-    chmod u+x local_setup/setup.sh
-    ./local_setup/setup.sh
-    ```
-    > Note: Actually, the script is trying to kill all conflict ports but sometimes it could not. So if there are conflict ports, you have to kill it first then rerun the script.
-    Here is the command to kill the port in Linux: `sudo kill $(sudo lsof -t -i:PORT_TO_FREE)`.
+    make help
 
-* Verify installation by visiting site below:
+## Get Backup databases from developer
+
+    ./config/db_dump/kc_db_dump.sql.gz
+    ./config/db_dump/admin_db_dump.sql.gz
+    ./config/db_dump/therapist_db_dump.sql.gz
+    ./config/db_dump/patient_db_dump.sql.gz
+    ./config/db_dump/vnpatient_db_dump.sql.gz
+    ./config/db_dump/phone_db_dump.sql.gz
+    ./config/db_dump/open_library_db_dump.sql.gz
+    ./config/db_dump/mongo_db_dump.gz
+
+## Restore database
+
+    make restore-all-dbs
+
+## Verify installation by visiting site below:
   * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
-    * super-admin@we.co / sup3r@Admin
-    * organization-admin@we.co / 0rganization@Admin
-    * country-admin@we.co / c0untry@Admin
-    * clinic-admin@we.co / cl1nic@Admin
+    * super-admin@we.co / Super@Admin
+    * organization-admin@we.co / Organization@Admin
+    * country-admin@we.co / Country@Admin
+    * clinic-admin@we.co / Clinic@Admin
   * [Therapist Portal](https://local-hi-therapist.wehost.asia) with user access below:
-    * therapist@we.co / th3rapist@WE
+    * therapist@we.co / Therapist@Portal
   * [Library Portal](https://local-hi-library.wehost.asia) with user access below:
-    * admin@we.co / admin@user
+    * library@we.co / Library@Portal
 
 ## Configure environment variables
-
-  ```bash
-  cp ../admin-service/.env.example ../admin-service/.env
-  cp ../therapist-service/.env.example ../therapist-service/.env
-  cp ../patient-service/.env.example ../patient-service/.env
-  ```
 
   > Edit `vi ../admin-service/.env` by replacing value for `KEYCLOAK_BACKEND_SECRET` getting from `hi` Realm -> Clients
 
@@ -75,6 +71,28 @@ This repository is where OpenTeleRehab is implemented in Microservices and using
 
 ### Enjoy your development on `admin-web-app` or `therapist-web-app`
 
+# Setup apache superset
+
+  ```bash
+  make
+  make docker-net
+  make apache-superset
+  ```
+
+# Setup Presto
+
+  ```bash
+  make
+  make docker-net
+  make presto
+  ```
+
+## Presto configuration files
+
+  ```bash
+  ./config/docker/presto/etc
+  ```
+
 # Useful docker command
 
 * Manually up docker
@@ -89,9 +107,11 @@ This repository is where OpenTeleRehab is implemented in Microservices and using
     docker-compose kill
     ```
 
-### Rocket Chat Configuration
-  Please follow [Installation Doc](https://confluence.web-essentials.co/display/TRA/Rocket+Chat+Configuration+for+OpenRehab)
-
 ### Common Issues
 * Invalid ssl certificate
   * Download [fullchain.pem](https://packages.web-essentials.asia/boxes/devssl/wehost.asia/fullchain.pem), [privkey.pem](https://packages.web-essentials.asia/boxes/devssl/wehost.asia/privkey.pem) files, and replace them into `./config/docker/ssl/`. Then please restart the docker containers.
+
+  ```bash
+  curl -o config/docker/ssl/fullchain.pem https://packages.web-essentials.asia/boxes/devssl/wehost.asia/fullchain.pem
+  curl -o config/docker/ssl/privkey.pem https://packages.web-essentials.asia/boxes/devssl/wehost.asia/privkey.pem
+  ```

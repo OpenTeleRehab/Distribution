@@ -1,9 +1,5 @@
 ---
 
-- name: Sync local storage to shared folder
-  shell: 'rsync -avz --chmod=ugo=rwX {{ workspace }}/patient-service/storage/ /export/{{ stage }}/{{ project_id }}/patient-service/'
-  when: stage != 'live'
-
 - name: PatientService | Copy deployment configuration
   template:
     src: 'internal/patient-service/{{ item }}.j2'
@@ -19,6 +15,24 @@
     src: 'internal/patient-service/env.j2'
     dest: '{{ workspace }}/patient-service/.env'
     mode: 0755
+
+- name: PatientService | Copy firebase-auth.json files
+  template:
+    src: 'internal/patient-service/firebase-auth.json.vault'
+    dest: '{{ workspace }}/patient-service/storage/app/firebase-auth.json'
+    mode: 0755
+  when: stage == 'live'
+
+- name: PatientService | Copy firebase-auth-dev.json files
+  template:
+    src: 'internal/patient-service/firebase-auth-dev.json.vault'
+    dest: '{{ workspace }}/patient-service/storage/app/firebase-auth.json'
+    mode: 0755
+  when: stage != 'live'
+
+- name: Sync local storage to shared folder
+  shell: 'rsync -avz --chmod=ugo=rwX {{ workspace }}/patient-service/storage/ /export/{{ stage }}/{{ project_id }}/patient-service/'
+  when: stage != 'live'
 
 - name: PatientService | Run composer to install dependencies
   shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'

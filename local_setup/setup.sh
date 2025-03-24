@@ -1,5 +1,12 @@
 #!/bin/bash
 
+echo "* User User own of the current directory"
+sudo chown -R ${USER}:${USER} .
+
+echo "* Copy SSL certificate"
+curl -o config/docker/ssl/fullchain.pem https://packages.web-essentials.asia/boxes/devssl/wehost.asia/fullchain.pem
+curl -o config/docker/ssl/privkey.pem https://packages.web-essentials.asia/boxes/devssl/wehost.asia/privkey.pem
+
 echo "* Cloning HIV repositories"
 git clone git@git.web-essentials.asia:hiv-tra-20/admin-service.git ../admin-service
 git clone git@git.web-essentials.asia:hiv-tra-20/therapist-service.git ../therapist-service
@@ -12,17 +19,29 @@ git clone git@git.web-essentials.asia:hiv-tra-20/hic-service.git ../open-library
 git clone git@git.web-essentials.asia:hiv-tra-20/hic-webapp.git ../open-library-web-app
 git clone git@git.web-essentials.asia:hiv-tra-20/phone-service.git ../phone-service
 
+echo "* Copy .evn"
+cp ../admin-service/.env.example ../admin-service/.env
+cp ../therapist-service/.env.example ../therapist-service/.env
+cp ../patient-service/.env.example ../patient-service/.env
+cp ../phone-service/.env.example ../phone-service/.env
+cp ../open-library-service/.env.example ../open-library-service/.env
+
+uid=$(id -u)
+cp -rf ./dot-env.example ./.env
+sed -i "s/USER_ID=*/USER_ID=$uid/g" ./.env
+
+
 echo "* Run composer to install dependencies"
-composer install --prefer-dist -vvv -d ../admin-service || exit -1
-composer install --prefer-dist -vvv -d ../therapist-service || exit -1
-composer install --prefer-dist -vvv -d ../patient-service || exit -1
-composer install --prefer-dist -vvv -d ../phone-service || exit -1
-composer install --prefer-dist -vvv -d ../open-library-service || exit -1
+docker-compose run --no-deps admin_service composer install --prefer-dist -vvv
+docker-compose run --no-deps therapist_service composer install --prefer-dist -vvv
+docker-compose run --no-deps patient_service composer install --prefer-dist -vvv
+docker-compose run --no-deps phone_service composer install --prefer-dist -vvv
+docker-compose run --no-deps library_service composer install --prefer-dist -vvv
 
 echo "* Run install NPM package dependencies"
-yarn --cwd ../admin-web-app
-yarn --cwd ../therapist-web-app
-yarn --cwd ../open-library-web-app
+docker-compose run --no-deps admin_web_app yarn --frozen-lockfile
+docker-compose run --no-deps therapist_web_app yarn --frozen-lockfile
+docker-compose run --no-deps library_web_app yarn --frozen-lockfile
 
 echo "* Up docker with docker-compose"
 docker-compose up -d
@@ -52,4 +71,15 @@ else
     sudo bash -c "echo 0.0.0.0 ${admin_hostname} ${therapist_hostname} ${chat_hostname} ${open_library_hostname} ${none_hi} >> /etc/hosts"
 fi
 
-echo "*** DONE ***"
+echo "*** READY ***"
+echo -e "
+  * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
+    * super-admin@we.co / sup3r@Admin
+    * organization-admin@we.co / 0rganization@Admin
+    * country-admin@we.co / c0untry@Admin
+    * clinic-admin@we.co / cl1nic@Admin
+  * [Therapist Portal](https://local-hi-therapist.wehost.asia) with user access below:
+    * therapist@we.co / th3rapist@WE
+  * [Library Portal](https://local-hi-library.wehost.asia) with user access below:
+    * admin@we.co / admin@user
+"

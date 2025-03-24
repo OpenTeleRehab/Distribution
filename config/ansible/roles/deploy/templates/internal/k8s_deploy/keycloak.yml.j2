@@ -23,30 +23,37 @@ spec:
             - containerPort: 8080
           volumeMounts:
             - name: configmap-{{ stage }}-{{ project_name }}-theme-properties
-              mountPath: /opt/jboss/keycloak/themes/hi/login/theme.properties
+              mountPath: /opt/keycloak/themes/hi/login/theme.properties
               subPath: theme-properties
             - name: configmap-{{ stage }}-{{ project_name }}-theme-properties
-              mountPath: /opt/jboss/keycloak/themes/open-library/login/theme.properties
+              mountPath: /opt/keycloak/themes/open-library/login/theme.properties
               subPath: theme-properties
             - name: tz-config
               mountPath: /etc/localtime
+          args: ["start"]
           env:
-            - name: DB_VENDOR
-              value: MYSQL
-            - name: DB_ADDR
+            - name: KC_DB
+              value: mysql
+            - name: KC_DB_URL_HOST
               value: {{ my_host }}
-            - name: DB_DATABASE
-              value: {{ my_keycloak_db }}
-            - name: DB_USER
+            - name: KC_DB_URL
+              value: jdbc:mysql://{{ my_host }}:3306/{{ my_keycloak_db }}
+            - name: KC_DB_USERNAME
               value: {{ my_keycloak_user }}
-            - name: DB_PASSWORD
+            - name: KC_DB_PASSWORD
               value: {{ my_keycloak_pass }}
-            - name: KEYCLOAK_USER
+            - name: KEYCLOAK_ADMIN
               value: {{ keycloak_admin_user }}
-            - name: KEYCLOAK_PASSWORD
+            - name: KEYCLOAK_ADMIN_PASSWORD
               value: {{ keycloak_admin_pass }}
-            - name: PROXY_ADDRESS_FORWARDING
-              value: 'true'
+            - name: KC_HOSTNAME_STRICT
+              value: 'false'
+            - name: KC_HOSTNAME_STRICT_HTTPS
+              value: 'false'
+            - name: KC_HTTP_RELATIVE_PATH
+              value: '/auth'
+            - name: KC_PROXY
+              value: 'edge'
             - name: JAVA_OPTS
               value: '-Dkeycloak.profile.feature.scripts=enabled
                     -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms256m -Xmx512m
