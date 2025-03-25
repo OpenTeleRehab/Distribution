@@ -45,14 +45,18 @@ server {
 
     try_files $uri @rewrites;
 
-    add_header X-UA-Compatible "IE=Edge";
-        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
-        add_header X-Frame-Options DENY;
-        add_header X-Content-Type-Options nosniff;
-        #add_header Content-Security-Policy "default-src 'self' 'unsafe-inline' data:; object-src 'none'; child-src 'self'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content;" always;
-        add_header X-XSS-Protection "1; mode=block";
-        add_header Referrer-Policy "strict-origin";
-        #add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+    ##
+    # Security Header
+    ##
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Referrer-Policy "strict-origin";
+    add_header X-Content-Type-Options "nosniff";
+    add_header Permissions-Policy "unload=()";
+    add_header Pragma no-cache;
+    add_header Cache-Control "private, must-revalidate";
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+    add_header Content-Security-Policy "default-src * data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src * data: blob: 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * data: blob: ; style-src * data: blob: 'unsafe-inline'; font-src * data: blob: 'unsafe-inline';";
 
     # Documents
     location ~* \.(?:manifest|appcache|html?|xml|json)$ {
