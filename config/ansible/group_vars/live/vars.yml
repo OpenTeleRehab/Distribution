@@ -21,7 +21,6 @@ vn_patient_host:              '103.229.42.86'
 phone_service:                'phone_service'
 superset_service:             'superset'
 
-superset_admin_user:                      'admin_service'
 superset_admin_password:                  '{{ superset_admin_password_vault }}'
 superset_dashboard_id_for_global_admin:   'bf15c6ab-9f2f-47d1-bbfa-48e8d3dcd94f'
 superset_dashboard_id_for_country_admin:  ''
