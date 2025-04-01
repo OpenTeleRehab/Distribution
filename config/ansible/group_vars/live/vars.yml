@@ -64,3 +64,4 @@ twilio_api_key:               '{{ twilio_api_key_vault }}'
 twilio_api_key_secret:        '{{ twilio_api_key_secret_vault }}'
 
 firebase_project_id:          'opentelerehab-e6c99'
+activity_logger_db_connection: 'adminService'
