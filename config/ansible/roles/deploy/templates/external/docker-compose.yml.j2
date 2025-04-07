@@ -167,25 +167,26 @@ services:
     container_name: keycloak
     image: {{ image_name }}/keycloak:latest
     restart: unless-stopped
-    ports:
-      - "8080:8080"
+    command: start
     networks:
       - hiv-docker-net
-    volumes:
-      - ./config/keycloak/theme.properties:/opt/jboss/keycloak/themes/hi/login/theme.properties
-      - ./config/keycloak/theme.properties:/opt/jboss/keycloak/themes/open-library/login/theme.properties
     environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: {{ my_host }}
-      DB_DATABASE: {{ mysql_name_keycloak }}
-      DB_USER: {{ mysql_user_keycloak }}
-      DB_PASSWORD: {{ mysql_pass_keycloak }}
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: {{ keycloak_admin_pass }}
-      PROXY_ADDRESS_FORWARDING: 'true'
+      KC_DB: mysql
+      KC_DB_URL_HOST: {{ my_host }}
+      KC_DB_URL: jdbc:mysql://{{ my_host }}:3306/{{ mysql_name_keycloak }}
+      KC_DB_USERNAME: {{ mysql_user_keycloak }}
+      KC_DB_PASSWORD: {{ mysql_pass_keycloak }}
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: {{ keycloak_admin_pass }}
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_HTTP_RELATIVE_PATH: "/auth"
+      KC_PROXY: "edge"
       JAVA_OPTS: '-Dkeycloak.profile.feature.scripts=enabled
                   -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms64m -Xmx512m
-                  -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
+                  -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m
+                  -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0
+                  -Djava.net.preferIPv4Stack=true
                   -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
 
   krakend:
@@ -201,7 +202,7 @@ services:
 
   rocketchat:
     container_name: rocketchat
-    image: rocketchat/rocket.chat:5.3.3
+    image: rocketchat/rocket.chat:7.1.0
     restart: unless-stopped
     networks:
       - hiv-docker-net
@@ -222,11 +223,11 @@ services:
 
   rocketchat_mongo:
     container_name: rocketchat_mongo
-    image: bitnami/mongodb:4.4.15
+    image: bitnami/mongodb:7.0.15
     networks:
       - hiv-docker-net
     volumes:
-      - rocketchat_db_data:/bitnami/mongodb
+      - ./vols/rocketchat_db_data:/bitnami/mongodb
     environment:
       MONGODB_REPLICA_SET_MODE: primary
       MONGODB_REPLICA_SET_NAME: rs0

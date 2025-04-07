@@ -14,13 +14,13 @@ ROCKETCHAT_HOST=local-hi-chat.wehost.asia
 
 DB_ROOT_PASS=root
 
-KC_SERVICE_NAME=keycloak_db
+KC_SERVICE_DB_NAME=keycloak_db
 KC_DB_NAME=keycloak
 KC_DB_USER=keycloak
 KC_DB_PASS=keycloak
 
 KC_ADMIN_USER=admin
-KC_ADMIN_PASS=P@55w0rd
+KC_ADMIN_PASS=KC@Admin
 
 ADMIN_SERVICE_NAME=admin_service
 ADMIN_SERVICE_DB_NAME=admin_service_db

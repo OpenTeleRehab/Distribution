@@ -1,0 +1,16 @@
+{
+  "Server 1": {
+    "driver": "mysql",
+    "server": "admin_service_db",
+    "username": "admin_service",
+    "password": "admin_service",
+    "db": "admin_service"
+  },
+  "Server 2": {
+    "driver": "mysql",
+    "server": "therapist_service_db",
+    "username": "therapist_service",
+    "password": "therapist_service",
+    "db": "postgtherapist_serviceres_db"
+  }
+}

@@ -45,7 +45,18 @@ server {
 
     try_files $uri @rewrites;
 
-    add_header X-UA-Compatible "IE=Edge";
+    ##
+    # Security Header
+    ##
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Referrer-Policy "strict-origin";
+    add_header X-Content-Type-Options "nosniff";
+    add_header Permissions-Policy "unload=()";
+    add_header Pragma no-cache;
+    add_header Cache-Control "private, must-revalidate";
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+    add_header Content-Security-Policy "default-src * data: blob: filesystem: about: ws: wss: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src * data: blob: 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src * data: blob: ; style-src * data: blob: 'unsafe-inline'; font-src * data: blob: 'unsafe-inline';";
 
     # Documents
     location ~* \.(?:manifest|appcache|html?|xml|json)$ {
