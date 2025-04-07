@@ -298,7 +298,7 @@ services:
   ### Open Library ###
   #############
   library_web_app:
-    image: node:14.17.6
+    image: node:22.0
     command:
       - npm
       - start
