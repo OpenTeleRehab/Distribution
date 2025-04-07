@@ -23,24 +23,13 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
     cd ~/dev/docker-projects/hiv/distribution
 
-## Using make to setup*
+## Using ```make help``` to show all setup command*
 
     make help
 
-## Get Backup databases from developer
+## Using ```make setup ``` to Setup project
 
-    ./config/db_dump/kc_db_dump.sql.gz
-    ./config/db_dump/admin_db_dump.sql.gz
-    ./config/db_dump/therapist_db_dump.sql.gz
-    ./config/db_dump/patient_db_dump.sql.gz
-    ./config/db_dump/vnpatient_db_dump.sql.gz
-    ./config/db_dump/phone_db_dump.sql.gz
-    ./config/db_dump/open_library_db_dump.sql.gz
-    ./config/db_dump/mongo_db_dump.gz
-
-## Restore database
-
-    make restore-all-dbs
+    make setup
 
 ## Verify installation by visiting site below:
   * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
@@ -52,20 +41,19 @@ This repository is where OpenRehab App implemented in Microservices and using do
     * therapist@we.co / Therapist@Portal
   * [Library Portal](https://local-hi-library.wehost.asia) with user access below:
     * library@we.co / Library@Portal
+  * [Rocket Chat](https://local-hi-chat.wehost.asia) with user access below:
+    * admin / Rocketchat@Admin
 
-## Configure environment variables
+## How to backup databases
+  * Backup mysql database ```keycloak_db, admin_service_db, therapist_service_db, patient_service_db, vn_patient_service_db, phone_service_db, open_library_service_db```
+    ```bash
+    docker-compose exec -T keycloak_db /usr/bin/mysqldump -uroot -proot keycloak | gzip -9 > kc_db_dump.sql.gz
+    ```
 
-  > Edit `vi ../admin-service/.env` by replacing value for `KEYCLOAK_BACKEND_SECRET` getting from `hi` Realm -> Clients
-
-  > Edit `vi ../therapist-service/.env` by replacing value for `KEYCLOAK_BACKEND_SECRET` getting from `hi-therapist` Realm -> Clients
-
-## Migrate database tables
-
-  ```bash
-  docker-compose run --rm admin_service php artisan migrate
-  docker-compose run --rm therapist_service php artisan migrate
-  docker-compose run --rm patient_service php artisan migrate
-  ```
+  * Backup Mongo database rocketchate
+    ```bash
+    docker-compose exec -T mongo mongodump --archive > mongo_db_dump.gz
+    ```
 
   > Access database via user interface: [http://localhost:8060/](http://localhost:8060/)
 

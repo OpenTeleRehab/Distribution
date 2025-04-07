@@ -42,7 +42,7 @@ services:
   ### Client ###
   #############
   client_web_app:
-    image: nginx:1.22.1
+    image: nginx:1.26.3
     networks:
       - docker-net
     volumes:
@@ -64,14 +64,18 @@ services:
     build: ../keycloak/
     networks:
       - docker-net
+    command: start
     environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: ${KC_SERVICE_NAME}
-      DB_DATABASE: ${KC_DB_NAME}
-      DB_USER: ${KC_DB_USER}
-      DB_PASSWORD: ${KC_DB_PASS}
-      KEYCLOAK_USER: ${KC_ADMIN_USER}
-      KEYCLOAK_PASSWORD: ${KC_ADMIN_PASS}
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://${KC_SERVICE_DB_NAME}:3306/${KC_DB_NAME}
+      KC_DB_USERNAME: ${KC_DB_USER}
+      KC_DB_PASSWORD: ${KC_DB_PASS}
+      KEYCLOAK_ADMIN: ${KC_ADMIN_USER}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASS}
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_HTTP_RELATIVE_PATH: "/auth"
+      KC_PROXY: "edge"
       PROXY_ADDRESS_FORWARDING: 'true'
       JAVA_OPTS: '-Dkeycloak.profile.feature.scripts=enabled
                   -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms64m -Xmx512m
@@ -196,8 +200,6 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - therapist_service_db_data:/var/lib/mysql
-      - ./config/mysql/therapist_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
-      - ./config/mysql/therapist_service_db/data_restore.sql:/docker-entrypoint-initdb.d/data_restore.sql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
       MYSQL_USER: ${THERAPIST_DB_USER}
@@ -257,8 +259,6 @@ services:
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - vn_patient_service_db_data:/var/lib/mysql
-      - ./config/mysql/patient_service_db/create_test_db.sql:/docker-entrypoint-initdb.d/create_test_db.sql
-      - ./config/mysql/vn_patient_service_db/data_restore.sql:/docker-entrypoint-initdb.d/data_restore.sql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
       MYSQL_USER: ${VNPATIENT_DB_USER}
@@ -382,8 +382,9 @@ services:
 
   # This container's job is for accessing database via user interface
   adminer:
-    image: library/adminer:4.7.8
+    image: adminer:latest
     networks:
       - docker-net
     ports:
       - "8060:8080"
+
