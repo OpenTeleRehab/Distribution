@@ -71,7 +71,8 @@ help:
 	@echo "  make install-npm"
 	$(call echo_title, "Start all services")
 	@echo "  make compose-up"
-
+	$(call echo_title, "Clear cache for all services")
+	@echo "  make clear-cache"
 	$(call echo_section,"=====================================")
 	$(call echo_section,"=========== APACHE SUPERSET =========")
 	$(call echo_section,"https://$(SUPERSET_HOST)")
@@ -123,7 +124,14 @@ setup:
 	$(MAKE) install-npm
 	$(call echo_title, "Start all services")
 	$(MAKE) compose-up
-
+	$(call echo_title, "Run passport:install for patient service")
+	$(MAKE) patient_service_passport
+	$(call echo_title, "Clear cache for all services")
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(ADMIN_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(THERAPIST_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PATIENT_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PHONE_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
 
 ######################
 ### Docker network ###
@@ -342,6 +350,15 @@ install-npm-therapist:
 install-npm-library:
 	$(call echo_title, "Run install NPM package dependencies $(LIBRARY_WEB_APP_NAME)")
 	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(LIBRARY_WEB_APP_NAME) yarn --frozen-lockfile
+
+
+clear-cache:
+	$(call echo_title, "Clear cache for all services")
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(ADMIN_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(THERAPIST_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PATIENT_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PHONE_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
 
 ######################################
 ### docker compose up all services ###
