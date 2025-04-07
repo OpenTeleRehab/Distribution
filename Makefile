@@ -19,8 +19,9 @@ define echo_error
 endef
 
 # GIT HOST
-# GIT_HOST := git@github.com:OpenTeleRehab
-GIT_HOST := git@git.web-essentials.asia:hiv-tra-20
+# public repo: git@github.com:OpenTeleRehab
+# private repo: git@git.web-essentials.asia:hiv-tra-20
+GIT_HOST ?= git@git.web-essentials.asia:hiv-tra-20
 
 # host name
 SUPERSET_HOST ?= local-hi-superset.wehost.asia
@@ -127,12 +128,8 @@ setup:
 	$(call echo_title, "Run passport:install for patient service")
 	$(MAKE) patient_service_passport
 	$(call echo_title, "Clear cache for all services")
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(ADMIN_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(THERAPIST_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PATIENT_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PHONE_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-
+	$(MAKE) clear-cache
+	$(MAKE) host_url
 ######################
 ### Docker network ###
 ######################
@@ -312,23 +309,23 @@ composer-install:
 
 composer-install-admin:
 	$(call echo_title, "Run composer install $(ADMIN_SERVICE_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(ADMIN_SERVICE_NAME) composer install --prefer-dist -vv
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(ADMIN_SERVICE_NAME) composer install --prefer-dist -vv
 
 composer-install-therapist:
 	$(call echo_title, "Run composer install $(THERAPIST_SERVICE_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(THERAPIST_SERVICE_NAME) composer install --prefer-dist -vv
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(THERAPIST_SERVICE_NAME) composer install --prefer-dist -vv
 
 composer-install-patient:
 	$(call echo_title, "Run composer install $(PATIENT_SERVICE_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(PATIENT_SERVICE_NAME) composer install --prefer-dist -vv
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(PATIENT_SERVICE_NAME) composer install --prefer-dist -vv
 
 composer-install-phone:
 	$(call echo_title, "Run composer install $(PHONE_SERVICE_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(PHONE_SERVICE_NAME) composer install --prefer-dist -vv
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(PHONE_SERVICE_NAME) composer install --prefer-dist -vv
 
 composer-install-openlibrary:
 	$(call echo_title, "Run composer install $(OPEN_LIBRARY_SERVICE_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(OPEN_LIBRARY_SERVICE_NAME) composer install --prefer-dist -vv
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(OPEN_LIBRARY_SERVICE_NAME) composer install --prefer-dist -vv
 
 ############################################
 ### Run install NPM package dependencies ###
@@ -341,15 +338,15 @@ install-npm:
 
 install-npm-admin:
 	$(call echo_title, "Run install NPM package dependencies $(ADMIN_WEB_APP_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(ADMIN_WEB_APP_NAME) yarn --frozen-lockfile
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(ADMIN_WEB_APP_NAME) yarn --frozen-lockfile
 
 install-npm-therapist:
 	$(call echo_title, "Run install NPM package dependencies $(THERAPIST_WEB_APP_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(THERAPIST_WEB_APP_NAME) yarn --frozen-lockfile
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(THERAPIST_WEB_APP_NAME) yarn --frozen-lockfile
 
 install-npm-library:
 	$(call echo_title, "Run install NPM package dependencies $(LIBRARY_WEB_APP_NAME)")
-	$(DOCKER_COMPOSE) -f docker-compose.yml run --no-deps $(LIBRARY_WEB_APP_NAME) yarn --frozen-lockfile
+	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(LIBRARY_WEB_APP_NAME) yarn --frozen-lockfile
 
 
 clear-cache:
@@ -366,7 +363,7 @@ clear-cache:
 add-hosts:
 	$(call echo_title, "Add host to /etc/hosts")
 	@if [ `grep -o "$(ADMIN_HOST)" /etc/hosts | wc -l` = 0 ]; then\
-		sudo bash -c "echo 0.0.0.0 $(ADMIN_HOST) $(THERAPIST_HOST) $(PATIENT_HOST) $(PHONE_HOST) $(LIBRARY_HOST) $(NONHI_ADMIN_HOST) $(NONHI_THERAPIST_HOST) $(NONHI_PATIENT) >> /etc/hosts";\
+		sudo bash -c "echo 0.0.0.0 $(ADMIN_HOST) $(THERAPIST_HOST) $(LIBRARY_HOST) $(NONHI_ADMIN_HOST) $(NONHI_THERAPIST_HOST) >> /etc/hosts";\
 	else\
 		echo "==> Skip: host already existed.";\
 	fi
@@ -380,13 +377,23 @@ compose-up:
 	@$(DOCKER_COMPOSE) -f docker-compose.yml up -d
 	sleep 10
 	@$(DOCKER_COMPOSE) -f docker-compose.yml up -d client_web_app proxy
+	$(MAKE) host_url
 
+compose-kill:
+	@$(DOCKER_COMPOSE) -f docker-compose.yml kill
+
+compose-cleanup:
+	@$(DOCKER_COMPOSE) -f docker-compose.yml kill
+	@$(DOCKER_COMPOSE) -f docker-compose.yml rm -f
+	@prefix=$$(basename $$PWD | tr -d '.'); \
+	docker volume ls -q | grep "^$${prefix}_" | xargs -r docker volume rm
+
+host_url:
 	$(call echo_title, "READY")
 	$(call echo_section, "https://${ADMIN_HOST}/")
 	$(call echo_section, "https://${THERAPIST_HOST}/")
-	$(call echo_section, "https://${PATIENT_HOST}/")
-	$(call echo_section, "https://${PHONE_HOST}/")
 	$(call echo_section, "https://${LIBRARY_HOST}/")
+
 
 #######################
 ### Apache Superset ###
