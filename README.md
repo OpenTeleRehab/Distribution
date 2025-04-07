@@ -43,6 +43,8 @@ This repository is where OpenRehab App implemented in Microservices and using do
     * library@we.co / Library@Portal
   * [Rocket Chat](https://local-hi-chat.wehost.asia) with user access below:
     * admin / Rocketchat@Admin
+  * [Keycloak](https://local-hi-admin.wehost.asia/auth) with user access below:
+    * admin / KC@Admin
 
 ## How to backup databases
   * Backup mysql database ```keycloak_db, admin_service_db, therapist_service_db, patient_service_db, vn_patient_service_db, phone_service_db, open_library_service_db```
