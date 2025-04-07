@@ -16,8 +16,15 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
 ## Clone project to your development workspace
 
+    ```bash
     git clone git@git.web-essentials.asia:hiv-tra-20/Distribution.git ~/dev/docker-projects/hiv/distribution
+    ```
 
+  OR from public github repo ```master``` branch
+
+    ```bash
+    git clone git@github.com:OpenTeleRehab/Distribution.git ~/dev/docker-projects/hiv/distribution
+    ```
 
 ## Navigate to your project
 
@@ -30,6 +37,10 @@ This repository is where OpenRehab App implemented in Microservices and using do
 ## Using ```make setup ``` to Setup project
 
     make setup
+
+  OR with public repo
+
+    make setup GIT_HOST=git@github.com:OpenTeleRehab
 
 ## Verify installation by visiting site below:
   * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
