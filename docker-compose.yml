@@ -322,7 +322,7 @@ services:
     volumes:
       - ../open-library-service:/var/www/html
       - ./config/service/default.conf:/etc/nginx/sites-available/default
-      - ./config/service/php.ini:/etc/php/7.4/fpm/php.ini
+      - ./config/service/php.ini:/etc/php/8.3/fpm/php.ini
     networks:
       - docker-net
     depends_on:
