@@ -28,7 +28,7 @@
     mode: 0755
 
 - name: AdminService | Run composer to install dependencies
-  shell: '{{ php_7_bin }} {{ composer_bin }} install {{ composer_flags }}'
+  shell: '{{ php_bin }} {{ composer_bin }} install {{ composer_flags }}'
   args:
     chdir: '{{ workspace }}/hicadmin-service'
 
