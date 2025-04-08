@@ -385,6 +385,9 @@ services:
     image: adminer:latest
     networks:
       - docker-net
+    env_file:
+      - ./config/adminer/adminer_servers.env
     ports:
       - "8060:8080"
-
+    volumes:
+      - ./config/adminer/login-servers.php:/var/www/html/plugins-enabled/login-servers.php
