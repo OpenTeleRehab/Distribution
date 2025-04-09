@@ -9,6 +9,7 @@
     - default.conf
     - Dockerfile
     - hi-task-scheduler
+    - queue-worker.conf
 
 - name: PatientService | Copy .env file
   template:
