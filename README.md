@@ -70,6 +70,8 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
   > Access database via user interface: [http://localhost:8060/](http://localhost:8060/)
 
+  > Access mailbox testing tool: [http://localhost:8025/](http://localhost:8025/)
+
 ### Enjoy your development on `admin-web-app` or `therapist-web-app`
 
 # Setup apache superset

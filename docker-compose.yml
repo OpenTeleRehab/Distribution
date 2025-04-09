@@ -391,3 +391,10 @@ services:
       - "8060:8080"
     volumes:
       - ./config/adminer/login-servers.php:/var/www/html/plugins-enabled/login-servers.php
+
+  mailpit:
+    image: axllent/mailpit:latest
+    networks:
+      - docker-net
+    ports:
+      - "8025:8025"
