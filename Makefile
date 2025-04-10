@@ -72,8 +72,12 @@ help:
 	@echo "  make install-npm"
 	$(call echo_title, "Start all services")
 	@echo "  make compose-up"
+	$(call echo_title, "Run php artisan migrate for all services")
+	@echo "  make artisan-migrate"
 	$(call echo_title, "Clear cache for all services")
 	@echo "  make clear-cache"
+	$(call echo_title, "Override .env file for all services")
+	@echo "  make override-services-env"
 	$(call echo_section,"=====================================")
 	$(call echo_section,"=========== APACHE SUPERSET =========")
 	$(call echo_section,"https://$(SUPERSET_HOST)")
@@ -127,6 +131,8 @@ setup:
 	$(MAKE) compose-up
 	$(call echo_title, "Run passport:install for patient service")
 	$(MAKE) patient_service_passport
+	$(call echo_title, "Run php artisan migrate for all services")
+	$(MAKE) artisan-migrate
 	$(call echo_title, "Clear cache for all services")
 	$(MAKE) clear-cache
 	$(MAKE) host_url
@@ -348,6 +354,13 @@ install-npm-library:
 	$(call echo_title, "Run install NPM package dependencies $(LIBRARY_WEB_APP_NAME)")
 	$(DOCKER_COMPOSE) -f docker-compose.yml run --rm --no-deps $(LIBRARY_WEB_APP_NAME) yarn --frozen-lockfile
 
+artisan-migrate:
+	$(call echo_title, "Run artisan migrate")
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(ADMIN_SERVICE_NAME) /usr/bin/php /var/www/html/artisan migrate
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(THERAPIST_SERVICE_NAME) /usr/bin/php /var/www/html/artisan migrate
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PATIENT_SERVICE_NAME) /usr/bin/php /var/www/html/artisan migrate
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PHONE_SERVICE_NAME) /usr/bin/php /var/www/html/artisan migrate
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan migrate
 
 clear-cache:
 	$(call echo_title, "Clear cache for all services")
@@ -356,6 +369,14 @@ clear-cache:
 	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PATIENT_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
 	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PHONE_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
 	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+
+override-services-env:
+	$(call echo_title, "Copy .env file from .env.example for all services")
+	cp ${adminPath}/.env.example ${adminPath}/.env
+	cp ${therapistPath}/.env.example ${therapistPath}/.env
+	cp ${patientPath}/.env.example ${patientPath}/.env
+	cp ${phonePath}/.env.example ${phonePath}/.env
+	cp ${openLibraryPath}/.env.example ${openLibraryPath}/.env
 
 ######################################
 ### docker compose up all services ###
