@@ -79,21 +79,21 @@ This repository is where OpenRehab App implemented in Microservices and using do
   ```bash
   make
   make docker-net
-  make apache-superset
+  make superset
   ```
 
-# Setup Presto
+# Setup Trino
 
   ```bash
   make
   make docker-net
-  make presto
+  make trino
   ```
 
-## Presto configuration files
+## Trino configuration files
 
   ```bash
-  ./config/docker/presto/etc
+  ./config/docker/trino/etc
   ```
 
 # Useful docker command
