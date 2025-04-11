@@ -1,7 +1,7 @@
 ---
 
 - name: Sync local storage to shared folder
-  shell: 'rsync -avz --chmod=ugo=rwX {{ workspace }}/therapist-service/storage/ /export/{{ stage }}/{{ project_id }}/therapist-service/'
+  shell: 'rsync -avz --exclude "cache" --chmod=ugo=rwX {{ workspace }}/therapist-service/storage/ /export/{{ stage }}/{{ project_id }}/therapist-service/'
   when: stage != 'live'
 
 - name: TherapistService | Copy deployment configuration
