@@ -101,7 +101,13 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/adminservice/storage:/var/www/storage
+      - ./config/adminservice/storage/education_material:/var/www/storage/education_material
+      - ./config/adminservice/storage/exercise:/var/www/storage/exercise
+      - ./config/adminservice/storage/exports:/var/www/storage/exports
+      - ./config/adminservice/storage/file:/var/www/storage/file
+      - ./config/adminservice/storage/questionnaire:/var/www/storage/questionnaire
+      - ./config/adminservice/storage/static_page:/var/www/storage/static_page
+      - ./config/adminservice/storage/logs:/var/www/storage/logs
 
   therapist_service:
     container_name: therapist_service
@@ -115,7 +121,7 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/therapistservice/storage:/var/www/storage
+      - ./config/therapistservice/storage/logs:/var/www/storage/logs
     depends_on:
       - admin_service
 
@@ -129,7 +135,8 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/patientservice/storage:/var/www/storage
+      - ./config/patientservice/storage/app:/var/www/storage/app
+      - ./config/patientservice/storage/logs:/var/www/storage/logs
     depends_on:
       - admin_service
 
@@ -143,7 +150,13 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/libraryservice/storage:/var/www/storage
+      - ./config/libraryservice/storage/country:/var/www/storage/country
+      - ./config/libraryservice/storage/education_material:/var/www/storage/education_material
+      - ./config/libraryservice/storage/exercise:/var/www/storage/exercise
+      - ./config/libraryservice/storage/file:/var/www/storage/file
+      - ./config/libraryservice/storage/questionnaire:/var/www/storage/questionnaire
+      - ./config/libraryservice/storage/static_page:/var/www/storage/static_page
+      - ./config/libraryservice/storage/logs:/var/www/storage/logs
     depends_on:
       - admin_service
 
@@ -159,7 +172,7 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/phoneservice/storage:/var/www/storage
+      - ./config/phoneservice/storage/logs:/var/www/storage/logs
     depends_on:
       - admin_service
 

@@ -19,5 +19,7 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/vn_patient/storage:/var/www/storage
+      - ./config/vn_patient/storage/api-docs:/var/www/storage/api-docs
+      - ./config/patientservice/storage/app:/var/www/storage/app
+      - ./config/patientservice/storage/logs:/var/www/storage/logs
       - ./config/vn_patient/env:/var/www/.env
