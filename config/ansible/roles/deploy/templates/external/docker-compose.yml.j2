@@ -137,6 +137,8 @@ services:
     volumes:
       - ./config/patientservice/storage/app:/var/www/storage/app
       - ./config/patientservice/storage/logs:/var/www/storage/logs
+      - ./config/patientservice/storage/oauth-private.key:/var/www/storage/oauth-private.key
+      - ./config/patientservice/storage/oauth-public.key:/var/www/storage/oauth-public.key
     depends_on:
       - admin_service
 

@@ -21,5 +21,7 @@ services:
     volumes:
       - ./config/vn_patient/storage/api-docs:/var/www/storage/api-docs
       - ./config/patientservice/storage/app:/var/www/storage/app
+      - ./config/vn_patient/storage/oauth-private.key:/var/www/storage/oauth-private.key
+      - ./config/vn_patient/storage/oauth-public.key:/var/www/storage/oauth-public.key
       - ./config/patientservice/storage/logs:/var/www/storage/logs
       - ./config/vn_patient/env:/var/www/.env
