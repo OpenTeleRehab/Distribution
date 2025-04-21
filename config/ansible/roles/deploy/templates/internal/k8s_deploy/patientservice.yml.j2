@@ -34,7 +34,8 @@ spec:
             mountPath: /var/www/.env.dusk
             subPath: patient-service-dusk-local
           - name: 'vol-{{ stage }}-{{ project_name }}'
-            mountPath: /var/www/storage
+            mountPath: /var/www/storage/app
+            subPath: 'app'
       volumes:
       - name: tz-config
         hostPath:
