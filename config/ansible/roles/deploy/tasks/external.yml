@@ -39,15 +39,15 @@
     - { src: 'external/config/vn_patient/env.j2', dest: 'projects/hiv/config/vn_patient/env' }
   delegate_to: live-gl-tra
 
-- name: Production | Sync storage
-  shell: 'rsync -avz --exclude "cache" {{ item.src }} {{ item.dest }}'
-  loop:
-    - { src: '{{ workspace }}/admin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/adminservice/storage/' }
-    - { src: '{{ workspace }}/therapist-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/therapistservice/storage/' }
-    - { src: '{{ workspace }}/hicadmin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/libraryservice/storage/' }
-    - { src: '{{ workspace }}/phone-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/phoneservice/storage/' }
-    - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/patientservice/storage/' }
-    - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/vn_patient/storage/' }
+# - name: Production | Sync storage
+#   shell: 'rsync -avz --exclude "cache" {{ item.src }} {{ item.dest }}'
+#   loop:
+#     - { src: '{{ workspace }}/admin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/adminservice/storage/' }
+#     - { src: '{{ workspace }}/therapist-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/therapistservice/storage/' }
+#     - { src: '{{ workspace }}/hicadmin-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/libraryservice/storage/' }
+#     - { src: '{{ workspace }}/phone-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/phoneservice/storage/' }
+#     - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/patientservice/storage/' }
+#     - { src: '{{ workspace }}/patient-service/storage/', dest: 'ubuntu@54.179.65.28:/home/{{ ssh_user }}/projects/hiv/config/vn_patient/storage/' }
 
 - name: Docker compose pull latest images
   shell: "docker-compose -f {{ item }} pull"
