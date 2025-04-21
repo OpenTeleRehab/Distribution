@@ -36,6 +36,12 @@ spec:
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /var/www/storage/app
             subPath: 'app'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/oauth-private.key
+            subPath: 'oauth-private.key'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/oauth-public.key
+            subPath: 'oauth-public.key'
       volumes:
       - name: tz-config
         hostPath:
