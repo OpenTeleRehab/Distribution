@@ -34,7 +34,24 @@ spec:
             mountPath: /var/www/.env.dusk.local
             subPath: hicadmin-service-env-dusk-local
           - name: 'vol-{{ stage }}-{{ project_name }}'
-            mountPath: /var/www/storage
+            mountPath: /var/www/storage/country
+            subPath: 'country'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/education_material
+            subPath: 'education_material'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/exercise
+            subPath: 'exercise'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/file
+            subPath: 'file'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/questionnaire
+            subPath: 'questionnaire'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/static_page
+            subPath: 'static_page'
+
       volumes:
       - name: tz-config
         hostPath:
