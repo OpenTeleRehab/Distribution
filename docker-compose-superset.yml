@@ -11,6 +11,8 @@ x-superset-volumes:
   - ./config/docker/superset:/app/docker
   - superset_home:/app/superset_home
   - ./config/docker/superset/superset_config.py:/app/pythonpath/superset_config.py
+  - ./config/docker/superset/translations:/app/superset/translations
+  - ./config/docker/superset/scripts:/app/superset-frontend/scripts
 
 volumes:
   superset_home:
@@ -59,7 +61,17 @@ services:
     container_name: superset_app
     networks:
       - docker-net
-    command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
+    command: >
+      sh -c "
+        apt-get update &&
+        apt-get install -y nodejs &&
+        apt-get install -y npm &&
+        npm install -g po2json &&
+        npm install -g prettier &&
+        echo '✅ Node, npm, po2json, and prettier installed' &&
+        chmod +x /app/superset-frontend/scripts/po2json.sh &&
+        /app/docker/docker-bootstrap.sh app-gunicorn
+      "
     user: "root"
     depends_on: *superset-depends-on
     volumes: *superset-volumes
