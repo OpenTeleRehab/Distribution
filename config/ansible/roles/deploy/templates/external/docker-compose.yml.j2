@@ -101,12 +101,12 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/adminservice/storage/education_material:/var/www/storage/education_material
-      - ./config/adminservice/storage/exercise:/var/www/storage/exercise
-      - ./config/adminservice/storage/exports:/var/www/storage/exports
-      - ./config/adminservice/storage/file:/var/www/storage/file
-      - ./config/adminservice/storage/questionnaire:/var/www/storage/questionnaire
-      - ./config/adminservice/storage/static_page:/var/www/storage/static_page
+      - ./config/adminservice/storage/app/education_material:/var/www/storage/app/education_material
+      - ./config/adminservice/storage/app/exercise:/var/www/storage/app/exercise
+      - ./config/adminservice/storage/app/exports:/var/www/storage/app/exports
+      - ./config/adminservice/storage/app/file:/var/www/storage/app/file
+      - ./config/adminservice/storage/app/questionnaire:/var/www/storage/app/questionnaire
+      - ./config/adminservice/storage/app/static_page:/var/www/storage/app/static_page
       - ./config/adminservice/storage/logs:/var/www/storage/logs
 
   therapist_service:
@@ -152,12 +152,12 @@ services:
       - hiv-docker-net
     working_dir: /var/www
     volumes:
-      - ./config/libraryservice/storage/country:/var/www/storage/country
-      - ./config/libraryservice/storage/education_material:/var/www/storage/education_material
-      - ./config/libraryservice/storage/exercise:/var/www/storage/exercise
-      - ./config/libraryservice/storage/file:/var/www/storage/file
-      - ./config/libraryservice/storage/questionnaire:/var/www/storage/questionnaire
-      - ./config/libraryservice/storage/static_page:/var/www/storage/static_page
+      - ./config/libraryservice/storage/app/country:/var/www/storage/app/country
+      - ./config/libraryservice/storage/app/education_material:/var/www/storage/app/education_material
+      - ./config/libraryservice/storage/app/exercise:/var/www/storage/app/exercise
+      - ./config/libraryservice/storage/app/file:/var/www/storage/app/file
+      - ./config/libraryservice/storage/app/questionnaire:/var/www/storage/app/questionnaire
+      - ./config/libraryservice/storage/app/static_page:/var/www/storage/app/static_page
       - ./config/libraryservice/storage/logs:/var/www/storage/logs
     depends_on:
       - admin_service
