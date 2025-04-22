@@ -185,6 +185,9 @@ services:
     command: start
     networks:
       - hiv-docker-net
+    volumes:
+      - ./config/keycloak/theme.properties:/opt/keycloak/themes/hi/login/theme.properties
+      - ./config/keycloak/theme.properties:/opt/keycloak/themes/open-library/login/theme.properties
     environment:
       KC_DB: mysql
       KC_DB_URL_HOST: {{ my_host }}
