@@ -20,7 +20,7 @@ DATA_CACHE_CONFIG = CACHE_CONFIG
 
 LANGUAGES = {
     'en': {'flag': 'us', 'name': 'English'},
-    'ar': {'flag': 'ar', 'name': 'اَلْعَرَبِيَّةُ'},
+    'ar': {'flag': 'sa', 'name': 'اَلْعَرَبِيَّةُ'},
     'es': {'flag': 'es', 'name': 'Español'},
     'my': {'flag': 'mm', 'name': 'မြန်မာစာ'},
     'fr': {'flag': 'fr', 'name': 'Français'},
