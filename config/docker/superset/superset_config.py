@@ -22,11 +22,11 @@ LANGUAGES = {
     'en': {'flag': 'us', 'name': 'English'},
     'ar': {'flag': 'ar', 'name': 'اَلْعَرَبِيَّةُ'},
     'es': {'flag': 'es', 'name': 'Español'},
-    'my': {'flag': 'my', 'name': 'မြန်မာစာ'},
+    'my': {'flag': 'mm', 'name': 'မြန်မာစာ'},
     'fr': {'flag': 'fr', 'name': 'Français'},
     'km': {'flag': 'kh', 'name': 'ភាសាខ្មែរ'},
     'rw': {'flag': 'rw', 'name': 'Ikinyarwanda'},
-    'lo': {'flag': 'lo', 'name': 'ພາສາລາວ'},
+    'lo': {'flag': 'la', 'name': 'ພາສາລາວ'},
     'th': {'flag': 'th', 'name': 'ภาษาไทย'},
     'vi': {'flag': 'vn', 'name': 'Tiếng Việt'},
 }
