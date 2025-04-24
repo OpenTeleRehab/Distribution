@@ -197,9 +197,9 @@ restore-therapist-db:
 		gunzip < ./config/db_dump/therapist_db_dump.sql.gz | $(DOCKER_COMPOSE) -f docker-compose.yml exec -T $(THERAPIST_SERVICE_DB_NAME) sh -c 'exec mysql -uroot -p$(DB_ROOT_PASS) $(THERAPIST_DB_NAME)'; \
 	else \
 		echo "==> ./config/db_dump/therapist_db_dump.sql.gz does not exist"; \
-	fi	
+	fi
 
-restore-patient-db:	
+restore-patient-db:
 	$(call echo_title, "Restore patient database")
 	@if [ -f "./config/db_dump/patient_db_dump.sql.gz" ]; then \
 		gunzip < ./config/db_dump/patient_db_dump.sql.gz | $(DOCKER_COMPOSE) -f docker-compose.yml exec -T $(PATIENT_SERVICE_DB_NAME) sh -c 'exec mysql -uroot -p$(DB_ROOT_PASS) $(PATIENT_DB_NAME)'; \
@@ -448,6 +448,12 @@ superset-dbrestore:
 
 superset-compose:
 	@$(DOCKER_COMPOSE) -f docker-compose-superset.yml $(filter-out $@,$(MAKECMDGOALS))
+
+superset-compile-translation:
+	@$(DOCKER_COMPOSE) -f docker-compose-superset.yml exec -T superset sh \
+								-c 'exec pybabel compile -d superset/translations'
+	@$(DOCKER_COMPOSE) -f docker-compose-superset.yml exec -w /app/superset-frontend -T superset sh \
+								-c 'exec npm run build-translation'
 
 #############
 ### Trino ###
