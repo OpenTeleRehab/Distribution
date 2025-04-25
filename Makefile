@@ -450,8 +450,6 @@ superset-compose:
 	@$(DOCKER_COMPOSE) -f docker-compose-superset.yml $(filter-out $@,$(MAKECMDGOALS))
 
 superset-compile-translation:
-	@$(DOCKER_COMPOSE) -f docker-compose-superset.yml exec -T superset sh \
-								-c 'exec pybabel compile -d superset/translations'
 	@$(DOCKER_COMPOSE) -f docker-compose-superset.yml exec -w /app/superset-frontend -T superset sh \
 								-c 'exec npm run build-translation'
 
