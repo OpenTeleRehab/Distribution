@@ -1,6 +1,7 @@
 FEATURE_FLAGS = {
     "ENABLE_TEMPLATE_PROCESSING": True,
     "EMBEDDED_SUPERSET": True,
+    "ESCAPE_MARKDOWN_HTML": False,
 }
 
 HTTP_HEADERS = {
@@ -29,4 +30,12 @@ LANGUAGES = {
     'lo': {'flag': 'la', 'name': 'ພາສາລາວ'},
     'th': {'flag': 'th', 'name': 'ภาษาไทย'},
     'vi': {'flag': 'vn', 'name': 'Tiếng Việt'},
+}
+
+HTML_SANITIZATION = True
+HTML_SANITIZATION_SCHEMA_EXTENSIONS = {
+  "attributes": {
+    "*": ["className"],
+  },
+  "tagNames": ["style"],
 }
