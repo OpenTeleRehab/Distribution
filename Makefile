@@ -35,6 +35,8 @@ ifeq ($(DOCKER_COMPOSE),)
   $(error "Neither 'docker-compose' nor 'docker compose' found. Please install Docker Compose.")
 endif
 
+SERVICE_CACHED := cache:clear config:cache route:clear view:clear
+
 # The default target
 all: help
 # Help target to display usage information
@@ -364,11 +366,31 @@ artisan-migrate:
 
 clear-cache:
 	$(call echo_title, "Clear cache for all services")
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(ADMIN_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(THERAPIST_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PATIENT_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(PHONE_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
-	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan optimize:clear
+	@for cache in $(SERVICE_CACHED); do \
+		echo "clear cache $$cache..."; \
+		docker-compose exec --user www-data $(ADMIN_SERVICE_NAME) \
+			/usr/bin/php /var/www/html/artisan $$cache ; \
+	done
+	@for cache in $(SERVICE_CACHED); do \
+		echo "clear cache $$cache..."; \
+		docker-compose exec --user www-data $(THERAPIST_SERVICE_NAME) \
+			/usr/bin/php /var/www/html/artisan $$cache ; \
+	done
+	@for cache in $(SERVICE_CACHED); do \
+		echo "clear cache $$cache..."; \
+		docker-compose exec --user www-data $(PATIENT_SERVICE_NAME) \
+			/usr/bin/php /var/www/html/artisan $$cache ; \
+	done
+	@for cache in $(SERVICE_CACHED); do \
+		echo "clear cache $$cache..."; \
+		docker-compose exec --user www-data $(PHONE_SERVICE_NAME) \
+			/usr/bin/php /var/www/html/artisan $$cache ; \
+	done
+	@for cache in $(SERVICE_CACHED); do \
+		echo "clear cache $$cache..."; \
+		docker-compose exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) \
+			/usr/bin/php /var/www/html/artisan $$cache ; \
+	done
 
 override-services-env:
 	$(call echo_title, "Copy .env file from .env.example for all services")
