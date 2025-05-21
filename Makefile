@@ -35,7 +35,7 @@ ifeq ($(DOCKER_COMPOSE),)
   $(error "Neither 'docker-compose' nor 'docker compose' found. Please install Docker Compose.")
 endif
 
-SERVICE_CACHED := cache:clear config:cache route:clear view:clear
+SERVICE_CACHED := cache:clear clear-compiled config:cache event:clear route:clear view:clear
 
 # The default target
 all: help
