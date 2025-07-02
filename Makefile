@@ -35,7 +35,7 @@ ifeq ($(DOCKER_COMPOSE),)
   $(error "Neither 'docker-compose' nor 'docker compose' found. Please install Docker Compose.")
 endif
 
-SERVICE_CACHED := cache:clear clear-compiled config:cache event:clear route:clear view:clear
+SERVICE_CACHED := cache:clear
 
 # The default target
 all: help
@@ -365,31 +365,38 @@ artisan-migrate:
 	$(DOCKER_COMPOSE) -f docker-compose.yml exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) /usr/bin/php /var/www/html/artisan migrate
 
 clear-cache:
+	$(call echo_title, "Remove cache config for all services")
+	docker compose exec $(ADMIN_SERVICE_NAME) bash -c "rm -rf bootstrap/cache/*.php"
+	docker compose exec $(PATIENT_SERVICE_NAME) bash -c "rm -rf bootstrap/cache/*.php"
+	docker compose exec $(THERAPIST_SERVICE_NAME) bash -c "rm -rf bootstrap/cache/*.php"
+	docker compose exec $(PHONE_SERVICE_NAME) bash -c	"rm -rf bootstrap/cache/*.php"
+	docker compose exec $(OPEN_LIBRARY_SERVICE_NAME) bash -c "rm -rf bootstrap/cache/*.php"
+
 	$(call echo_title, "Clear cache for all services")
 	@for cache in $(SERVICE_CACHED); do \
 		echo "clear cache $$cache..."; \
-		docker-compose exec --user www-data $(ADMIN_SERVICE_NAME) \
-			/usr/bin/php /var/www/html/artisan $$cache ; \
+		docker compose exec $(ADMIN_SERVICE_NAME) bash -c \
+			"php artisan $$cache" ; \
 	done
 	@for cache in $(SERVICE_CACHED); do \
 		echo "clear cache $$cache..."; \
-		docker-compose exec --user www-data $(THERAPIST_SERVICE_NAME) \
-			/usr/bin/php /var/www/html/artisan $$cache ; \
+		docker compose exec $(THERAPIST_SERVICE_NAME) bash -c \
+			"php artisan $$cache" ; \
 	done
 	@for cache in $(SERVICE_CACHED); do \
 		echo "clear cache $$cache..."; \
-		docker-compose exec --user www-data $(PATIENT_SERVICE_NAME) \
-			/usr/bin/php /var/www/html/artisan $$cache ; \
+		docker compose exec $(PATIENT_SERVICE_NAME) bash -c \
+			"php artisan $$cache" ; \
 	done
 	@for cache in $(SERVICE_CACHED); do \
 		echo "clear cache $$cache..."; \
-		docker-compose exec --user www-data $(PHONE_SERVICE_NAME) \
-			/usr/bin/php /var/www/html/artisan $$cache ; \
+		docker compose exec $(PHONE_SERVICE_NAME) bash -c \
+			"php artisan $$cache" ; \
 	done
 	@for cache in $(SERVICE_CACHED); do \
 		echo "clear cache $$cache..."; \
-		docker-compose exec --user www-data $(OPEN_LIBRARY_SERVICE_NAME) \
-			/usr/bin/php /var/www/html/artisan $$cache ; \
+		docker compose exec $(OPEN_LIBRARY_SERVICE_NAME) bash -c \
+			"php artisan $$cache" ; \
 	done
 
 override-services-env:
