@@ -37,6 +37,7 @@
     - { src: 'external/vn-patient.yml.j2', dest: 'projects/hiv/vn-patient-compose.yml' }
     - { src: 'external/config/keycloak/theme.properties.j2', dest: 'projects/hiv/config/keycloak/theme.properties' }
     - { src: 'external/config/vn_patient/env.j2', dest: 'projects/hiv/config/vn_patient/env' }
+    - { src: 'external/config/superset/superset_config.py.j2', dest: 'projects/apache-superset/config/docker/superset/superset_config.py' }
   delegate_to: live-gl-tra
 
 # - name: Production | Sync storage
@@ -287,4 +288,11 @@
     - admin_webapp
     - library_webapp
     - therapist_webapp
+  delegate_to: live-gl-tra
+
+### START APACHE SUPERSET
+- name: Docker up superset
+  shell: "docker-compose up -d"
+  args:
+    chdir: 'projects/apache-superset'
   delegate_to: live-gl-tra

@@ -141,6 +141,8 @@ superset_dashboard_id_for_global_admin: 'f793e38a-3ff6-49f3-b780-5e4b26c2f3ef'
 superset_dashboard_id_for_country_admin: 'b92ddd55-c681-4d08-b831-407c9bae236e'
 superset_dashboard_id_for_clinic_admin: '22d2ffa8-6bdf-4dbe-8756-7e5ff50ab1b2'
 superset_dashboard_id_for_therapist: 'f793e38a-3ff6-49f3-b780-5e4b26c2f3ef'
+superset_guest_token_jwt_secret:          '{{ superset_guest_token_jwt_secret_vault }}'
+
 # Presto
 presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
 
