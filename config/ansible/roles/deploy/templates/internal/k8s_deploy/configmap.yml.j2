@@ -267,6 +267,9 @@ data:
     KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
     KEYCLOAK_REAMLS_NAME=hi-library
 
+    KEYCLOAK_LIBRARY_USERNAME=hi_library
+    KEYCLOAK_LIBRARY_PASSWORD=H1@library
+
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
@@ -690,6 +693,8 @@ data:
     ACTIVITYLOG_DB_PASSWORD={{ my_adminservice_pass }}
     ACTIVITY_LOGGER_DB_CONNECTION={{ activity_logger_db_connection }}
 
+    CRYPT_SECRET={{ crypt_secret }}
+
 ---
 
 apiVersion: v1
@@ -792,6 +797,7 @@ data:
     ACTIVITYLOG_DB_USERNAME={{ my_adminservice_user }}
     ACTIVITYLOG_DB_PASSWORD={{ my_adminservice_pass }}
     ACTIVITY_LOGGER_DB_CONNECTION={{ activity_logger_db_connection }}
+    CRYPT_SECRET={{ crypt_secret }}
 
 
 ---
