@@ -149,3 +149,4 @@ presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
 activity_logger_db_connection: 'adminService'
 
 crypt_secret: '{{ crypt_secret }}'
+crypt_cipher: '{{ crypt_cipher }}'
