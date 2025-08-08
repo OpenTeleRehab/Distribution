@@ -157,14 +157,17 @@ data:
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
     KEYCLOAK_REAMLS_NAME=hi
+
+    KEYCLOAK_LIBRARY_USERNAME=hi_library
+    KEYCLOAK_LIBRARY_PASSWORD={{ keycloak_hi_library_password }}
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
     PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -264,11 +267,11 @@ data:
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_library_backend_secret }}
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
     KEYCLOAK_REAMLS_NAME=hi-library
 
     KEYCLOAK_LIBRARY_USERNAME=hi_library
-    KEYCLOAK_LIBRARY_PASSWORD=H1@library
+    KEYCLOAK_LIBRARY_PASSWORD={{ keycloak_hi_library_password }}
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
@@ -364,14 +367,14 @@ data:
         KEYCLOAK_BACKEND_CLIENT=hi_backend
         KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
         KEYCLOAK_BACKEND_USERNAME=hi_backend
-        KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+        KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
         KEYCLOAK_REAMLS_NAME=hi
 
         GADMIN_KEYCLOAK_REAMLS_NAME=hi
         GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
         THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-        THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+        THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
         PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -458,7 +461,7 @@ data:
         KEYCLOAK_BACKEND_CLIENT=hi_backend
         KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
         KEYCLOAK_BACKEND_USERNAME=hi_backend
-        KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+        KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
         KEYCLOAK_REAMLS_NAME=hi
 
         GADMIN_KEYCLOAK_REAMLS_NAME=hi
@@ -545,9 +548,9 @@ data:
         KEYCLOAK_LOAD_USER_FROM_DATABASE=true
         KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
         KEYCLOAK_BACKEND_CLIENT=hi_backend
-        KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+        KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
         KEYCLOAK_BACKEND_USERNAME=hi_backend
-        KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+        KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
         KEYCLOAK_REAMLS_NAME=hi-therapist
 
         GADMIN_KEYCLOAK_REAMLS_NAME=hi
@@ -557,7 +560,7 @@ data:
         ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
         THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-        THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+        THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
         PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -645,9 +648,9 @@ data:
     KEYCLOAK_LOAD_USER_FROM_DATABASE=true
     KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
     KEYCLOAK_BACKEND_CLIENT=hi_backend
-    KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
     KEYCLOAK_REAMLS_NAME=hi-therapist
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
@@ -657,7 +660,7 @@ data:
     ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
     PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -764,7 +767,7 @@ data:
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
@@ -773,7 +776,7 @@ data:
     ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
     PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -870,7 +873,7 @@ data:
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
@@ -879,7 +882,7 @@ data:
     ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
     PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -1043,7 +1046,7 @@ data:
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
@@ -1052,7 +1055,7 @@ data:
     ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
     PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
@@ -1145,7 +1148,7 @@ data:
     KEYCLOAK_URL=http://{{ keycloak_service }}
     KEYCLOAK_BACKEND_CLIENT=hi_backend
     KEYCLOAK_BACKEND_USERNAME=hi_backend
-    KEYCLOAK_BACKEND_PASSWORD=hi_backendPWD
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
 
     GADMIN_KEYCLOAK_REAMLS_NAME=hi
     GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
@@ -1154,7 +1157,7 @@ data:
     ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
 
     THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
-    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapistbackend_secret }}
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
 
     PATIENT_BACKEND_PIN={{ patient_backend_pin }}
 
