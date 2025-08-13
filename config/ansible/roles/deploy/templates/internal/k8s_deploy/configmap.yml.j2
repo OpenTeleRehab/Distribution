@@ -1081,6 +1081,9 @@ data:
     ACTIVITYLOG_DB_PASSWORD={{ my_adminservice_pass }}
     ACTIVITY_LOGGER_DB_CONNECTION={{ activity_logger_db_connection }}
 
+    CRYPT_SECRET={{ crypt_secret }}
+    CRYPT_CIPHER={{ crypt_cipher }}
+
 ---
 
 apiVersion: v1
@@ -1183,7 +1186,8 @@ data:
     ACTIVITYLOG_DB_PASSWORD={{ my_adminservice_pass }}
     ACTIVITY_LOGGER_DB_CONNECTION={{ activity_logger_db_connection }}
 
-
+    CRYPT_SECRET={{ crypt_secret }}
+    CRYPT_CIPHER={{ crypt_cipher }}
 
 ---
 
