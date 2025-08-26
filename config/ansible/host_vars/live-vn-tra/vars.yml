@@ -1,7 +1,7 @@
 ---
 
 ssh_user:                 'ubuntu'
-my_host:                  'production-db.cwgm5sdsswey.ap-southeast-1.rds.amazonaws.com'
+my_host:                  'hidb.cwgm5sdsswey.ap-southeast-1.rds.amazonaws.com'
 my_root_vn_patient_pass:  '{{ my_root_vn_patient_pass_vault }}'
 my_patientservice_user:   'vn_patient_service'
 my_patientservice_db:     'vn_patient_service'
