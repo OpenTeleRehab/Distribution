@@ -28,7 +28,7 @@ superset_dashboard_id_for_clinic_admin:   '0de69a4b-8a02-4068-8e09-c8b3a792d77b'
 superset_dashboard_id_for_therapist:      'bba7e01a-56df-461d-bdaf-0fb01aff048f'
 superset_guest_token_jwt_secret:          '{{ superset_guest_token_jwt_secret_vault }}'
 
-my_host:                      'production-db.cwgm5sdsswey.ap-southeast-1.rds.amazonaws.com'
+my_host:                      'hidb.cwgm5sdsswey.ap-southeast-1.rds.amazonaws.com'
 my_adminservice_user:         'admin_service'
 my_adminservice_db:           'admin_service'
 my_adminservice_pass:         '{{ my_adminservice_pass_vault }}'
