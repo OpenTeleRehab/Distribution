@@ -236,7 +236,7 @@ restore-open-library-db:
 restore-mongo-db:
 	$(call echo_title, "Restore mongo database")
 	@if [ -f "./config/db_dump/mongo_db_dump.gz" ]; then \
-		$(DOCKER_COMPOSE) -f docker-compose.yml exec -T $(MONGO_SERVICE_NAME) mongorestore --archive < ./config/db_dump/mongo_db_dump.gz; \
+		$(DOCKER_COMPOSE) -f docker-compose.yml exec -T $(MONGO_SERVICE_NAME) mongorestore --gzip --archive < ./config/db_dump/mongo_db_dump.gz; \
 	else \
 		echo "==> ./config/db_dump/mongo_db_dump.gz does not exist"; \
 	fi
