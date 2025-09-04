@@ -44,18 +44,18 @@ This repository is where OpenRehab App implemented in Microservices and using do
 
 ## Verify installation by visiting site below:
   * [Admin Portal](https://local-hi-admin.wehost.asia) with user access below:
-    * super-admin@we.co / Super@Admin
-    * organization-admin@we.co / Organization@Admin
-    * country-admin@we.co / Country@Admin
-    * clinic-admin@we.co / Clinic@Admin
+    * super-admin@we.co / Xr<6U15i3[
+    * organization-admin@we.co / X!*7z-J(km
+    * country-admin@we.co / 1;f:W2vraO
+    * clinic-admin@we.co / 00C{s#+3Sh
   * [Therapist Portal](https://local-hi-therapist.wehost.asia) with user access below:
-    * therapist@we.co / Therapist@Portal
+    * therapist@we.co / m>Hd2fn<ws
   * [Library Portal](https://local-hi-library.wehost.asia) with user access below:
     * library@we.co / Library@Portal
   * [Rocket Chat](https://local-hi-chat.wehost.asia) with user access below:
-    * admin / Rocketchat@Admin
+    * admin / H1V-CHAT@ADM1N
   * [Keycloak](https://local-hi-admin.wehost.asia/auth) with user access below:
-    * admin / KC@Admin
+    * admin / j}kFTdp=jE&YUJe3
 
 ## How to backup databases
   * Backup mysql database ```keycloak_db, admin_service_db, therapist_service_db, patient_service_db, vn_patient_service_db, phone_service_db, open_library_service_db```
