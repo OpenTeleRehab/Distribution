@@ -3,7 +3,7 @@
 project_id:                             'hiv-tra-20'
 project_name:                           'tra'
 
-git_branch:                             'master'
+git_branch:                             'develop'
 
 k8s_namespace:                          'hiv'
 root_domain:                            'rehabilitation.wehost.asia'
