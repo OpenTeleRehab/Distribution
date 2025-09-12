@@ -241,6 +241,11 @@ restore-mongo-db:
 		echo "==> ./config/db_dump/mongo_db_dump.gz does not exist"; \
 	fi
 
+dump-keycloak-db:
+	$(call echo_title, "Dump keycloak database")
+	$(DOCKER_COMPOSE) -f docker-compose.yml exec -T $(KC_SERVICE_DB_NAME) sh \
+		-c 'exec mysqldump -uroot -p$(DB_ROOT_PASS) $(KC_DB_NAME)' | gzip > ./config/db_dump/kc_db_dump.sql.gz
+
 #################
 ### GIT CLONE ###
 #################
