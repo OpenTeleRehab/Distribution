@@ -85,6 +85,7 @@ keycloak_hi_backend_password:           '{{ keycloak_hi_backend_password_vault }
 keycloak_hi_library_password:           '{{ keycloak_hi_library_password_vault }}'
 keycloak_idp_mapping_saml:              '@hi.org,@external.hi.org'
 keycloak_idp_mapping_oidc:              ''
+federated_domains:                      '@hi.org,@external.hi.org'
 
 patient_backend_pin:                    '{{ patient_backend_pin_vault }}'
 

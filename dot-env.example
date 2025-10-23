@@ -67,3 +67,5 @@ MONGO_SERVICE_NAME=mongo
 ADMIN_WEB_APP_NAME=admin_web_app
 THERAPIST_WEB_APP_NAME=therapist_web_app
 LIBRARY_WEB_APP_NAME=library_web_app
+
+FEDERATED_DOMAINS=@hi.org
