@@ -83,6 +83,8 @@ keycloak_hi_therapist_backend_secret:   '{{ keycloak_hi_therapist_backend_secret
 keycloak_hi_library_backend_secret:     '{{ keycloak_hi_library_backend_secret_vault }}'
 keycloak_hi_backend_password:           '{{ keycloak_hi_backend_password_vault }}'
 keycloak_hi_library_password:           '{{ keycloak_hi_library_password_vault }}'
+keycloak_idp_mapping_saml:              '@hi.org,@external.hi.org'
+keycloak_idp_mapping_oidc:              ''
 
 patient_backend_pin:                    '{{ patient_backend_pin_vault }}'
 

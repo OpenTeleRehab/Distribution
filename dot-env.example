@@ -22,6 +22,9 @@ KC_DB_PASS=keycloak
 KC_ADMIN_USER=admin
 KC_ADMIN_PASS=KC@Admin
 
+KC_IDP_MAPPING_SAML=@hi.org,@external.hi.org
+KC_IDP_MAPPING_OIDC=
+
 ADMIN_SERVICE_NAME=admin_service
 ADMIN_SERVICE_DB_NAME=admin_service_db
 ADMIN_DB_NAME=admin_service
