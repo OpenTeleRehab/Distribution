@@ -47,9 +47,9 @@ spec:
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: {{ keycloak_admin_pass }}
             - name: KC_IDP_MAPPING_SAML
-              value: {{ keycloak_idp_mapping_saml }}
+              value: '{{ keycloak_idp_mapping_saml }}'
             - name: KC_IDP_MAPPING_OIDC
-              value: {{ keycloak_idp_mapping_oidc }}
+              value: '{{ keycloak_idp_mapping_oidc }}'
             - name: KC_HOSTNAME_STRICT
               value: 'false'
             - name: KC_HOSTNAME_STRICT_HTTPS
