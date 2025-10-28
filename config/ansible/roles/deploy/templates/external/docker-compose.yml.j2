@@ -196,8 +196,7 @@ services:
       KC_DB_PASSWORD: {{ mysql_pass_keycloak }}
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: "{{ keycloak_admin_pass }}"
-      KC_IDP_MAPPING_SAML: "{{ keycloak_idp_mapping_saml }}"
-      KC_IDP_MAPPING_OIDC: "{{ keycloak_idp_mapping_oidc }}"
+      KC_IDP_MAPPING: "{{ keycloak_idp_mapping }}"
       FEDERATED_DOMAINS: "{{ federated_domains }}"
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: 'false'
