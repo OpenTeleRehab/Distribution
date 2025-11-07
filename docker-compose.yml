@@ -79,6 +79,7 @@ services:
                   -Dkeycloak.profile.feature.upload_scripts=enabled -server -Xms64m -Xmx512m
                   -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
                   -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
+      FEDERATED_DOMAINS: '@hi.org'
     depends_on:
       - keycloak_db
 
