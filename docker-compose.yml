@@ -366,7 +366,7 @@ services:
       - mongo
 
   mongo:
-    image: bitnami/mongodb:7.0.15
+    image: bitnamilegacy/mongodb:7.0.15
     volumes:
       - rocketchat_db_data:/bitnami/mongodb
     networks:
