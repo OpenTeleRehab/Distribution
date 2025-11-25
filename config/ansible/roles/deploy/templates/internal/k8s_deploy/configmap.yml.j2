@@ -202,6 +202,8 @@ data:
     SUPERSET_DASHBOARD_ID_FOR_COUNTRY_ADMIN={{ superset_dashboard_id_for_country_admin }}
     SUPERSET_DASHBOARD_ID_FOR_CLINIC_ADMIN={{ superset_dashboard_id_for_clinic_admin }}
 
+    FEDERATED_DOMAINS={{ federated_domains }}
+
 ---
 
 apiVersion: v1
@@ -303,6 +305,7 @@ data:
 
     GLOBAL_ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
 
+    FEDERATED_DOMAINS={{ federated_domains }}
 ---
 
 apiVersion: v1
@@ -698,6 +701,8 @@ data:
 
     CRYPT_SECRET={{ crypt_secret }}
     CRYPT_CIPHER={{ crypt_cipher }}
+
+    FEDERATED_DOMAINS={{ federated_domains }}
 
 ---
 

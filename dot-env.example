@@ -22,6 +22,8 @@ KC_DB_PASS=keycloak
 KC_ADMIN_USER=admin
 KC_ADMIN_PASS=KC@Admin
 
+KC_IDP_MAPPING=saml::@hi.org,@external.hi.org
+
 ADMIN_SERVICE_NAME=admin_service
 ADMIN_SERVICE_DB_NAME=admin_service_db
 ADMIN_DB_NAME=admin_service
@@ -64,3 +66,5 @@ MONGO_SERVICE_NAME=mongo
 ADMIN_WEB_APP_NAME=admin_web_app
 THERAPIST_WEB_APP_NAME=therapist_web_app
 LIBRARY_WEB_APP_NAME=library_web_app
+
+FEDERATED_DOMAINS=@hi.org

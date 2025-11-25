@@ -53,6 +53,8 @@ mysql_name_keycloak:          'keycloak_service'
 mysql_user_keycloak:          'keycloak_service'
 mysql_pass_keycloak:          '{{ mysql_pass_keycloak_vault }}'
 keycloak_admin_pass:          '{{ keycloak_admin_pass_vault }}'
+keycloak_idp_mapping:         'saml::@hi.org'
+federated_domains:            '@hi.org'
 
 rocketchat_admin_user_id:     '{{ rocketchat_admin_user_id_vault }}'
 rocketchat_admin_auth_token:  '{{ rocketchat_admin_auth_token_vault }}'

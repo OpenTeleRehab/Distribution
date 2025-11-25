@@ -46,6 +46,10 @@ spec:
               value: {{ keycloak_admin_user }}
             - name: KEYCLOAK_ADMIN_PASSWORD
               value: {{ keycloak_admin_pass }}
+            - name: KC_IDP_MAPPING
+              value: '{{ keycloak_idp_mapping }}'
+            - name: FEDERATED_DOMAINS
+              value: '{{ federated_domains }}'
             - name: KC_HOSTNAME_STRICT
               value: 'false'
             - name: KC_HOSTNAME_STRICT_HTTPS
