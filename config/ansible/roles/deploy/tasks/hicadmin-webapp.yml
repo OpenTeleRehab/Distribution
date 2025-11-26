@@ -1,4 +1,11 @@
 ---
+- name: HICAdminWebapp | Clone Admin webapp repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/hic-webapp.git
+    dest: '{{ workspace }}/hicadmin-webapp'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
 
 - name: HICAdminWebapp | Create configuration teamplates
   template:
@@ -63,3 +70,12 @@
   loop:
     - '{{ version }}'
     - latest
+
+### Deploy HICAdmin Webapp
+- name: Deploy hicadmin webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/hicadmin_webapp.yml'
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-webapp-build'
+    state: absent

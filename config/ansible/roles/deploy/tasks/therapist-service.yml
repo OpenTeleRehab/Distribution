@@ -1,5 +1,13 @@
 ---
 
+- name: TherapistService | Clone therapist service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/therapist-service.git
+    dest: '{{ workspace }}/therapist-service'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
+
 - name: TherapistService | Copy deployment configuration
   template:
     src: 'internal/therapist-service/{{ item }}.j2'
@@ -48,3 +56,39 @@
   loop:
     - '{{ version }}'
     - latest
+
+### Deploy Thearapist Service
+- name: Deploy Therapist Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapistservice.yml'
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-service-build'
+    state: absent
+
+- name: Therapist-Service | Wait until container ready
+  shell: |
+    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-therapist-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
+- name: Therapist-Service | Get running admin service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-therapist-service | cut -d " " -f1'
+  register: therapist_pod_name
+
+- name: Therapist-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: Therapist-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: Therapist-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: Therapist-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+
+- name: Therapist-Service | Import Backend User
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan hi:create-backend-user &'

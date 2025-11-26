@@ -1,5 +1,13 @@
 ---
 
+- name: AdminService | Clone Admin service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/admin-service.git
+    dest: '{{ workspace }}/admin-service'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
+
 - name: AdminService | Copy deployment configuration
   template:
     src: 'internal/admin-service/{{ item }}.j2'
@@ -48,3 +56,44 @@
   loop:
     - '{{ version }}'
     - latest
+
+### Deploy Admin Service
+- name: Deploy Admin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
+    state: absent
+
+- name: Admin-Service | Wait until container ready
+  shell: |
+    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-admin-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
+- name: Admin-Service | Get running admin service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
+  register: admin_pod_name
+
+- name: Admin-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: Admin-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: Admin-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+
+- name: Admin-Service | Import default system settings
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - hi:import-default-translation
+    - hi:import-system-limit
+    - hi:create-backend-user
+    - hi:generate-thumbnails

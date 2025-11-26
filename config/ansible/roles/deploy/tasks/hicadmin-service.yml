@@ -1,4 +1,11 @@
 ---
+- name: HICAdminService | Clone Admin service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/hic-service.git
+    dest: '{{ workspace }}/hicadmin-service'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
 
 - name: AdminService | Copy deployment configuration
   template:
@@ -48,3 +55,42 @@
   loop:
     - '{{ version }}'
     - latest
+
+### Deploy HIC Admin Service
+- name: Deploy HICAdmin Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/hicadminservice.yml'
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-service-build'
+    state: absent
+
+- name: HIC-Admin-Service | Wait until container ready
+  shell: |
+    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-hicadmin-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
+- name: HIC-Admin-Service | Get running admin service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-hicadmin-service | cut -d " " -f1'
+  register: hicadmin_pod_name
+
+- name: HIC-Admin-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: HIC-Admin-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: HIC-Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: HIC-Admin-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+
+- name: HIC-Admin-Service | Import default system settings
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - hi:import-default-translation
+    - hi:import-system-limit

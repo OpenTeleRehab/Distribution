@@ -1,5 +1,13 @@
 ---
 
+- name: TherapistWebapp | Clone Therapist webapp repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/therapist-web-app.git
+    dest: '{{ workspace }}/therapist-webapp'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
+
 - name: TherapistWebapp | Create configuration teamplates
   template:
     src: '{{ item }}'
@@ -50,3 +58,12 @@
   loop:
     - '{{ version }}'
     - latest
+
+### Deploy Therapist Webapp
+- name: Deploy Therapist webapp
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/therapist_webapp.yml'
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-therapist-webapp-build'
+    state: absent
