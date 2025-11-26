@@ -56,9 +56,6 @@
   import_tasks: deploy-k8s-common.yml
   when: stage != 'live'
 
-- name: Git clone all repositories into workspace (Admin, Therapist, Patient)
-  import_tasks: clone-projects.yml
-
 ### Build Docker image Admin Service
 - name: Build Admin service
   import_tasks: admin-service.yml
@@ -111,11 +108,6 @@
 ### Deploy k8s pods
 - name: Deploy deploy services
   import_tasks: deploy-k8s-services.yml
-  when: stage != 'live'
-
-### Run migration Admin therapist Patient
-- name: Migration Admin, therapist, Patient
-  import_tasks: deploy-k8s-migration.yml
   when: stage != 'live'
 
 ### Run task on live

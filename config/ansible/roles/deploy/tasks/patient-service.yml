@@ -1,5 +1,13 @@
 ---
 
+- name: PatientService | Clone Admin service repos
+  git:
+    repo: git@git.web-essentials.asia:hiv-tra-20/patient-service.git
+    dest: '{{ workspace }}/patient-service'
+    accept_hostkey: yes
+    version: '{{ git_branch }}'
+    force: yes
+
 - name: PatientService | Copy deployment configuration
   template:
     src: 'internal/patient-service/{{ item }}.j2'
@@ -56,3 +64,69 @@
   loop:
     - '{{ version }}'
     - latest
+
+### Deploy Patient Service
+- name: Deploy Patient Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/patientservice.yml'
+
+- name: Deploy VN Patient Service
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/vn_patientservice.yml'
+
+- name: Remove build file
+  file:
+    path: '/var/tmp/{{ project_id }}/{{ stage }}-patient-service-build'
+    state: absent
+
+- name: Patient-Service | Wait until container ready
+  shell: |
+    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-patient-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
+- name: Patient-Service | Get running patient service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-patient-service | cut -d " " -f1'
+  register: patient_pod_name
+
+- name: Patient-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: Patient-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: Patient-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: Patient-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+
+- name: Patient-Service | Import Backend User
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan hi:create-backend-user &'
+
+- name: VN-Patient-Service | Wait until container ready
+  shell: |
+    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-vn-patient-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+  args:
+    executable: /bin/bash
+
+- name: VN-Patient-Service | Get running patient service pod name
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-vn-patient-service | cut -d " " -f1'
+  register: vn_patient_pod_name
+
+- name: VN-Patient-Service | Migrate DB
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+
+- name: VN-Patient-Service | Link storage folder to public
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
+
+- name: VN-Patient-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+
+- name: VN-Patient-Service | Clear caches
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - cache:clear
+
+- name: VN-Patient-Service | Import Backend User
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan hi:create-backend-user &'
