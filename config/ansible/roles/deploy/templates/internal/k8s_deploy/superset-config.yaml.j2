@@ -40,6 +40,14 @@ data:
         'vi': {'flag': 'vn', 'name': 'Tiếng Việt'},
     }
 
+    HTML_SANITIZATION = True
+    HTML_SANITIZATION_SCHEMA_EXTENSIONS = {
+      "attributes": {
+        "*": ["className"],
+      },
+      "tagNames": ["style"],
+    }
+
   po2json.sh: |
     #!/bin/bash
     # Licensed to the Apache Software Foundation (ASF) under one
