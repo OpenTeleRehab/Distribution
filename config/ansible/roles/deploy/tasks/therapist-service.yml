@@ -90,5 +90,8 @@
   loop:
     - cache:clear
 
-- name: Therapist-Service | Import Backend User
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan hi:create-backend-user &'
+- name: Therapist-Service | Import default system settings
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ therapist_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  loop:
+    - hi:create-backend-user
+    - hi:keycloak-setup-permissions

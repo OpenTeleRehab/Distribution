@@ -97,3 +97,4 @@
     - hi:import-system-limit
     - hi:create-backend-user
     - hi:generate-thumbnails
+    - hi:keycloak-setup-permissions
