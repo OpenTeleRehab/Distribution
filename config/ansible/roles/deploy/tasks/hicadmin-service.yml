@@ -75,14 +75,14 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-hicadmin-service | cut -d " " -f1'
   register: hicadmin_pod_name
 
+- name: HIC-Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
+
 - name: HIC-Admin-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan migrate --force &'
 
 - name: HIC-Admin-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
-
-- name: HIC-Admin-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan storage:link &'
 
 - name: HIC-Admin-Service | Clear caches
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
@@ -90,7 +90,7 @@
     - cache:clear
 
 - name: HIC-Admin-Service | Import default system settings
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
   loop:
     - hi:import-default-translation
     - hi:import-system-limit

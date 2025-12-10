@@ -76,22 +76,22 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
   register: admin_pod_name
 
+- name: Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
+
 - name: Admin-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan migrate --force &'
 
 - name: Admin-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
-
-- name: Admin-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan storage:link &'
 
 - name: Admin-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
 
 - name: Admin-Service | Import default system settings
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
   loop:
     - hi:import-default-translation
     - hi:import-system-limit

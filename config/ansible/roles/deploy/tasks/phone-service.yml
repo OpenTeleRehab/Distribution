@@ -68,16 +68,16 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-phone-service | cut -d " " -f1'
   register: phone_pod_name
 
+- name: Phone-Service | Change Ownership
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
+
 - name: Phone-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan migrate --force &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan migrate --force &'
 
 - name: Phone-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan storage:link &'
-
-- name: Phone-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chmod -R 0777 /var/www/storage/ &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan storage:link &'
 
 - name: Phone-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
