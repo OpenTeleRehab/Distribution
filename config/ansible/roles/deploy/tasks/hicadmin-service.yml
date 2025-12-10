@@ -94,3 +94,6 @@
   loop:
     - hi:import-default-translation
     - hi:import-system-limit
+
+- name: HIC-Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ hicadmin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'

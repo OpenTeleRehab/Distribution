@@ -81,3 +81,6 @@
   shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
   loop:
     - cache:clear
+
+- name: Phone-Service | Change Ownership
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ phone_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'

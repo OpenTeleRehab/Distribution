@@ -98,3 +98,6 @@
     - hi:create-backend-user
     - hi:generate-thumbnails
     - hi:keycloak-setup-permissions
+
+- name: Admin-Service | Change permission
+  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
