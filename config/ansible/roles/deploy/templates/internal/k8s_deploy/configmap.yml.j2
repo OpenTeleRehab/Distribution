@@ -810,6 +810,11 @@ data:
     CRYPT_SECRET={{ crypt_secret }}
     CRYPT_CIPHER={{ crypt_cipher }}
 
+    PHONE_SERVICE_PATIENT_API_URL=https://{{ admin_webapp_url }}/api/patient
+    PHONE_SERVICE_ADMIN_API_URL=https://{{ admin_webapp_url }}/api/admin
+    PHONE_SERVICE_THERAPIST_API_URL=https://{{ admin_webapp_url }}/api/therapist
+    PHONE_SERVICE_CHAT_API_URL=https://{{ rocketchat_url }}
+    PHONE_SERVICE_CHAT_WEBSOCKET_URL=wss://{{ rocketchat_url }}/websocket
 
 ---
 
@@ -1089,6 +1094,11 @@ data:
     CRYPT_SECRET={{ crypt_secret }}
     CRYPT_CIPHER={{ crypt_cipher }}
 
+    PHONE_SERVICE_PATIENT_API_URL=https://{{ admin_webapp_url }}/api/patient
+    PHONE_SERVICE_ADMIN_API_URL=https://{{ admin_webapp_url }}/api/admin
+    PHONE_SERVICE_THERAPIST_API_URL=https://{{ admin_webapp_url }}/api/therapist
+    PHONE_SERVICE_CHAT_API_URL=https://{{ rocketchat_url }}
+    PHONE_SERVICE_CHAT_WEBSOCKET_URL=wss://{{ rocketchat_url }}/websocket
 ---
 
 apiVersion: v1
