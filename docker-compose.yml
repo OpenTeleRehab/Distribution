@@ -80,6 +80,8 @@ services:
                   -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true
                   -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true'
       FEDERATED_DOMAINS: '@hi.org'
+    volumes:
+      - ../keycloak/themes:/opt/keycloak/themes
     depends_on:
       - keycloak_db
 
