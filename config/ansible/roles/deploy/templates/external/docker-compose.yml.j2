@@ -102,6 +102,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./config/adminservice/storage/app/education_material:/var/www/storage/app/education_material
+      - ./config/adminservice/storage/app/screening_questionnaire:/var/www/storage/app/screening_questionnaire
       - ./config/adminservice/storage/app/exercise:/var/www/storage/app/exercise
       - ./config/adminservice/storage/app/exports:/var/www/storage/app/exports
       - ./config/adminservice/storage/app/file:/var/www/storage/app/file
@@ -154,6 +155,7 @@ services:
     volumes:
       - ./config/libraryservice/storage/app/country:/var/www/storage/app/country
       - ./config/libraryservice/storage/app/education_material:/var/www/storage/app/education_material
+      - ./config/libraryservice/storage/app/screening_questionnaire:/var/www/storage/app/screening_questionnaire
       - ./config/libraryservice/storage/app/exercise:/var/www/storage/app/exercise
       - ./config/libraryservice/storage/app/file:/var/www/storage/app/file
       - ./config/libraryservice/storage/app/questionnaire:/var/www/storage/app/questionnaire

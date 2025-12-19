@@ -40,6 +40,9 @@ spec:
             mountPath: /var/www/storage/app/exercise
             subPath: 'app/exercise'
           - name: 'vol-{{ stage }}-{{ project_name }}'
+            mountPath: /var/www/storage/app/screening_questionnaire
+            subPath: 'app/screening_questionnaire'
+          - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /var/www/storage/app/exports
             subPath: 'app/exports'
           - name: 'vol-{{ stage }}-{{ project_name }}'
