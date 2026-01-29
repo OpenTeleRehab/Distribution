@@ -25,6 +25,20 @@
     dest: '{{ workspace }}/therapist-service/.env'
     mode: 0755
 
+- name: TherapistService | Copy firebase-auth.json files
+  template:
+    src: 'internal/therapist-service/firebase-auth.json.vault'
+    dest: '{{ workspace }}/therapist-service/storage/app/firebase-auth.json'
+    mode: 0755
+  when: stage == 'live'
+
+- name: TherapistService | Copy firebase-auth-dev.json files
+  template:
+    src: 'internal/therapist-service/firebase-auth-dev.json.vault'
+    dest: '{{ workspace }}/therapist-service/storage/app/firebase-auth.json'
+    mode: 0755
+  when: stage != 'live'
+
 - name: TherapistService | Copy .env.dusk.local
   template:
     src: 'internal/therapist-service/env.dusk.local.j2'
