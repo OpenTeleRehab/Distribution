@@ -143,8 +143,11 @@ superset_admin_user: 'admin_service'
 superset_admin_password: '{{ superset_admin_password_vault }}'
 superset_dashboard_id_for_global_admin:   'ebb93bc0-bde5-4f76-b991-c1954e0813a9'
 superset_dashboard_id_for_country_admin:  '48bc1e88-80ae-4fa4-9b5b-2ff937c5ad2f'
+superset_dashboard_id_for_regional_admin:  '7cf5e758-b198-4efa-9786-c948ce12fa2e'
 superset_dashboard_id_for_clinic_admin:   '8044e76d-252d-46c0-b7b1-4ca5f88a5e70'
+superset_dashboard_id_for_phc_service_admin:   '7169bd30-cfcf-4b86-a7c4-f3580ab5fc7c'
 superset_dashboard_id_for_therapist:      '71e3cc54-1150-4984-86be-d6782e06e84f'
+superset_dashboard_id_for_phc_worker:      'aa411a32-54e2-4ce5-81f6-c34ba81defe3'
 superset_guest_token_jwt_secret:          '{{ superset_guest_token_jwt_secret_vault }}'
 
 # Presto
