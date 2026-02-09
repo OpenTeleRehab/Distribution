@@ -86,11 +86,11 @@ keycloak_hi_library_password:           '{{ keycloak_hi_library_password_vault }
 keycloak_idp_mapping:                   'saml::@hi.org,@external.hi.org'
 federated_domains:                      '@hi.org,@external.hi.org'
 
-admin_keycloak_backend_client:          '{{ admin_keycloak_backend_client_vault }}'
-admin_keycloak_backend_username:        '{{ admin_keycloak_backend_username_vault }}'
+admin_keycloak_backend_client:          'hi_backend'
+admin_keycloak_backend_username:        'hi_backend'
 admin_keycloak_backend_password:        '{{ admin_keycloak_backend_password_vault }}'
-therapist_keycloak_backend_client:       '{{ therapist_keycloak_backend_client_vault }}'
-therapist_keycloak_backend_username:     '{{ therapist_keycloak_backend_username_vault }}'
+therapist_keycloak_backend_client:       'hi_backend'
+therapist_keycloak_backend_username:     'hi_backend'
 therapist_keycloak_backend_password:     '{{ therapist_keycloak_backend_password_vault }}'
 
 patient_backend_pin:                    '{{ patient_backend_pin_vault }}'
