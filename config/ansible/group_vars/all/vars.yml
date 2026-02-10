@@ -86,6 +86,9 @@ keycloak_hi_library_password:           '{{ keycloak_hi_library_password_vault }
 keycloak_idp_mapping:                   'saml::@hi.org,@external.hi.org'
 federated_domains:                      '@hi.org,@external.hi.org'
 
+gadmin_keycloak_backend_client:         'hi_backend'
+gadmin_keycloak_backend_username:       'hi_backend'
+gadmin_keycloak_backend_password:       '{{ gadmin_keycloak_backend_password_vault }}'
 admin_keycloak_backend_client:          'hi_backend'
 admin_keycloak_backend_username:        'hi_backend'
 admin_keycloak_backend_password:        '{{ admin_keycloak_backend_password_vault }}'
