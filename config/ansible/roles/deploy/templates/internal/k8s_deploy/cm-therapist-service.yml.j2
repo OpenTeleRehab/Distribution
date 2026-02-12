@@ -1,0 +1,226 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-therapist-service-env
+  namespace: hiv
+data:
+  therapist-service-env: |
+    APP_NAME=hi
+    APP_ENV=production
+    APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
+    APP_DEBUG=false
+    APP_URL=http://localhost
+
+    LOG_CHANNEL=stack
+
+    DB_CONNECTION=mysql
+    DB_HOST={{ my_host }}
+    DB_PORT=3306
+    DB_DATABASE={{ my_therapistservice_db }}
+    DB_USERNAME={{ my_therapistservice_user }}
+    DB_PASSWORD={{ my_therapistservice_pass }}
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    QUEUE_CONNECTION=database
+    SESSION_DRIVER=file
+    SESSION_LIFETIME=120
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_MAILER=smtp
+    MAIL_HOST=10.10.10.37
+    MAIL_PORT=1025
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+    MAIL_FROM_ADDRESS=noreply@web-essentials.co
+    MAIL_FROM_NAME="${APP_NAME}"
+
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRET_ACCESS_KEY=
+    AWS_DEFAULT_REGION=us-east-1
+    AWS_BUCKET=
+
+    PUSHER_APP_ID={{ pusher_app_id }}
+    PUSHER_APP_KEY={{ pusher_app_key }}
+    PUSHER_APP_SECRET={{ pusher_app_secret }}
+    PUSHER_APP_CLUSTER=ap1
+    BROADCAST_DRIVER=pusher
+
+    KEYCLOAK_URL=http://{{ keycloak_service }}
+    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_therapist_realm_public_key }}
+    KEYCLOAK_ALLOWED_RESOURCES=account
+    KEYCLOAK_LOAD_USER_FROM_DATABASE=true
+    KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
+    KEYCLOAK_BACKEND_CLIENT=hi_backend
+    KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
+    KEYCLOAK_BACKEND_USERNAME=hi_backend
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
+    KEYCLOAK_REAMLS_NAME=hi-therapist
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+    GADMIN_KEYCLOAK_BACKEND_CLIENT={{ gadmin_keycloak_backend_client }}
+    GADMIN_KEYCLOAK_BACKEND_USERNAME={{ gadmin_keycloak_backend_username }}
+    GADMIN_KEYCLOAK_BACKEND_PASSWORD={{ gadmin_keycloak_backend_password }}
+
+    ADMIN_KEYCLOAK_REAMLS_NAME=hi
+    ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+    ADMIN_KEYCLOAK_BACKEND_CLIENT={{ admin_keycloak_backend_client }}
+    ADMIN_KEYCLOAK_BACKEND_USERNAME={{ admin_keycloak_backend_username }}
+    ADMIN_KEYCLOAK_BACKEND_PASSWORD={{ admin_keycloak_backend_password }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
+    REACT_APP_BASE_URL=https://{{ therapist_webapp_url }}/
+
+    GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+    ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+    PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
+    THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
+
+    ROCKET_CHAT_URL={{ rocketchat_service }}
+    ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
+    ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
+    ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+
+    SMS_SID={{ sms_sid }}
+    SMS_TOKEN={{ sms_token }}
+    SMS_PHONE_NUMBER={{ sms_phone_number }}
+
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
+
+    SUPERSET_BASE_URL=http://{{ superset_service }}:8088
+    SUPERSET_ADMIN_USER={{ superset_admin_user }}
+    SUPERSET_ADMIN_PASSWORD={{ superset_admin_password }}
+    SUPERSET_DASHBOARD_ID_FOR_THERAPIST={{ superset_dashboard_id_for_therapist }}
+    SUPERSET_DASHBOARD_ID_FOR_PHC_WORKER={{ superset_dashboard_id_for_phc_worker }}
+
+    ACTIVITYLOG_DB_HOST={{ my_host }}
+    ACTIVITYLOG_DB_PORT=3306
+    ACTIVITYLOG_DB_DATABASE={{ my_adminservice_db }}
+    ACTIVITYLOG_DB_USERNAME={{ my_adminservice_user }}
+    ACTIVITYLOG_DB_PASSWORD={{ my_adminservice_pass }}
+    ACTIVITY_LOGGER_DB_CONNECTION={{ activity_logger_db_connection }}
+
+    CRYPT_SECRET={{ crypt_secret }}
+    CRYPT_CIPHER={{ crypt_cipher }}
+
+    FEDERATED_DOMAINS={{ federated_domains }}
+
+    FIREBASE_CREDENTIALS=storage/app/firebase-auth.json
+
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-{{ stage }}-{{ project_name }}-therapist-service-env-dusk-local
+  namespace: hiv
+data:
+  therapist-service-env-dusk-local: |
+    APP_NAME=hi
+    APP_ENV=testing
+    APP_KEY=base64:cYp7oHl1O8HfKTFjpuY/amT2KNyyHcX0SqqSlg24pBM=
+    APP_DEBUG=false
+    APP_URL=http://localhost
+
+    LOG_CHANNEL=stack
+
+    DB_CONNECTION=mysql
+    DB_HOST={{ my_host }}
+    DB_PORT=3306
+    DB_DATABASE={{ my_therapistservice_db }}
+    DB_USERNAME={{ my_therapistservice_user }}
+    DB_PASSWORD={{ my_therapistservice_pass }}
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    QUEUE_CONNECTION=database
+    SESSION_DRIVER=file
+    SESSION_LIFETIME=120
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_MAILER=smtp
+    MAIL_HOST=10.10.10.37
+    MAIL_PORT=1025
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+    MAIL_FROM_ADDRESS=noreply@web-essentials.co
+    MAIL_FROM_NAME="${APP_NAME}"
+
+    AWS_ACCESS_KEY_ID=
+    AWS_SECRET_ACCESS_KEY=
+    AWS_DEFAULT_REGION=us-east-1
+    AWS_BUCKET=
+
+    PUSHER_APP_ID=
+    PUSHER_APP_KEY=
+    PUSHER_APP_SECRET=
+    PUSHER_APP_CLUSTER=mt1
+
+    MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+    MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+
+    KEYCLOAK_URL=http://{{ keycloak_service }}
+    KEYCLOAK_REALM_PUBLIC_KEY={{ keycloak_hi_therapist_realm_public_key }}
+    KEYCLOAK_ALLOWED_RESOURCES=account
+    KEYCLOAK_LOAD_USER_FROM_DATABASE=true
+    KEYCLOAK_USER_PROVIDER_CREDENTIAL=email
+    KEYCLOAK_BACKEND_CLIENT=hi_backend
+    KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
+    KEYCLOAK_BACKEND_USERNAME=hi_backend
+    KEYCLOAK_BACKEND_PASSWORD={{ keycloak_hi_backend_password }}
+    KEYCLOAK_REAMLS_NAME=hi-therapist
+
+    GADMIN_KEYCLOAK_REAMLS_NAME=hi
+    GADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+
+    ADMIN_KEYCLOAK_REAMLS_NAME=hi
+    ADMIN_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_backend_secret }}
+    ADMIN_KEYCLOAK_BACKEND_CLIENT={{ admin_keycloak_backend_client }}
+    ADMIN_KEYCLOAK_BACKEND_USERNAME={{ admin_keycloak_backend_username }}
+    ADMIN_KEYCLOAK_BACKEND_PASSWORD={{ admin_keycloak_backend_password }}
+
+    THERAPIST_KEYCLOAK_REAMLS_NAME=hi-therapist
+    THERAPIST_KEYCLOAK_BACKEND_SECRET={{ keycloak_hi_therapist_backend_secret }}
+
+    PATIENT_BACKEND_PIN={{ patient_backend_pin }}
+
+    REACT_APP_BASE_URL=https://{{ therapist_webapp_url }}/
+
+    GADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+    ADMIN_SERVICE_URL=http://{{ krakend_service }}:8000/admin
+    PATIENT_SERVICE_URL=http://{{ krakend_service }}:8000/patient
+    THERAPIST_SERVICE_URL=http://{{ krakend_service }}:8000/therapist
+
+    ROCKET_CHAT_URL={{ rocketchat_service }}
+    ROCKET_CHAT_ADMIN_USER_ID={{ rocketchat_admin_user_id }}
+    ROCKET_CHAT_ADMIN_AUTH_TOKEN={{ rocketchat_admin_auth_token }}
+    ROCKET_CHAT_ADMIN_PASSWORD={{ rocketchat_admin_pass }}
+
+    TWILIO_ACCOUNT_SID={{ twilio_account_sid }}
+    TWILIO_API_KEY={{ twilio_api_key }}
+    TWILIO_API_KEY_SECRET={{ twilio_api_key_secret }}
+
+    ACTIVITYLOG_DB_HOST={{ my_host }}
+    ACTIVITYLOG_DB_PORT=3306
+    ACTIVITYLOG_DB_DATABASE={{ my_adminservice_db }}
+    ACTIVITYLOG_DB_USERNAME={{ my_adminservice_user }}
+    ACTIVITYLOG_DB_PASSWORD={{ my_adminservice_pass }}
+    ACTIVITY_LOGGER_DB_CONNECTION={{ activity_logger_db_connection }}
