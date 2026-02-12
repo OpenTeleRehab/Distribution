@@ -19,5 +19,7 @@
   loop:
     - namespace.yml
     - configmap.yml
-    - cm-*.yml
     - pvc.yml
+
+- name: Deploy service configmap
+  shell: 'cat cm-*.yml | KUBECONFIG={{ kubeconfig }} kubectl apply -f -'
