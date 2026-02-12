@@ -23,3 +23,5 @@
 
 - name: Deploy service configmap
   shell: 'cat cm-*.yml | KUBECONFIG={{ kubeconfig }} kubectl apply -f -'
+  args:
+    chdir: '{{ workspace }}/k8s-deploy'
