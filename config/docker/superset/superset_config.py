@@ -4,8 +4,12 @@ FEATURE_FLAGS = {
     "ESCAPE_MARKDOWN_HTML": False,
 }
 
-HTTP_HEADERS = {
-    "X-Frame-Options": "ALLOWALL",
+TALISMAN_CONFIG = {
+    "content_security_policy": {
+        "frame-ancestors": [
+            "https://*.wehost.asia",
+        ]
+    }
 }
 
 GUEST_ROLE_NAME= 'embed_dashboard'
