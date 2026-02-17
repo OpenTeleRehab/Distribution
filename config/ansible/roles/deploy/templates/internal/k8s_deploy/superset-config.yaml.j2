@@ -10,9 +10,17 @@ data:
     FEATURE_FLAGS = {
         "ENABLE_TEMPLATE_PROCESSING": True,
         "EMBEDDED_SUPERSET": True,
+        "ESCAPE_MARKDOWN_HTML": False,
     }
 
-    TALISMAN_ENABLED = False
+    TALISMAN_CONFIG = {
+        "content_security_policy": {
+            "frame-ancestors": [
+                "https://{{ admin_webapp_url }}",
+                "https://{{ therapist_webapp_url }}",
+            ]
+        }
+    }
 
     GUEST_TOKEN_JWT_EXP_SECONDS = 1800
     GUEST_TOKEN_JWT_SECRET = "{{ superset_guest_token_jwt_secret }}"
@@ -29,7 +37,7 @@ data:
 
     LANGUAGES = {
         'en': {'flag': 'us', 'name': 'English'},
-        'ar': {'flag': 'ar', 'name': 'اَلْعَرَبِيَّةُ'},
+        'ar': {'flag': 'sa', 'name': 'اَلْعَرَبِيَّةُ'},
         'es': {'flag': 'es', 'name': 'Español'},
         'my': {'flag': 'mm', 'name': 'မြန်မာစာ'},
         'fr': {'flag': 'fr', 'name': 'Français'},
