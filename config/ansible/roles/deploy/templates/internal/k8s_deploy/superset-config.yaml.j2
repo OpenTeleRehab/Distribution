@@ -22,6 +22,13 @@ data:
         }
     }
 
+    JINJA_CONTEXT_ADDONS = {
+        "admin_service_db": "{{ superset_db_admin_service }}",
+        "therapist_service_db": "{{ superset_db_therapist_service }}",
+        "patient_service_db": "{{ superset_db_patient_service }}",
+        "vn_patient_service_db": "{{ superset_db_vn_patient_service }}",
+    }
+
     GUEST_TOKEN_JWT_EXP_SECONDS = 1800
     GUEST_TOKEN_JWT_SECRET = "{{ superset_guest_token_jwt_secret }}"
     GUEST_ROLE_NAME = 'embed_dashboard'

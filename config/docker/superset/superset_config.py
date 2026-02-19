@@ -12,6 +12,10 @@ TALISMAN_CONFIG = {
     }
 }
 
+JINJA_CONTEXT_ADDONS = {
+    "admin_service_db": "admin_service.admin_service"
+}
+
 GUEST_ROLE_NAME= 'embed_dashboard'
 
 CACHE_CONFIG = {

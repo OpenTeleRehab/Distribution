@@ -143,6 +143,11 @@ superset_db_user: '{{ stage }}_{{ project_name }}_superset'
 superset_db_pass: '{{ superset_db_pass_vault }}'
 superset_db_name: '{{ stage }}_{{ project_name }}_superset'
 
+superset_db_admin_service: 'admin_service.{{ stage }}_adminservice'
+superset_db_therapist_service: 'therapist_service.{{ stage }}_therapistservice'
+superset_db_patient_service: 'patient_service.{{ stage }}_patientservice'
+superset_db_vn_patient_service: 'vn_patient_service.vn_{{ stage }}_patientservice'
+
 superset_redis_image: 'redis:7.4.1'
 superset_redis_host: 'svc-{{ stage }}-{{ project_name }}-superset-redis'
 superset_redis_port: '6379'
@@ -151,14 +156,15 @@ superset_secret_key: '{{ superset_secret_key_vault }}'
 
 superset_admin_user: 'admin_service'
 superset_admin_password: '{{ superset_admin_password_vault }}'
+superset_guest_token_jwt_secret: '{{ superset_guest_token_jwt_secret_vault }}'
+
 superset_dashboard_id_for_global_admin:   'ebb93bc0-bde5-4f76-b991-c1954e0813a9'
 superset_dashboard_id_for_country_admin:  '48bc1e88-80ae-4fa4-9b5b-2ff937c5ad2f'
-superset_dashboard_id_for_regional_admin:  '7cf5e758-b198-4efa-9786-c948ce12fa2e'
+superset_dashboard_id_for_regional_admin: '7cf5e758-b198-4efa-9786-c948ce12fa2e'
 superset_dashboard_id_for_clinic_admin:   '8044e76d-252d-46c0-b7b1-4ca5f88a5e70'
 superset_dashboard_id_for_phc_service_admin:   '7169bd30-cfcf-4b86-a7c4-f3580ab5fc7c'
 superset_dashboard_id_for_therapist:      '71e3cc54-1150-4984-86be-d6782e06e84f'
-superset_dashboard_id_for_phc_worker:      'aa411a32-54e2-4ce5-81f6-c34ba81defe3'
-superset_guest_token_jwt_secret:          '{{ superset_guest_token_jwt_secret_vault }}'
+superset_dashboard_id_for_phc_worker:     'aa411a32-54e2-4ce5-81f6-c34ba81defe3'
 
 # Presto
 presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
