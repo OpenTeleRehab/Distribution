@@ -117,7 +117,7 @@ smtp_port:                              '1025'
 smtp_user:                              '{{ smtp_user_vault }}'
 smtp_pass:                              '{{ smtp_pass_vault }}'
 smtp_encryption:                        'null'
-smtp_mail_from_address:                 'noreply@opentelerehab.com'
+smtp_mail_from_address:                 'noreply@web-essentials.co'
 
 map_api_key:                            '{{ map_api_key_vault }}'
 

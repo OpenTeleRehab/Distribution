@@ -21,6 +21,11 @@ vn_patient_host:              '103.229.42.86'
 phone_service:                'phone_service'
 superset_service:             'superset'
 
+smtp_host:                              'email-smtp.us-east-1.amazonaws.com'
+smtp_port:                              '587'
+smtp_encryption:                        'tls'
+smtp_mail_from_address:                 'noreply@opentelerehab.com'
+
 superset_admin_password:                  '{{ superset_admin_password_vault }}'
 superset_dashboard_id_for_global_admin:   'bf15c6ab-9f2f-47d1-bbfa-48e8d3dcd94f'
 superset_dashboard_id_for_country_admin:  '6b258431-8af1-42bb-a651-c27b4cad42a2'
