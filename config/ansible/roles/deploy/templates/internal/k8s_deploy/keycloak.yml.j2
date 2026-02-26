@@ -30,7 +30,9 @@ spec:
               subPath: theme-properties
             - name: tz-config
               mountPath: /etc/localtime
-          args: ["start"]
+          args:
+            - start
+            - --features=persistent-user-sessions
           env:
             - name: KC_DB
               value: mysql

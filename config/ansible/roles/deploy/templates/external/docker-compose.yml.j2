@@ -184,7 +184,7 @@ services:
     container_name: keycloak
     image: {{ image_name }}/keycloak:latest
     restart: unless-stopped
-    command: start
+    command: start --features="persistent-user-sessions"
     networks:
       - hiv-docker-net
     volumes:

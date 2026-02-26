@@ -61,7 +61,7 @@ services:
     build: ../keycloak/
     networks:
       - docker-net
-    command: start
+    command: start --features="persistent-user-sessions"
     environment:
       KC_DB: mysql
       KC_DB_URL: jdbc:mysql://${KC_SERVICE_DB_NAME}:3306/${KC_DB_NAME}
