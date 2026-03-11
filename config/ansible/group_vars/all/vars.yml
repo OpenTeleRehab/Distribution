@@ -165,3 +165,5 @@ activity_logger_db_connection: 'adminService'
 
 crypt_secret: '{{ crypt_secret }}'
 crypt_cipher: '{{ crypt_cipher }}'
+
+mail_from_name: 'OpenTelerehab'
