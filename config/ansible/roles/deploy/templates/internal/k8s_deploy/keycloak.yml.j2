@@ -52,6 +52,8 @@ spec:
               value: '{{ keycloak_idp_mapping }}'
             - name: FEDERATED_DOMAINS
               value: '{{ federated_domains }}'
+            - name: KC_FEATURES
+              value: persistent-user-sessions
             - name: KC_HOSTNAME_STRICT
               value: 'false'
             - name: KC_HOSTNAME_STRICT_HTTPS
