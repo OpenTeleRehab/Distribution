@@ -161,8 +161,6 @@ superset_guest_token_jwt_secret: '{{ superset_guest_token_jwt_secret_vault }}'
 # Presto
 presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
 
-activity_logger_db_connection: 'adminService'
-
 crypt_secret: '{{ crypt_secret }}'
 crypt_cipher: '{{ crypt_cipher }}'
 
