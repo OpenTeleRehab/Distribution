@@ -74,21 +74,21 @@
 
 # Run artisan admin service
 - name: Run artisan migration
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan migrate --force'
+  shell: 'docker-compose exec -T admin_service /usr/bin/php artisan migrate --force'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
   delegate_to: live-gl-tra
 
 - name: Run artisan storage link
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan storage:link'
+  shell: 'docker-compose exec -T admin_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
   delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan {{ item }}'
+  shell: 'docker-compose exec -T admin_service /usr/bin/php artisan {{ item }}'
   args:
     chdir: 'projects/hiv'
   loop:
@@ -100,14 +100,21 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:import-default-translation'
+  shell: 'docker-compose exec -T admin_service /usr/bin/php artisan {{ item }}'
   args:
     chdir: 'projects/hiv'
+  loop:
+    - hi:keycloak-setup-permissions
+    - hi:import-default-translation
+    - hi:import-system-limit
+    - hi:create-backend-user
+    - hi:generate-thumbnails
+    - hi:import-email-template
   when: admin_service_build.stat.exists
   delegate_to: live-gl-tra
 
-- name: Run artisan create backend user
-  shell: 'docker-compose exec admin_service /usr/bin/php artisan hi:create-backend-user &'
+- name: Change ownership
+  shell: 'docker-compose exec -T admin_service chown -R www-data:www-data /var/www'
   args:
     chdir: 'projects/hiv'
   when: admin_service_build.stat.exists
@@ -115,21 +122,21 @@
 
 # Run artisan therapist service
 - name: Run artisan migration
-  shell: 'docker-compose exec therapist_service /usr/bin/php artisan migrate --force'
+  shell: 'docker-compose exec -T therapist_service /usr/bin/php artisan migrate --force'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
   delegate_to: live-gl-tra
 
 - name: Run artisan storage link
-  shell: 'docker-compose exec therapist_service /usr/bin/php artisan storage:link'
+  shell: 'docker-compose exec -T therapist_service /usr/bin/php artisan storage:link'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
   delegate_to: live-gl-tra
 
 - name: Run artisan clear cache
-  shell: 'docker-compose exec therapist_service /usr/bin/php artisan {{ item }}'
+  shell: 'docker-compose exec -T therapist_service /usr/bin/php artisan {{ item }}'
   args:
     chdir: 'projects/hiv'
   loop:
@@ -141,7 +148,17 @@
   delegate_to: live-gl-tra
 
 - name: Run artisan import
-  shell: 'docker-compose exec therapist_service /usr/bin/php artisan hi:create-backend-user &'
+  shell: 'docker-compose exec -T therapist_service /usr/bin/php artisan {{ item }}'
+  args:
+    chdir: 'projects/hiv'
+  loop:
+    - hi:create-backend-user
+    - hi:keycloak-setup-permissions
+  when: therapist_service_build.stat.exists
+  delegate_to: live-gl-tra
+
+- name: Change ownership
+  shell: 'docker-compose exec -T therapist_service chown -R www-data:www-data /var/www'
   args:
     chdir: 'projects/hiv'
   when: therapist_service_build.stat.exists
