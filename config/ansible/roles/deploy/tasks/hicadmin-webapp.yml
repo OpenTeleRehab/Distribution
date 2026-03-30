@@ -72,10 +72,13 @@
     - latest
 
 ### Deploy HICAdmin Webapp
-- name: Deploy hicadmin webapp
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/hicadmin_webapp.yml'
+- name: Deploy Service on kubernetest
+  when: stage != "live"
+  block:
+    - name: Deploy hicadmin webapp
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/hicadmin_webapp.yml'
 
-- name: Remove build file
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-webapp-build'
-    state: absent
+    - name: Remove build file
+      file:
+        path: '/var/tmp/{{ project_id }}/{{ stage }}-hicadmin-webapp-build'
+        state: absent

@@ -58,47 +58,50 @@
     - latest
 
 ### Deploy Admin Service
-- name: Deploy Admin Service
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
+- name: Deploy Service on kubernetest
+  when: stage != "live"
+  block:
+    - name: Deploy Admin Service
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl apply -f {{ workspace }}/k8s-deploy/adminservice.yml'
 
-- name: Remove build file
-  file:
-    path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
-    state: absent
+    - name: Remove build file
+      file:
+        path: '/var/tmp/{{ project_id }}/{{ stage }}-admin-service-build'
+        state: absent
 
-- name: Admin-Service | Wait until container ready
-  shell: |
-    while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-admin-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
-  args:
-    executable: /bin/bash
+    - name: Admin-Service | Wait until container ready
+      shell: |
+        while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-admin-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
+      args:
+        executable: /bin/bash
 
-- name: Admin-Service | Get running admin service pod name
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
-  register: admin_pod_name
+    - name: Admin-Service | Get running admin service pod name
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl get pods -n {{ k8s_namespace }} | grep app-{{ stage }}-{{ project_name }}-admin-service | cut -d " " -f1'
+      register: admin_pod_name
 
-- name: Admin-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
+    - name: Admin-Service | Change permission
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
 
-- name: Admin-Service | Migrate DB
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan migrate --force &'
+    - name: Admin-Service | Migrate DB
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan migrate --force &'
 
-- name: Admin-Service | Link storage folder to public
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan storage:link &'
+    - name: Admin-Service | Link storage folder to public
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan storage:link &'
 
-- name: Admin-Service | Clear caches
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
-  loop:
-    - cache:clear
+    - name: Admin-Service | Clear caches
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
+      loop:
+        - cache:clear
 
-- name: Admin-Service | Import default system settings
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
-  loop:
-    - hi:keycloak-setup-permissions
-    - hi:import-default-translation
-    - hi:import-system-limit
-    - hi:create-backend-user
-    - hi:generate-thumbnails
-    - hi:import-email-template
+    - name: Admin-Service | Import default system settings
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan {{ item }} &'
+      loop:
+        - hi:keycloak-setup-permissions
+        - hi:import-default-translation
+        - hi:import-system-limit
+        - hi:create-backend-user
+        - hi:generate-thumbnails
+        - hi:import-email-template
 
-- name: Admin-Service | Change permission
-  shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
+    - name: Admin-Service | Change permission
+      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ admin_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'
