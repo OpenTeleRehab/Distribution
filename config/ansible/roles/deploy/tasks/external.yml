@@ -110,6 +110,7 @@
     - hi:create-backend-user
     - hi:generate-thumbnails
     - hi:import-email-template
+    - hi:migrate-region-mapping
   when: admin_service_build.stat.exists
   delegate_to: live-gl-tra
 
