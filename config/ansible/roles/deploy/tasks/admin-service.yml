@@ -99,7 +99,6 @@
         - hi:keycloak-setup-permissions
         - hi:import-default-translation
         - hi:import-system-limit
-        - hi:create-backend-user
         - hi:generate-thumbnails
         - hi:import-email-template
 
