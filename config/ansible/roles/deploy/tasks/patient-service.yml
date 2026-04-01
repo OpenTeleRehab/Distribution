@@ -104,9 +104,6 @@
       loop:
         - cache:clear
 
-    - name: Patient-Service | Import Backend User
-      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan hi:create-backend-user &'
-
     - name: VN-Patient-Service | Wait until container ready
       shell: |
         while [[ $(KUBECONFIG={{ kubeconfig }} kubectl -n {{ k8s_namespace }} get po -l app=app-{{ stage }}-{{ project_name }}-vn-patient-service -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]] ; do echo "waiting for pod" && sleep 1 ; done
@@ -130,9 +127,6 @@
       shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/php artisan {{ item }} &'
       loop:
         - cache:clear
-
-    - name: VN-Patient-Service | Import Backend User
-      shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} su - www-data -- /usr/bin/php artisan hi:create-backend-user &'
 
     - name: VN-Patient-Service | Change permission
       shell: 'KUBECONFIG={{ kubeconfig }} kubectl exec {{ vn_patient_pod_name.stdout }} -n {{ k8s_namespace }} -- /usr/bin/chown -R www-data:www-data /var/www/storage/ &'

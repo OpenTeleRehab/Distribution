@@ -107,7 +107,6 @@
     - hi:keycloak-setup-permissions
     - hi:import-default-translation
     - hi:import-system-limit
-    - hi:create-backend-user
     - hi:generate-thumbnails
     - hi:import-email-template
     - hi:migrate-region-mapping
@@ -153,7 +152,6 @@
   args:
     chdir: 'projects/hiv'
   loop:
-    - hi:create-backend-user
     - hi:keycloak-setup-permissions
   when: therapist_service_build.stat.exists
   delegate_to: live-gl-tra
@@ -189,13 +187,6 @@
     - config:clear
     - view:clear
     - route:clear
-  when: patient_service_build.stat.exists
-  delegate_to: live-gl-tra
-
-- name: Run artisan import
-  shell: 'docker-compose exec patient_service /usr/bin/php artisan hi:create-backend-user &'
-  args:
-    chdir: 'projects/hiv'
   when: patient_service_build.stat.exists
   delegate_to: live-gl-tra
 
@@ -277,12 +268,6 @@
     - view:clear
     - route:clear
   when: patient_service_build.stat.exists
-  delegate_to: live-gl-tra
-
-- name: Run artisan import
-  shell: 'docker-compose -f vn-patient-compose.yml exec vn_patient_service /usr/bin/php artisan hi:create-backend-user &'
-  args:
-    chdir: 'projects/hiv'
   delegate_to: live-gl-tra
 
 - name: Remove build file state
