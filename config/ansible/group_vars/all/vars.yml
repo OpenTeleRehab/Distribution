@@ -122,8 +122,9 @@ smtp_mail_from_address:                 'noreply@web-essentials.co'
 map_api_key:                            '{{ map_api_key_vault }}'
 
 pusher_app_id:                          '{{ pusher_app_id_vault }}'
-pusher_app_key:                         '{{ pusher_app_key_vault }}'
+pusher_app_key:                         '935f123b01733c536268'
 pusher_app_secret:                      '{{ pusher_app_secret_vault }}'
+pusher_app_cluster:                     'ap1'
 
 google_translate_api_key:               '{{ google_translate_api_key_vault }}'
 
