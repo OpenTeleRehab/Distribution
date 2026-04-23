@@ -30,9 +30,6 @@ spec:
           - name: configmap-{{ stage }}-{{ project_name }}-env
             mountPath: /var/www/.env
             subPath: admin-service-env
-          - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-            mountPath: /var/www/.env.dusk.local
-            subPath: admin-service-env-dusk-local
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /var/www/storage/app/education_material
             subPath: 'app/education_material'
@@ -61,9 +58,6 @@ spec:
       - name: configmap-{{ stage }}-{{ project_name }}-env
         configMap:
           name: configmap-{{ stage }}-{{ project_name }}-admin-service-env
-      - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-        configMap:
-          name: configmap-{{ stage }}-{{ project_name }}-admin-service-env-dusk-local
       - name: 'vol-{{ stage }}-{{ project_name }}'
         persistentVolumeClaim:
           claimName: 'pvc-{{ stage }}-{{ project_id }}-admin-service'

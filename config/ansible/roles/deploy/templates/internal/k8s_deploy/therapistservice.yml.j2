@@ -30,9 +30,6 @@ spec:
           - name: configmap-{{ stage }}-{{ project_name }}-env
             mountPath: /var/www/.env
             subPath: therapist-service-env
-          - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-            mountPath: /var/www/.env.dusk.local
-            subPath: therapist-service-env-dusk-local
       volumes:
       - name: tz-config
         hostPath:
@@ -40,9 +37,6 @@ spec:
       - name: configmap-{{ stage }}-{{ project_name }}-env
         configMap:
           name: configmap-{{ stage }}-{{ project_name }}-therapist-service-env
-      - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-        configMap:
-          name: configmap-{{ stage }}-{{ project_name }}-therapist-service-env-dusk-local
       - name: 'vol-{{ stage }}-{{ project_name }}'
         persistentVolumeClaim:
           claimName: 'pvc-{{ stage }}-{{ project_id }}-therapist-service'

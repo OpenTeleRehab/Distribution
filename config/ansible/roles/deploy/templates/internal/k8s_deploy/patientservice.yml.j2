@@ -30,9 +30,6 @@ spec:
           - name: configmap-{{ stage }}-{{ project_name }}-env
             mountPath: /var/www/.env
             subPath: patient-service-env
-          - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-            mountPath: /var/www/.env.dusk
-            subPath: patient-service-dusk-local
           - name: 'vol-{{ stage }}-{{ project_name }}'
             mountPath: /var/www/storage/app
             subPath: 'app'
@@ -49,9 +46,6 @@ spec:
       - name: configmap-{{ stage }}-{{ project_name }}-env
         configMap:
           name: configmap-{{ stage }}-{{ project_name }}-patient-service-env
-      - name: configmap-{{ stage }}-{{ project_name }}-env-dusk-local
-        configMap:
-          name: configmap-{{ stage }}-{{ project_name }}-patient-service-dusk-local
       - name: 'vol-{{ stage }}-{{ project_name }}'
         persistentVolumeClaim:
           claimName: 'pvc-{{ stage }}-{{ project_id }}-patient-service'

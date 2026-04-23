@@ -48,31 +48,36 @@ image_name:                             'hub.web-essentials.co/we/{{ project_id 
 kubeconfig:                             '~/.kube/admin.conf'
 workspace:                              '{{ lookup("env", "WORKSPACE") or lookup("env", "PWD") }}'
 
-my_host:                                '10.10.10.25'
+my_host:                                '10.10.10.24'
 
-my_adminservice_user:                   '{{ stage }}_adminservice'
+my_adminservice_user:                   '{{ stage }}_hiv_admin'
 my_adminservice_pass:                   '{{ my_adminservice_pass_vault }}'
-my_adminservice_db:                     '{{ stage }}_adminservice'
+my_adminservice_db:                     '{{ stage }}_hiv_admin'
 
-my_hicadminservice_user:                '{{ stage }}_hicadminservice'
+my_hicadminservice_user:                '{{ stage }}_hiv_hic'
 my_hicadminservice_pass:                '{{ my_hicadminservice_pass_vault }}'
-my_hicadminservice_db:                  '{{ stage }}_hicadminservice'
+my_hicadminservice_db:                  '{{ stage }}_hiv_hic'
 
-my_therapistservice_user:               '{{ stage }}_therapistservice'
+my_therapistservice_user:               '{{ stage }}_hiv_therapist'
 my_therapistservice_pass:               '{{ my_therapistservice_pass_vault }}'
-my_therapistservice_db:                 '{{ stage }}_therapistservice'
+my_therapistservice_db:                 '{{ stage }}_hiv_therapist'
 
-my_patientservice_user:                 '{{ stage }}_patientservice'
+my_patientservice_user:                 '{{ stage }}_hiv_patient'
 my_patientservice_pass:                 '{{ my_patientservice_pass_vault }}'
-my_patientservice_db:                   '{{ stage }}_patientservice'
+my_patientservice_db:                   '{{ stage }}_hiv_patient'
 
-my_phoneservice_db:                     '{{ stage }}_phoneservice'
-my_phoneservice_user:                   '{{ stage }}_phoneservice'
+my_vn_patientservice_user:              '{{ stage }}_hiv_vn_patient'
+my_vn_patientservice_pass:              '{{ my_vn_patientservice_pass_vault }}'
+my_vn_patientservice_db:                '{{ stage }}_hiv_vn_patient'
+
+my_phoneservice_db:                     '{{ stage }}_hiv_phone'
+my_phoneservice_user:                   '{{ stage }}_hiv_phone'
 my_phoneservice_pass:                   '{{ my_phoneservice_pass_vault }}'
 
-my_keycloak_user:                       '{{ stage }}_{{ project_name }}_keycloak'
+my_keycloak_user:                       '{{ stage }}_hiv_keycloak'
 my_keycloak_pass:                       '{{ my_keycloak_pass_vault }}'
-my_keycloak_db:                         '{{ stage }}_{{ project_name }}_keycloak'
+my_keycloak_db:                         '{{ stage }}_hiv_keycloak'
+
 keycloak_admin_user:                    'admin'
 keycloak_admin_pass:                    '{{ keycloak_admin_pass_vault }}'
 keycloak_hi_realm_public_key:           '{{ keycloak_hi_realm_public_key_vault }}'
@@ -136,31 +141,8 @@ twilio_auth_token:                      '{{ twilio_auth_token_vault }}'
 firebase_project_id:                    'opentelerehab-dev'
 
 # Apache superset
-superset_image:   'apache/superset:4.1.1'
-superset_host:    '{{ stage }}-superset-rehabilitation.wehost.asia'
-database_dialect: 'mysql'
-superset_db_port: '3306'
-superset_db_user: '{{ stage }}_{{ project_name }}_superset'
-superset_db_pass: '{{ superset_db_pass_vault }}'
-superset_db_name: '{{ stage }}_{{ project_name }}_superset'
-
-superset_db_admin_service: 'admin_service.{{ stage }}_adminservice'
-superset_db_therapist_service: 'therapist_service.{{ stage }}_therapistservice'
-superset_db_patient_service: 'patient_service.{{ stage }}_patientservice'
-superset_db_vn_patient_service: 'vn_patient_service.vn_{{ stage }}_patientservice'
-
-superset_redis_image: 'redis:7.4.1'
-superset_redis_host: 'svc-{{ stage }}-{{ project_name }}-superset-redis'
-superset_redis_port: '6379'
-
-superset_secret_key: '{{ superset_secret_key_vault }}'
-
 superset_admin_user: 'admin_service'
 superset_admin_password: '{{ superset_admin_password_vault }}'
-superset_guest_token_jwt_secret: '{{ superset_guest_token_jwt_secret_vault }}'
-
-# Presto
-presto_host: '{{ stage }}-presto-rehabilitation.wehost.asia'
 
 crypt_secret: '{{ crypt_secret }}'
 crypt_cipher: '{{ crypt_cipher }}'
