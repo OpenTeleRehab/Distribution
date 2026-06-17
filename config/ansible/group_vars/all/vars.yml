@@ -148,3 +148,5 @@ crypt_secret: '{{ crypt_secret }}'
 crypt_cipher: '{{ crypt_cipher }}'
 
 mail_from_name: 'OpenTelerehab'
+
+tinymce_api_key: '{{ tinymce_api_key_vault }}'
