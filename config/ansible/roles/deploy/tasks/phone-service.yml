@@ -16,6 +16,7 @@
   loop:
     - default.conf
     - Dockerfile
+    - queue-worker.conf
 
 - name: PhoneService | Copy .env file
   template:
