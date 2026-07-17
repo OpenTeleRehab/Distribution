@@ -18,7 +18,7 @@ volumes:
 
 services:
   proxy:
-    image: traefik:v2.5
+    image: traefik:v3.7
     networks:
       - docker-net
     volumes:
