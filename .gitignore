@@ -2,3 +2,4 @@
 /config/docker/ssl/fullchain.pem
 /config/docker/ssl/privkey.pem
 config/docker/superset/translations/__pycache__/*
+.scannerwork/
